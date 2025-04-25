@@ -1,0 +1,23 @@
+{
+  "login": {
+    "title": "{{role}} Login",
+    "subtitle": "Welcome back! Please enter your details",
+    "rollNumber": "Enter your Roll Number",
+    "rollNumberError": "Roll Number is required",
+    "studentName": "Enter your name",
+    "studentNameError": "Name is required",
+    "email": "Enter your email",
+    "emailError": "Email is required",
+    "password": "Password",
+    "passwordError": "Password is required",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "button": "Login",
+    "guest": "Login as Guest",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up",
+    "wait": "Please wait"
+  }
+}
+
+  

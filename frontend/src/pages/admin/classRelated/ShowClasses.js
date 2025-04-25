@@ -1,0 +1,225 @@
+import { useEffect, useState } from 'react';
+import {
+  IconButton,
+  Box,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  Tooltip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Button,
+  Typography,
+  Paper
+} from '@mui/material';
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from '@mui/icons-material/Edit';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { deleteUser } from '../../../redux/userRelated/userHandle';
+import { getAllSclasses } from '../../../redux/sclassRelated/sclassHandle';
+import { BlueButton, GreenButton } from '../../../components/buttonStyles';
+import TableTemplate from '../../../components/TableTemplate';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import PostAddIcon from '@mui/icons-material/PostAdd';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import AddCardIcon from '@mui/icons-material/AddCard';
+import styled from 'styled-components';
+import SpeedDialTemplate from '../../../components/SpeedDialTemplate';
+import Popup from '../../../components/Popup';
+import axios from 'axios';
+
+const ShowClasses = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { sclassesList, loading } = useSelector((state) => state.sclass);
+  const { currentUser } = useSelector(state => state.user);
+  const adminID = currentUser._id;
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
+  const [message, setMessage] = useState("");
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editClass, setEditClass] = useState({});
+
+  useEffect(() => {
+    dispatch(getAllSclasses(adminID, "Sclass"));
+  }, [adminID, dispatch]);
+
+  const deleteHandler = (deleteID, address) => {
+    dispatch(deleteUser(deleteID, address))
+      .then(() => dispatch(getAllSclasses(adminID, "Sclass")));
+  };
+
+  const handleEditClick = (row) => {
+    setEditClass({ _id: row.id, sclassName: row.name });
+    setEditModalOpen(true);
+  };
+
+  const handleEditSave = async () => {
+    try {
+      await axios.put(`http://localhost:5001/Sclass/${editClass._id}`, { sclassName: editClass.sclassName });
+      setEditModalOpen(false);
+      dispatch(getAllSclasses(adminID, "Sclass"));
+    } catch (err) {
+      console.error("Ошибка при редактировании:", err);
+    }
+  };
+
+  const sclassColumns = [
+    { id: 'name', label: 'Название класса', minWidth: 170 },
+  ];
+
+  const sclassRows = sclassesList?.map((sclass) => ({
+    name: sclass.sclassName,
+    id: sclass._id,
+  })) || [];
+
+  const filteredRows = sclassRows.filter((row) =>
+    row.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const SclassButtonHaver = ({ row }) => {
+    const actions = [
+      { icon: <PostAddIcon />, name: 'Добавить предметы', action: () => navigate("/Admin/addsubject/" + row.id) },
+      { icon: <PersonAddAlt1Icon />, name: 'Добавить ученика', action: () => navigate("/Admin/class/addstudents/" + row.id) },
+    ];
+    return (
+      <ButtonContainer>
+        <Tooltip title="Удалить класс">
+          <IconButton onClick={() => deleteHandler(row.id, "Sclass")}>
+            <DeleteIcon color="error" />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Редактировать класс">
+          <IconButton onClick={() => handleEditClick(row)}>
+            <EditIcon color="primary" />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Просмотр класса">
+          <BlueButton variant="contained" onClick={() => navigate("/Admin/classes/class/" + row.id)}>
+            Просмотр
+          </BlueButton>
+        </Tooltip>
+        <ActionMenu actions={actions} />
+      </ButtonContainer>
+    );
+  };
+
+  const ActionMenu = ({ actions }) => {
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+
+    return (
+      <>
+        <Tooltip title="Дополнительно">
+          <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
+            <SpeedDialIcon />
+          </IconButton>
+        </Tooltip>
+        <Menu
+          anchorEl={anchorEl}
+          open={open}
+          onClose={() => setAnchorEl(null)}
+          PaperProps={{ elevation: 2, sx: styles.styledPaper }}
+        >
+          {actions.map((action, index) => (
+            <MenuItem key={index} onClick={action.action}>
+              <ListItemIcon>{action.icon}</ListItemIcon>
+              {action.name}
+            </MenuItem>
+          ))}
+        </Menu>
+      </>
+    );
+  };
+
+  const actions = [
+    {
+      icon: <AddCardIcon color="primary" />, name: 'Добавить новый класс',
+      action: () => navigate("/Admin/addclass")
+    },
+    {
+      icon: <DeleteIcon color="error" />, name: 'Удалить все классы',
+      action: () => deleteHandler(adminID, "Sclasses")
+    },
+  ];
+
+  return (
+    <>
+      <Typography variant="h4" sx={{ mb: 3 }}>Управление классами</Typography>
+
+      <Paper sx={{ p: 2, mb: 3 }} elevation={2}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <TextField
+            label="Поиск по классу"
+            variant="outlined"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <GreenButton variant="contained" onClick={() => navigate("/Admin/addclass")}>Добавить класс</GreenButton>
+        </Box>
+      </Paper>
+
+      {Array.isArray(filteredRows) && filteredRows.length > 0 ? (
+        <TableTemplate buttonHaver={SclassButtonHaver} columns={sclassColumns} rows={filteredRows} />
+      ) : (
+        <Typography variant="body1" sx={{ textAlign: 'center', mt: 4 }}>Нет доступных классов.</Typography>
+      )}
+
+      <SpeedDialTemplate actions={actions} />
+
+      <Dialog open={editModalOpen} onClose={() => setEditModalOpen(false)}>
+        <DialogTitle>Редактировать класс</DialogTitle>
+        <DialogContent>
+          <TextField
+            fullWidth
+            label="Название класса"
+            value={editClass.sclassName || ''}
+            onChange={(e) => setEditClass({ ...editClass, sclassName: e.target.value })}
+            margin="normal"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setEditModalOpen(false)}>Отмена</Button>
+          <Button variant="contained" onClick={handleEditSave}>Сохранить</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
+    </>
+  );
+};
+
+export default ShowClasses;
+
+const styles = {
+  styledPaper: {
+    overflow: 'visible',
+    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+    mt: 1.5,
+    '&:before': {
+      content: '""',
+      display: 'block',
+      position: 'absolute',
+      top: 0,
+      right: 14,
+      width: 10,
+      height: 10,
+      bgcolor: 'background.paper',
+      transform: 'translateY(-50%) rotate(45deg)',
+      zIndex: 0,
+    },
+  }
+};
+
+const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+`;
