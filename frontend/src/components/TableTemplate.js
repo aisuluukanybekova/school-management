@@ -1,71 +1,98 @@
-import React, { useState } from 'react';
-import { StyledTableCell, StyledTableRow } from './styles';
-import { Table, TableBody, TableContainer, TableHead, TablePagination } from '@mui/material';
+import React from 'react';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Box
+} from '@mui/material';
 
-const TableTemplate = ({ buttonHaver: ButtonHaver, columns, rows }) => {
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-
-    return (
-        <>
-            <TableContainer>
-                <Table stickyHeader aria-label="таблица">
-                    <TableHead>
-                        <StyledTableRow>
-                            {columns.map((column) => (
-                                <StyledTableCell
-                                    key={column.id}
-                                    align={column.align}
-                                    style={{ minWidth: column.minWidth }}
-                                >
-                                    {column.label}
-                                </StyledTableCell>
-                            ))}
-                            <StyledTableCell align="center">
-                                Действия
-                            </StyledTableCell>
-                        </StyledTableRow>
-                    </TableHead>
-                    <TableBody>
-                        {rows
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((row) => (
-                                <StyledTableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                                    {columns.map((column) => {
-                                        const value = row[column.id];
-                                        return (
-                                            <StyledTableCell key={column.id} align={column.align}>
-                                                {
-                                                    column.format && typeof value === 'number'
-                                                        ? column.format(value)
-                                                        : value
-                                                }
-                                            </StyledTableCell>
-                                        );
-                                    })}
-                                    <StyledTableCell align="center">
-                                        <ButtonHaver row={row} />
-                                    </StyledTableCell>
-                                </StyledTableRow>
-                            ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            <TablePagination
-                rowsPerPageOptions={[5, 10, 25, 100,]}
-                component="div"
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={(event, newPage) => setPage(newPage)}
-                onRowsPerPageChange={(event) => {
-                    setRowsPerPage(parseInt(event.target.value, 5));
-                    setPage(0);
+const TableTemplate = ({ columns, rows, buttonHaver: ButtonHaver }) => {
+  return (
+    <Box sx={{ width: '100%', overflowX: 'auto' }}>
+      <TableContainer component={Paper} sx={{
+        borderRadius: 3,
+        boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+        overflow: 'hidden'
+      }}>
+        <Table stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell
+                align="center"
+                sx={{
+                  backgroundColor: 'black',
+                  color: 'white',
+                  fontWeight: 'bold',
+                  fontSize: { xs: '12px', md: '16px' },
                 }}
-                labelRowsPerPage="Строк на странице"
-            />
-        </>
-    );
+              >
+                №
+              </TableCell>
+              {columns.map((column) => (
+                <TableCell
+                  key={column.id}
+                  align="center"
+                  sx={{
+                    backgroundColor: 'black',
+                    color: 'white',
+                    fontWeight: 'bold',
+                    fontSize: { xs: '12px', md: '16px' },
+                  }}
+                >
+                  {column.label}
+                </TableCell>
+              ))}
+              <TableCell
+                align="center"
+                sx={{
+                  backgroundColor: 'black',
+                  color: 'white',
+                  fontWeight: 'bold',
+                  fontSize: { xs: '12px', md: '16px' },
+                }}
+              >
+                Действия
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.length > 0 ? rows.map((row, index) => (
+              <TableRow
+                hover
+                key={row.id}
+                sx={{
+                  transition: 'background-color 0.3s',
+                  '&:hover': { backgroundColor: '#f5f5f5' }
+                }}
+              >
+                <TableCell align="center" sx={{ fontSize: { xs: '12px', md: '14px' } }}>
+                  {index + 1}
+                </TableCell>
+                {columns.map((column) => (
+                  <TableCell key={column.id} align="center" sx={{ fontSize: { xs: '12px', md: '14px' } }}>
+                    {row[column.id]}
+                  </TableCell>
+                ))}
+                <TableCell align="center">
+                  <ButtonHaver row={row} />
+                </TableCell>
+              </TableRow>
+            )) : (
+              <TableRow>
+                <TableCell colSpan={columns.length + 2} align="center" sx={{ p: 4 }}>
+                  Нет данных для отображения
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
+  );
 };
 
 export default TableTemplate;

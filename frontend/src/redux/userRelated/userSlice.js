@@ -30,18 +30,13 @@ const userSlice = createSlice({
             state.tempDetails = action.payload;
         },
         authSuccess: (state, action) => {
-            const user = action.payload;
-          
-            // 🛠️ фикс для ObjectId вместо school._id
-            const schoolId = user.school?._id || user.school || null;
-          
             state.status = 'success';
-            state.currentUser = { ...user, schoolId };
-            state.currentRole = user.role;
-            localStorage.setItem('user', JSON.stringify({ ...user, schoolId }));
+            state.currentUser = action.payload;
+            state.currentRole = action.payload.role;
+            localStorage.setItem('user', JSON.stringify(action.payload));
             state.response = null;
             state.error = null;
-          },
+        },
         authFailed: (state, action) => {
             state.status = 'failed';
             state.response = action.payload;

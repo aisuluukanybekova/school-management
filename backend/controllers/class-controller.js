@@ -129,5 +129,5 @@ module.exports = {
     deleteSclasses,
     getSclassDetail,
     getSclassStudents,
-    updateSclass, // ✅ экспортируем
+    updateSclass, //  экспортируем
 };

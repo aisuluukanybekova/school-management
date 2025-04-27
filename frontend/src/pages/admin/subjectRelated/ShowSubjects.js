@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import { getSubjectList } from '../../../redux/sclassRelated/sclassHandle';
+import { getAllSubjects } from '../../../redux/subjectRelated/subjectHandle';
 import { deleteUser } from '../../../redux/userRelated/userHandle';
 import axios from 'axios';
 import PostAddIcon from '@mui/icons-material/PostAdd';
@@ -21,7 +21,8 @@ const REACT_APP_BASE_URL = "http://localhost:5001";
 const ShowSubjects = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { subjectsList, loading, error, response } = useSelector((state) => state.sclass);
+  
+  const { subjectsList, loading, error, response } = useSelector((state) => state.subject);
   const { currentUser } = useSelector(state => state.user);
 
   const [showPopup, setShowPopup] = useState(false);
@@ -32,12 +33,12 @@ const ShowSubjects = () => {
   const [searchClass, setSearchClass] = useState("");
 
   useEffect(() => {
-    dispatch(getSubjectList(currentUser._id, "AllSubjects"));
+    dispatch(getAllSubjects(currentUser._id));
   }, [currentUser._id, dispatch]);
 
   const deleteHandler = (deleteID, address) => {
     dispatch(deleteUser(deleteID, address))
-      .then(() => dispatch(getSubjectList(currentUser._id, "AllSubjects")));
+      .then(() => dispatch(getAllSubjects(currentUser._id)));
   };
 
   const handleEditClick = (row) => {
@@ -51,10 +52,9 @@ const ShowSubjects = () => {
 
   const handleSaveEdit = async () => {
     try {
-      const res = await axios.put(`${REACT_APP_BASE_URL}/Subject/${editSubject._id}`, editSubject);
-      console.log("Обновлено:", res.data);
+      await axios.put(`${REACT_APP_BASE_URL}/api/subjects/${editSubject._id}`, editSubject);
       setEditModalOpen(false);
-      dispatch(getSubjectList(currentUser._id, "AllSubjects"));
+      dispatch(getAllSubjects(currentUser._id));
     } catch (error) {
       console.error("Ошибка при обновлении:", error.response?.data || error.message);
     }
@@ -62,17 +62,17 @@ const ShowSubjects = () => {
 
   const subjectColumns = [
     { id: 'subName', label: 'Название предмета', minWidth: 170 },
-    { id: 'sessions', label: 'Занятий проведено', minWidth: 170 },
+    { id: 'sessions', label: 'Количество занятий', minWidth: 170 },
     { id: 'sclassName', label: 'Класс', minWidth: 170 },
   ];
 
-  const subjectRows = subjectsList.map((subject) => ({
+  const subjectRows = subjectsList?.map((subject) => ({
     subName: subject.subName,
     sessions: subject.sessions,
     sclassName: subject.sclassName?.sclassName || '',
     sclassID: subject.sclassName?._id,
     id: subject._id,
-  }));
+  })) || [];
 
   const filteredRows = subjectRows.filter(row =>
     row.subName.toLowerCase().includes(searchQuery.toLowerCase()) &&
@@ -125,16 +125,14 @@ const ShowSubjects = () => {
               value={searchClass}
               onChange={(e) => setSearchClass(e.target.value)}
             />
-            <GreenButton variant="contained" onClick={() => navigate("/Admin/subjects/chooseclass")}>Добавить предметы</GreenButton>
+            <GreenButton variant="contained" onClick={() => navigate("/Admin/subjects/chooseclass")}>
+              Добавить предмет
+            </GreenButton>
           </Box>
 
           <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-            {Array.isArray(subjectsList) && filteredRows.length > 0 ? (
-              <TableTemplate
-                buttonHaver={SubjectsButtonHaver}
-                columns={subjectColumns}
-                rows={filteredRows}
-              />
+            {Array.isArray(filteredRows) && filteredRows.length > 0 ? (
+              <TableTemplate buttonHaver={SubjectsButtonHaver} columns={subjectColumns} rows={filteredRows} />
             ) : (
               <div style={{ padding: "2rem" }}>Ничего не найдено</div>
             )}

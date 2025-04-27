@@ -46,7 +46,7 @@ const ShowClasses = () => {
   const [editClass, setEditClass] = useState({});
 
   useEffect(() => {
-    dispatch(getAllSclasses(adminID, "Sclass"));
+    dispatch(getAllSclasses(adminID));
   }, [adminID, dispatch]);
 
   const deleteHandler = (deleteID, address) => {

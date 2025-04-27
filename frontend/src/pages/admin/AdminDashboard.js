@@ -107,7 +107,7 @@ const AdminDashboard = () => {
           <Route path="/Admin/profile" element={<AdminProfile />} />
           <Route path="/Admin/settings" element={<AdminSettings />} />
           <Route path="/Admin/teacher-schedule" element={<ShowTeacherSchedule />} />
-          <Route path="/Admin/terms" element={<AdminTermManager schoolId={admin?.school?._id || admin?.schoolId} />} />
+          <Route path="/Admin/terms" element={<AdminTermManager schoolId={admin?.schoolId || admin?.school?._id} />} />
           <Route path="/Admin/term-overview" element={<TermOverview schoolId={admin?.school?._id} />} />
           {/* Complaints */}
           <Route path="/Admin/complains" element={<SeeComplains />} />

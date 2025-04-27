@@ -26,11 +26,11 @@ const ClassDetails = () => {
   const classID = params.id;
 
   useEffect(() => {
-    dispatch(getClassDetails(classID, "Sclass"));
-    dispatch(getSubjectList(classID, "ClassSubjects"));
-    dispatch(getClassStudents(classID));
-  }, [dispatch, classID]);
-
+    dispatch(getClassDetails(classID, "Sclass")); // (пока оставляем "Sclass" для деталей класса)
+    dispatch(getSubjectList(classID)); 
+    dispatch(getClassStudents(classID)); 
+  }, [dispatch, classID]);  
+  
   if (error) {
     console.log(error);
   }
@@ -50,7 +50,7 @@ const ClassDetails = () => {
 
   const subjectColumns = [
     { id: 'name', label: 'Название предмета', minWidth: 170 },
-    { id: 'code', label: 'Код предмета', minWidth: 100 },
+   // { id: 'code', label: 'Код предмета', minWidth: 100 },
   ];
 
   const subjectRows = subjectsList && subjectsList.length > 0 && subjectsList.map((subject) => {

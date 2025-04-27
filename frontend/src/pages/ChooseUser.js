@@ -35,7 +35,6 @@ const ChooseUser = ({ visitor }) => {
       navigate(`/${user}login`);
       return;
     }
-
     const credentials = {
       Admin: { email: "yogendra@12", password },
       Student: { rollNum: "1", studentName: "Dipesh Awasthi", password },
@@ -87,7 +86,6 @@ const ChooseUser = ({ visitor }) => {
               Выберите роль для входа в систему
             </Typography>
           </HeaderContainer>
-
           <CardStack>
             {roles.map(({ key, icon, title, description }) => (
               <StyledPaper key={key} elevation={4} onClick={() => navigateHandler(key)}>
@@ -100,12 +98,10 @@ const ChooseUser = ({ visitor }) => {
             ))}
           </CardStack>
         </VerticalContainer>
-
         <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loader}>
           <CircularProgress color="inherit" />
           <Box ml={2}>Пожалуйста, подождите...</Box>
         </Backdrop>
-
         <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
       </Background>
     </>
@@ -196,7 +192,6 @@ const VerticalContainer = styled.div`
   justify-content: flex-start;
   padding-top: 4vh; 
 `;
-
 const HeaderContainer = styled.div`
   text-align: center;
   margin-bottom: 2.5rem;

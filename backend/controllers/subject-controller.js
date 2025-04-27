@@ -1,9 +1,8 @@
 const Subject = require('../models/subjectSchema.js');
 const Teacher = require('../models/teacherSchema.js');
 const Student = require('../models/studentSchema.js');
-
-// ✅ Создание новых предметов (без subCode)
-const subjectCreate = async (req, res) => {
+//  Создание новых предметов
+const createSubject = async (req, res) => {
     try {
         const subjects = req.body.subjects.map((subject) => ({
             subName: subject.subName,
@@ -18,8 +17,49 @@ const subjectCreate = async (req, res) => {
         res.status(500).json(err);
     }
 };
+//  Получение всех предметов по школе
+const getSubjectsBySchool = async (req, res) => {
+    try {
+        const subjects = await Subject.find({ school: req.params.id }).populate("sclassName", "sclassName");
+        if (subjects.length > 0) {
+            res.send(subjects);
+        } else {
+            res.send({ message: "No subjects found" });
+        }
+    } catch (err) {
+        res.status(500).json(err);
+    }
+};
+//  Получение всех предметов по классу
+const getSubjectsByClass = async (req, res) => {
+    try {
+        const subjects = await Subject.find({ sclassName: req.params.id });
+        if (subjects.length > 0) {
+            res.send(subjects);
+        } else {
+            res.send({ message: "No subjects found" });
+        }
+    } catch (err) {
+        res.status(500).json(err);
+    }
+};
+//  Получение подробностей по предмету
+const getSubjectDetail = async (req, res) => {
+    try {
+        let subject = await Subject.findById(req.params.id)
+            .populate("sclassName", "sclassName")
+            .populate("teacher", "name");
 
-// ✅ Обновление предмета
+        if (subject) {
+            res.send(subject);
+        } else {
+            res.send({ message: "No subject found" });
+        }
+    } catch (err) {
+        res.status(500).json(err);
+    }
+};
+// Обновление предмета
 const updateSubject = async (req, res) => {
     try {
         const { subName, sessions } = req.body;
@@ -34,67 +74,7 @@ const updateSubject = async (req, res) => {
     }
 };
 
-// ✅ Получение всех предметов по школе
-const allSubjects = async (req, res) => {
-    try {
-        const subjects = await Subject.find({ school: req.params.id })
-            .populate("sclassName", "sclassName");
-
-        if (subjects.length > 0) {
-            res.send(subjects);
-        } else {
-            res.send({ message: "No subjects found" });
-        }
-    } catch (err) {
-        res.status(500).json(err);
-    }
-};
-
-// ✅ Получение предметов по классу
-const classSubjects = async (req, res) => {
-    try {
-        const subjects = await Subject.find({ sclassName: req.params.id });
-        if (subjects.length > 0) {
-            res.send(subjects);
-        } else {
-            res.send({ message: "No subjects found" });
-        }
-    } catch (err) {
-        res.status(500).json(err);
-    }
-};
-
-// ✅ Список свободных предметов (без преподавателя)
-const freeSubjectList = async (req, res) => {
-    try {
-        const subjects = await Subject.find({ sclassName: req.params.id, teacher: { $exists: false } });
-        if (subjects.length > 0) {
-            res.send(subjects);
-        } else {
-            res.send({ message: "No subjects found" });
-        }
-    } catch (err) {
-        res.status(500).json(err);
-    }
-};
-
-// ✅ Получение подробностей по предмету
-const getSubjectDetail = async (req, res) => {
-    try {
-        let subject = await Subject.findById(req.params.id);
-        if (subject) {
-            subject = await subject.populate("sclassName", "sclassName");
-            subject = await subject.populate("teacher", "name");
-            res.send(subject);
-        } else {
-            res.send({ message: "No subject found" });
-        }
-    } catch (err) {
-        res.status(500).json(err);
-    }
-};
-
-// ✅ Удаление одного предмета
+//  Удаление одного предмета
 const deleteSubject = async (req, res) => {
     try {
         const deletedSubject = await Subject.findByIdAndDelete(req.params.id);
@@ -115,7 +95,7 @@ const deleteSubject = async (req, res) => {
     }
 };
 
-// ✅ Удаление всех предметов по школе
+// Удаление всех предметов по школе
 const deleteSubjects = async (req, res) => {
     try {
         const subjectsToDelete = await Subject.find({ school: req.params.id });
@@ -134,7 +114,7 @@ const deleteSubjects = async (req, res) => {
     }
 };
 
-// ✅ Удаление всех предметов по классу
+//  Удаление всех предметов по классу
 const deleteSubjectsByClass = async (req, res) => {
     try {
         const subjectsToDelete = await Subject.find({ sclassName: req.params.id });
@@ -153,15 +133,28 @@ const deleteSubjectsByClass = async (req, res) => {
     }
 };
 
-// ✅ Экспорт всех функций
+//  Получение свободных предметов (без преподавателя)
+const freeSubjectList = async (req, res) => {
+    try {
+        const subjects = await Subject.find({ sclassName: req.params.id, teacher: { $exists: false } });
+        if (subjects.length > 0) {
+            res.send(subjects);
+        } else {
+            res.send({ message: "No subjects found" });
+        }
+    } catch (err) {
+        res.status(500).json(err);
+    }
+};
+
 module.exports = {
-    subjectCreate,
-    freeSubjectList,
-    classSubjects,
+    createSubject,
+    getSubjectsBySchool,
+    getSubjectsByClass,
     getSubjectDetail,
-    deleteSubjectsByClass,
-    deleteSubjects,
+    updateSubject,
     deleteSubject,
-    allSubjects,
-    updateSubject
+    deleteSubjects,
+    deleteSubjectsByClass,
+    freeSubjectList
 };

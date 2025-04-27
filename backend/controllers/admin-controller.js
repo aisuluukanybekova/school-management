@@ -10,44 +10,57 @@ const Complain = require('../models/complainSchema.js');
 // Регистрация администратора
 const adminRegister = async (req, res) => {
     try {
-        const admin = new Admin({ ...req.body });
-
         const existingAdminByEmail = await Admin.findOne({ email: req.body.email });
         const existingSchool = await Admin.findOne({ schoolName: req.body.schoolName });
 
         if (existingAdminByEmail) {
-            res.send({ message: 'Email already exists' });
-        } else if (existingSchool) {
-            res.send({ message: 'School name already exists' });
-        } else {
-            let result = await admin.save();
-            result.password = undefined;
-            res.send(result);
+            return res.send({ message: 'Email already exists' });
         }
+        if (existingSchool) {
+            return res.send({ message: 'School name already exists' });
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+
+        const admin = new Admin({
+            ...req.body,
+            password: hashedPassword
+        });
+
+        const result = await admin.save();
+        result.password = undefined;
+        res.send(result);
     } catch (err) {
-        res.status(500).json(err);
+        console.error(err);
+        res.status(500).json({ message: 'Server error during registration' });
     }
 };
 
-// Авторизация администратора
+// ✅ Логин администратора
 const adminLogIn = async (req, res) => {
     if (req.body.email && req.body.password) {
-        let admin = await Admin.findOne({ email: req.body.email });
-        if (admin) {
-            if (req.body.password === admin.password) {
-                admin.password = undefined;
-                res.send(admin);
-            } else {
-                res.send({ message: "Invalid password" });
+        try {
+            const admin = await Admin.findOne({ email: req.body.email });
+            if (!admin) {
+                return res.send({ message: "User not found" });
             }
-        } else {
-            res.send({ message: "User not found" });
+
+            const isValid = await bcrypt.compare(req.body.password, admin.password);
+            if (!isValid) {
+                return res.send({ message: "Invalid password" });
+            }
+
+            admin.password = undefined;
+            res.send(admin);
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ message: 'Server error during login' });
         }
     } else {
         res.send({ message: "Email and password are required" });
     }
 };
-
 // Получение информации об администраторе
 const getAdminDetail = async (req, res) => {
     try {

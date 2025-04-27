@@ -11,70 +11,72 @@ import {
     getSubDetailsSuccess,
     getSubDetailsRequest
 } from './sclassSlice';
-const REACT_APP_BASE_URL = "http://localhost:5001";
-export const getAllSclasses = (id, address) => async (dispatch) => {
+
+const REACT_APP_BASE_URL = "http://localhost:5001/api";
+
+// === Получить все классы ===
+export const getAllSclasses = (id) => async (dispatch) => {
     dispatch(getRequest());
-
     try {
-        const result = await axios.get(`${REACT_APP_BASE_URL}/${address}List/${id}`);
-        if (result.data.message) {
-            dispatch(getFailedTwo(result.data.message));
-        } else {
-            dispatch(getSuccess(result.data));
-        }
+      const result = await axios.get(`${REACT_APP_BASE_URL}/classes/school/${id}`);
+      if (result.data.message) {
+        dispatch(getFailedTwo(result.data.message));
+      } else {
+        dispatch(getSuccess(result.data));
+      }
     } catch (error) {
-        dispatch(getError(error));
+      dispatch(getError(error));
     }
-}
+};
 
+// === Получить всех учеников класса ===
 export const getClassStudents = (id) => async (dispatch) => {
     dispatch(getRequest());
-
     try {
-        const result = await axios.get(`${REACT_APP_BASE_URL}/Sclass/Students/${id}`);
-        if (result.data.message) {
-            dispatch(getFailedTwo(result.data.message));
-        } else {
-            dispatch(getStudentsSuccess(result.data));
-        }
+      const result = await axios.get(`${REACT_APP_BASE_URL}/students/class/${id}`);
+      if (result.data.message) {
+        dispatch(getFailedTwo(result.data.message));
+      } else {
+        dispatch(getStudentsSuccess(result.data));
+      }
     } catch (error) {
-        dispatch(getError(error));
+      dispatch(getError(error));
     }
-}
+};
 
-export const getClassDetails = (id, address) => async (dispatch) => {
+// === Получить детали класса ===
+export const getClassDetails = (id) => async (dispatch) => {
     dispatch(getRequest());
-
     try {
-        const result = await axios.get(`${REACT_APP_BASE_URL}/${address}/${id}`);
+        const result = await axios.get(`${REACT_APP_BASE_URL}/classes/${id}`);
         if (result.data) {
             dispatch(detailsSuccess(result.data));
         }
     } catch (error) {
         dispatch(getError(error));
     }
-}
+};
 
-export const getSubjectList = (id, address) => async (dispatch) => {
+// === Получить все предметы класса ===
+export const getSubjectList = (id) => async (dispatch) => {
     dispatch(getRequest());
-
     try {
-        const result = await axios.get(`${REACT_APP_BASE_URL}/${address}/${id}`);
-        if (result.data.message) {
-            dispatch(getFailed(result.data.message));
-        } else {
-            dispatch(getSubjectsSuccess(result.data));
-        }
+      const result = await axios.get(`${REACT_APP_BASE_URL}/subjects/class/${id}`);
+      if (result.data.message) {
+        dispatch(getFailed(result.data.message));
+      } else {
+        dispatch(getSubjectsSuccess(result.data));
+      }
     } catch (error) {
-        dispatch(getError(error));
+      dispatch(getError(error));
     }
-}
+};
 
+// === Получить свободные предметы для учителя ===
 export const getTeacherFreeClassSubjects = (id) => async (dispatch) => {
     dispatch(getRequest());
-
     try {
-        const result = await axios.get(`${REACT_APP_BASE_URL}/FreeSubjectList/${id}`);
+        const result = await axios.get(`${REACT_APP_BASE_URL}/subjects/free/${id}`);
         if (result.data.message) {
             dispatch(getFailed(result.data.message));
         } else {
@@ -83,17 +85,17 @@ export const getTeacherFreeClassSubjects = (id) => async (dispatch) => {
     } catch (error) {
         dispatch(getError(error));
     }
-}
+};
 
-export const getSubjectDetails = (id, address) => async (dispatch) => {
+// === Получить детали предмета ===
+export const getSubjectDetails = (id) => async (dispatch) => {
     dispatch(getSubDetailsRequest());
-
     try {
-        const result = await axios.get(`${REACT_APP_BASE_URL}/${address}/${id}`);
+        const result = await axios.get(`${REACT_APP_BASE_URL}/subjects/${id}`);
         if (result.data) {
             dispatch(getSubDetailsSuccess(result.data));
         }
     } catch (error) {
         dispatch(getError(error));
     }
-}
+};

@@ -4,16 +4,19 @@ const termSchema = new mongoose.Schema({
   termNumber: {
     type: Number,
     required: true,
+    min: 1,
+    max: 4,
     validate: {
       validator: async function (value) {
+        // Проверяем, существует ли уже такая четверть для этой школы
         const existing = await this.constructor.findOne({
           school: this.school,
           termNumber: value,
-          _id: { $ne: this._id }
+          _id: { $ne: this._id } // исключить сам себя при обновлении
         });
         return !existing;
       },
-      message: 'Эта четверть уже существует для школы'
+      message: 'Эта четверть уже существует для данной школы.'
     }
   },
   startDate: {
@@ -27,11 +30,12 @@ const termSchema = new mongoose.Schema({
       validator: function (v) {
         return v > this.startDate;
       },
-      message: 'Дата окончания должна быть позже даты начала'
+      message: 'Дата окончания должна быть позже даты начала.'
     }
   },
   workingDays: {
-    type: Number
+    type: Number,
+    default: 0 // <-- Добавил значение по умолчанию для стабильности
   },
   school: {
     type: mongoose.Schema.Types.ObjectId,
@@ -40,4 +44,5 @@ const termSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Term', termSchema);
+const Term = mongoose.model('Term', termSchema);
+module.exports = Term;

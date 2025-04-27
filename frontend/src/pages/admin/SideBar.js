@@ -39,12 +39,7 @@ const SideBar = () => {
     { text: 'Журнал', full: 'Журнал оценок', icon: <LibraryBooksIcon />, path: '/Admin/journal' },
     { text: 'Посещаемость', full: 'Журнал посещаемости', icon: <EventAvailableIcon />, path: '/Admin/attendance' },
     { text: 'Четверти', full: 'Управление четвертями', icon: <DateRangeIcon />, path: '/Admin/terms' },
-    {
-      text: 'Четверти (таблица)',
-      full: 'Обзор четвертей',
-      icon: <DateRangeIcon />,
-      path: '/Admin/term-overview'
-    }
+    { text: 'Четверти (таблица)',full: 'Обзор четвертей', icon: <DateRangeIcon />,path: '/Admin/term-overview'}
   ];
 
   const userItems = [

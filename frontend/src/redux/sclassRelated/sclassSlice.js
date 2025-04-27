@@ -24,19 +24,19 @@ const sclassSlice = createSlice({
             state.subloading = true;
         },
         getSuccess: (state, action) => {
-            state.sclassesList = action.payload;
+            state.sclassesList = Array.isArray(action.payload) ? action.payload : [];
             state.loading = false;
             state.error = null;
             state.getresponse = null;
         },
         getStudentsSuccess: (state, action) => {
-            state.sclassStudents = action.payload;
+            state.sclassStudents = Array.isArray(action.payload) ? action.payload : [];
             state.loading = false;
             state.error = null;
             state.getresponse = null;
         },
         getSubjectsSuccess: (state, action) => {
-            state.subjectsList = action.payload;
+            state.subjectsList = Array.isArray(action.payload) ? action.payload : [];
             state.loading = false;
             state.error = null;
             state.response = null;
@@ -86,7 +86,7 @@ export const {
     getFailedTwo,
     resetSubjects,
     getSubDetailsSuccess,
-    getSubDetailsRequest
+    getSubDetailsRequest,
 } = sclassSlice.actions;
 
 export const sclassReducer = sclassSlice.reducer;

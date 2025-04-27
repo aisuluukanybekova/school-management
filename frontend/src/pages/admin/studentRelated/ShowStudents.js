@@ -2,13 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { getAllStudents } from '../../../redux/studentRelated/studentHandle';
-import {
-  Paper, Box, IconButton, Dialog, DialogTitle, DialogContent,
-  DialogActions, TextField, Button, ButtonGroup, InputAdornment, MenuItem
-} from '@mui/material';
-import {
-  KeyboardArrowUp, KeyboardArrowDown
-} from '@mui/icons-material';
+import { Paper, Box, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, ButtonGroup, InputAdornment, MenuItem } from '@mui/material';
+import { KeyboardArrowUp, KeyboardArrowDown } from '@mui/icons-material';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import EditIcon from '@mui/icons-material/Edit';
@@ -17,7 +12,6 @@ import Grow from '@mui/material/Grow';
 import Popper from '@mui/material/Popper';
 import MenuList from '@mui/material/MenuList';
 import SearchIcon from '@mui/icons-material/Search';
-
 import { BlackButton, BlueButton, GreenButton } from '../../../components/buttonStyles';
 import TableTemplate from '../../../components/TableTemplate';
 import SpeedDialTemplate from '../../../components/SpeedDialTemplate';
@@ -25,7 +19,7 @@ import Popup from '../../../components/Popup';
 import axios from 'axios';
 import { deleteUser } from '../../../redux/userRelated/userHandle';
 
-const REACT_APP_BASE_URL = "http://localhost:5001";
+const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:5001";
 
 const ShowStudents = () => {
   const navigate = useNavigate();
@@ -35,10 +29,8 @@ const ShowStudents = () => {
 
   const [showPopup, setShowPopup] = useState(false);
   const [message, setMessage] = useState("");
-
   const [editStudent, setEditStudent] = useState({});
   const [editModalOpen, setEditModalOpen] = useState(false);
-
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedClass, setSelectedClass] = useState('Все');
 
@@ -48,14 +40,12 @@ const ShowStudents = () => {
 
   const deleteHandler = (deleteID, address) => {
     dispatch(deleteUser(deleteID, address))
-      .then(() => {
-        dispatch(getAllStudents(currentUser._id));
-      });
+      .then(() => dispatch(getAllStudents(currentUser._id)));
   };
 
   const handleSaveEdit = async () => {
     try {
-      const res = await axios.put(`${REACT_APP_BASE_URL}/Student/${editStudent._id}`, editStudent);
+      await axios.put(`${REACT_APP_BASE_URL}/Student/${editStudent._id}`, editStudent);
       setEditModalOpen(false);
       dispatch(getAllStudents(currentUser._id));
     } catch (error) {
@@ -67,7 +57,7 @@ const ShowStudents = () => {
 
   const filteredStudents = studentsList.filter(student => {
     const nameMatch = student.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const classMatch = selectedClass === 'Все' || student.sclassName?.sclassName === selectedClass;
+    const classMatch = selectedClass === 'Все' || (student?.sclassName?.sclassName === selectedClass);
     return nameMatch && classMatch;
   });
 
@@ -139,7 +129,13 @@ const ShowStudents = () => {
 
   return (
     <>
-      {loading ? <div>Загрузка...</div> : (
+      {loading ? (
+        <div>Загрузка...</div>
+      ) : error ? (
+        <Box sx={{ p: 4, textAlign: 'center', color: 'red' }}>
+          Ошибка загрузки студентов
+        </Box>
+      ) : (
         <>
           {response ? (
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
@@ -168,14 +164,20 @@ const ShowStudents = () => {
                   ))}
                 </TextField>
               </Box>
-              {Array.isArray(filteredStudents) && filteredStudents.length > 0 && (
+
+              {filteredStudents.length > 0 ? (
                 <TableTemplate buttonHaver={StudentButtonHaver} columns={studentColumns} rows={studentRows} />
+              ) : (
+                <Box sx={{ p: 4, textAlign: 'center' }}>
+                  Нет студентов для отображения
+                </Box>
               )}
               <SpeedDialTemplate actions={actions} />
             </Paper>
           )}
         </>
       )}
+
       <Dialog open={editModalOpen} onClose={() => setEditModalOpen(false)}>
         <DialogTitle>Редактировать ученика</DialogTitle>
         <DialogContent>
@@ -199,6 +201,7 @@ const ShowStudents = () => {
           <Button variant="contained" onClick={handleSaveEdit}>Сохранить</Button>
         </DialogActions>
       </Dialog>
+
       <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
     </>
   );

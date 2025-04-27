@@ -56,10 +56,25 @@ const studentLogIn = async (req, res) => {
   }
 };
 
-// === Получить всех студентов ===
+// === Получить всех студентов школы ===
 const getStudents = async (req, res) => {
   try {
     const students = await Student.find({ school: req.params.id }).populate("sclassName", "sclassName");
+    if (students.length > 0) {
+      const modified = students.map((s) => ({ ...s._doc, password: undefined }));
+      res.send(modified);
+    } else {
+      res.send({ message: "No students found" });
+    }
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+// === Получить студентов по классу ===
+const getStudentsByClass = async (req, res) => {
+  try {
+    const students = await Student.find({ sclassName: req.params.id }).populate("sclassName", "sclassName");
     if (students.length > 0) {
       const modified = students.map((s) => ({ ...s._doc, password: undefined }));
       res.send(modified);
@@ -129,7 +144,7 @@ const deleteStudentsByClass = async (req, res) => {
   }
 };
 
-// ✅ === ОБНОВЛЕНИЕ студента ===
+// === Обновить студента ===
 const updateStudent = async (req, res) => {
   try {
     if (req.body.password) {
@@ -153,7 +168,6 @@ const updateStudent = async (req, res) => {
 // === Обновить оценку ===
 const updateExamResult = async (req, res) => {
   const { subName, marksObtained, date } = req.body;
-
   try {
     const student = await Student.findById(req.params.id);
     if (!student) return res.send({ message: 'Student not found' });
@@ -162,9 +176,9 @@ const updateExamResult = async (req, res) => {
 
     if (existingResult) {
       existingResult.marksObtained = marksObtained;
-      existingResult.date = date; // ✅ обновляем дату
+      existingResult.date = date;
     } else {
-      student.examResult.push({ subName, marksObtained, date }); // ✅ передаём дату
+      student.examResult.push({ subName, marksObtained, date });
     }
 
     const result = await student.save();
@@ -174,11 +188,9 @@ const updateExamResult = async (req, res) => {
   }
 };
 
-
-// === Отметить посещаемость ===
+// === Посещаемость студента ===
 const studentAttendance = async (req, res) => {
   const { subName, status, date } = req.body;
-
   try {
     const student = await Student.findById(req.params.id);
     if (!student) return res.send({ message: 'Student not found' });
@@ -262,6 +274,7 @@ module.exports = {
   studentRegister,
   studentLogIn,
   getStudents,
+  getStudentsByClass,
   getStudentDetail,
   deleteStudents,
   deleteStudent,
