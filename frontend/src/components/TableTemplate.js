@@ -35,12 +35,15 @@ const TableTemplate = ({ columns, rows, buttonHaver: ButtonHaver }) => {
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
-                  align="center"
+                  align={column.align || 'center'}
                   sx={{
                     backgroundColor: 'black',
                     color: 'white',
                     fontWeight: 'bold',
                     fontSize: { xs: '12px', md: '16px' },
+                    minWidth: column.minWidth,
+                    maxWidth: column.maxWidth,
+                    whiteSpace: column.noWrap ? 'nowrap' : 'normal',
                   }}
                 >
                   {column.label}
@@ -63,7 +66,7 @@ const TableTemplate = ({ columns, rows, buttonHaver: ButtonHaver }) => {
             {rows.length > 0 ? rows.map((row, index) => (
               <TableRow
                 hover
-                key={row.id}
+                key={row._id || index}
                 sx={{
                   transition: 'background-color 0.3s',
                   '&:hover': { backgroundColor: '#f5f5f5' }
@@ -73,7 +76,16 @@ const TableTemplate = ({ columns, rows, buttonHaver: ButtonHaver }) => {
                   {index + 1}
                 </TableCell>
                 {columns.map((column) => (
-                  <TableCell key={column.id} align="center" sx={{ fontSize: { xs: '12px', md: '14px' } }}>
+                  <TableCell
+                    key={column.id}
+                    align={column.align || 'center'}
+                    sx={{
+                      fontSize: { xs: '12px', md: '14px' },
+                      minWidth: column.minWidth,
+                      maxWidth: column.maxWidth,
+                      whiteSpace: column.noWrap ? 'nowrap' : 'normal',
+                    }}
+                  >
                     {row[column.id]}
                   </TableCell>
                 ))}

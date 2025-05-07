@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const gradebookSchema = new mongoose.Schema({
   classId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Class',
+    ref: 'sclass', 
     required: true,
   },
   subjectId: {
@@ -17,8 +17,8 @@ const gradebookSchema = new mongoose.Schema({
     required: true,
   },
   term: {
-    type: String,
-    enum: ['1', '2', '3', '4'], // четверть
+    type: Number,
+    enum: [1, 2, 3, 4],
     required: true,
   },
   grades: [
@@ -26,17 +26,16 @@ const gradebookSchema = new mongoose.Schema({
       studentId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Student',
+        required: true,
       },
       values: [
         {
-          date: Date,
-          grade: Number,
+          date: { type: String, required: true },
+          grade: { type: Number, min: 1, max: 5 },
         },
       ],
     },
   ],
-}, {
-  timestamps: true
 });
 
 module.exports = mongoose.model('Gradebook', gradebookSchema);

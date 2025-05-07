@@ -1,162 +1,100 @@
-import { useEffect } from "react";
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom'
-import { getClassStudents } from "../../redux/sclassRelated/sclassHandle";
-import { Paper, Box, Typography, ButtonGroup, Button, Popper, Grow, ClickAwayListener, MenuList, MenuItem } from '@mui/material';
-import { BlackButton, BlueButton } from "../../components/buttonStyles";
-import TableTemplate from "../../components/TableTemplate";
-import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
+import { getClassStudents } from '../../redux/sclassRelated/sclassHandle';
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Typography,
+  Paper
+} from '@mui/material';
+import TableTemplate from '../../components/TableTemplate';
 
-const TeacherClassDetails = () => {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const { sclassStudents, loading, error, getresponse } = useSelector((state) => state.sclass);
-    const { currentUser } = useSelector((state) => state.user);
+const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:5001';
 
-    const classID = currentUser.teachSclass?._id;
-    const subjectID = currentUser.teachSubject?._id;
+const TeacherClassForm = () => {
+  const dispatch = useDispatch();
+  const { currentUser } = useSelector(state => state.user);
+  const { sclassStudents, loading } = useSelector(state => state.sclass);
 
-    useEffect(() => {
-        dispatch(getClassStudents(classID));
-    }, [dispatch, classID]);
+  const [teacherClasses, setTeacherClasses] = useState([]);
+  const [selectedClass, setSelectedClass] = useState('');
 
-    if (error) {
-        console.log(error);
-    }
+  const teacherId = currentUser?._id;
 
-    const studentColumns = [
-        { id: 'name', label: 'Имя', minWidth: 170 },
-        { id: 'rollNum', label: 'Номер зачетки', minWidth: 100 },
-    ];
+const fetchTeacherClasses = async () => {
+  try {
+    const res = await axios.get(`http://localhost:5001/api/teacherSubjectClass/by-teacher/${teacherId}`);
 
-    const studentRows = sclassStudents.map((student) => {
-        return {
-            name: student.name,
-            rollNum: student.rollNum,
-            id: student._id,
-        };
-    });
-
-    const StudentsButtonHaver = ({ row }) => {
-        const options = ['Отметить посещаемость', 'Поставить оценку'];
-
-        const [open, setOpen] = React.useState(false);
-        const anchorRef = React.useRef(null);
-        const [selectedIndex, setSelectedIndex] = React.useState(0);
-
-        const handleClick = () => {
-            if (selectedIndex === 0) {
-                navigate(`/Teacher/class/student/attendance/${row.id}/${subjectID}`);
-            } else if (selectedIndex === 1) {
-                navigate(`/Teacher/class/student/marks/${row.id}/${subjectID}`);
-            }
-        };
-
-        const handleMenuItemClick = (event, index) => {
-            setSelectedIndex(index);
-            setOpen(false);
-        };
-
-        const handleToggle = () => {
-            setOpen((prevOpen) => !prevOpen);
-        };
-
-        const handleClose = (event) => {
-            if (anchorRef.current && anchorRef.current.contains(event.target)) {
-                return;
-            }
-            setOpen(false);
-        };
-
-        return (
-            <>
-                <BlueButton
-                    variant="contained"
-                    onClick={() => navigate("/Teacher/class/student/" + row.id)}
-                >
-                    Посмотреть
-                </BlueButton>
-                <React.Fragment>
-                    <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button">
-                        <Button onClick={handleClick}>{options[selectedIndex]}</Button>
-                        <BlackButton
-                            size="small"
-                            aria-controls={open ? 'split-button-menu' : undefined}
-                            aria-expanded={open ? 'true' : undefined}
-                            aria-label="select action"
-                            aria-haspopup="menu"
-                            onClick={handleToggle}
-                        >
-                            {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-                        </BlackButton>
-                    </ButtonGroup>
-                    <Popper
-                        sx={{ zIndex: 1 }}
-                        open={open}
-                        anchorEl={anchorRef.current}
-                        role={undefined}
-                        transition
-                        disablePortal
-                    >
-                        {({ TransitionProps, placement }) => (
-                            <Grow
-                                {...TransitionProps}
-                                style={{
-                                    transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
-                                }}
-                            >
-                                <Paper>
-                                    <ClickAwayListener onClickAway={handleClose}>
-                                        <MenuList id="split-button-menu" autoFocusItem>
-                                            {options.map((option, index) => (
-                                                <MenuItem
-                                                    key={option}
-                                                    selected={index === selectedIndex}
-                                                    onClick={(event) => handleMenuItemClick(event, index)}
-                                                >
-                                                    {option}
-                                                </MenuItem>
-                                            ))}
-                                        </MenuList>
-                                    </ClickAwayListener>
-                                </Paper>
-                            </Grow>
-                        )}
-                    </Popper>
-                </React.Fragment>
-            </>
-        );
-    };
-
-    return (
-        <>
-            {loading ? (
-                <div>Загрузка...</div>
-            ) : (
-                <>
-                    <Typography variant="h4" align="center" gutterBottom>
-                        Детали класса
-                    </Typography>
-                    {getresponse ? (
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
-                            Студенты не найдены
-                        </Box>
-                    ) : (
-                        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                            <Typography variant="h5" gutterBottom>
-                                Список студентов:
-                            </Typography>
-
-                            {Array.isArray(sclassStudents) && sclassStudents.length > 0 &&
-                                <TableTemplate buttonHaver={StudentsButtonHaver} columns={studentColumns} rows={studentRows} />
-                            }
-                        </Paper>
-                    )}
-                </>
-            )}
-        </>
-    );
+    setTeacherClasses(res.data);
+  } catch (err) {
+    console.error('Ошибка загрузки классов учителя:', err);
+  }
 };
 
-export default TeacherClassDetails;
+
+  useEffect(() => {
+    if (currentUser?._id) {
+      fetchTeacherClasses();
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (selectedClass) {
+      dispatch(getClassStudents(selectedClass));
+    }
+  }, [selectedClass, dispatch]);
+
+  const uniqueClasses = [...new Map(teacherClasses.map(item => [item.sclassId, { id: item.sclassId, name: item.sclassName }])).values()];
+
+  const studentColumns = [
+    { id: 'name', label: 'Имя', minWidth: 170 },
+    { id: 'rollNum', label: 'Номер зачетки', minWidth: 100 },
+  ];
+
+  const studentRows = sclassStudents.map((s) => ({
+    name: s.name,
+    rollNum: s.rollNum,
+    id: s._id,
+  }));
+
+  return (
+    <Box sx={{ p: 3 }}>
+      <Typography variant="h5" gutterBottom>Выберите класс</Typography>
+
+      <FormControl fullWidth sx={{ mb: 3 }}>
+        <InputLabel>Класс</InputLabel>
+        <Select
+          value={selectedClass}
+          label="Класс"
+          onChange={(e) => setSelectedClass(e.target.value)}
+        >
+          {uniqueClasses.map(cls => (
+            <MenuItem key={cls.id} value={cls.id}>{cls.name}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      {loading ? (
+        <Typography>Загрузка студентов...</Typography>
+      ) : (
+        sclassStudents.length > 0 ? (
+          <Paper sx={{ mt: 3 }}>
+            <TableTemplate
+              columns={studentColumns}
+              rows={studentRows}
+              buttonHaver={() => null} // или замени на нужный тебе компонент действий
+            />
+          </Paper>
+        ) : (
+          <Typography color="text.secondary">Нет студентов для выбранного класса.</Typography>
+        )
+      )}
+    </Box>
+  );
+};
+
+export default TeacherClassForm;

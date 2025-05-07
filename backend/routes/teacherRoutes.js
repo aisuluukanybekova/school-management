@@ -1,4 +1,6 @@
-const router = require('express').Router();
+const express = require('express');
+const router = express.Router();
+
 const {
   teacherRegister,
   teacherLogIn,
@@ -12,36 +14,38 @@ const {
   teacherAttendance
 } = require('../controllers/teacher-controller');
 
-// === Преподаватель Роуты ===
-
-// Регистрация
+// === Роуты для преподавателей ===
 router.post('/register', teacherRegister);
-
-// Вход
 router.post('/login', teacherLogIn);
-
-// Получить всех преподавателей по школе
-router.get('/school/:id', getTeachers);
-
-// Получить одного преподавателя по id
+router.get('/school/:id', getTeachers); 
 router.get('/:id', getTeacherDetail);
-
-// Обновить преподавателя
 router.put('/:id', updateTeacher);
-
-// Обновить предмет преподавателя
 router.put('/update-subject', updateTeacherSubject);
-
-// Удалить одного преподавателя
 router.delete('/:id', deleteTeacher);
-
-// Удалить всех преподавателей школы
 router.delete('/school/:id', deleteTeachers);
-
-// Удалить всех преподавателей класса
 router.delete('/class/:id', deleteTeachersByClass);
-
-// Отметить посещаемость преподавателя
 router.post('/attendance/:id', teacherAttendance);
+
+//  Дополнительный — получить всех преподавателей без фильтра
+router.get('/', async (req, res) => {
+  try {
+    const Teacher = require('../models/teacherSchema');
+    const teachers = await Teacher.find();
+    res.json(teachers);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+//  Получить всех классных руководителей школы
+router.get('/homerooms/:schoolId', async (req, res) => {
+  try {
+    const Teacher = require('../models/teacherSchema');
+    const homerooms = await Teacher.find({ school: req.params.schoolId, homeroomFor: { $ne: null } })
+      .populate('homeroomFor', 'sclassName');
+    res.status(200).json(homerooms);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 module.exports = router;

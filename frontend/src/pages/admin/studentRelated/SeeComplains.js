@@ -1,24 +1,35 @@
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Paper, Box, Checkbox
-} from '@mui/material';
-import { getAllComplains } from '../../../redux/complainRelated/complainHandle';
+import { Paper, Box, Typography, Checkbox, Button, Stack } from '@mui/material';
+import { getAllComplains, deleteComplain } from '../../../redux/complainRelated/complainHandle';
 import TableTemplate from '../../../components/TableTemplate';
 
 const SeeComplains = () => {
-  const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
   const dispatch = useDispatch();
-  const { complainsList, loading, error, response } = useSelector((state) => state.complain);
-  const { currentUser } = useSelector(state => state.user);
+  const { complainsList, loading, error } = useSelector((state) => state.complain);
+  const { currentUser } = useSelector((state) => state.user);
+
+  const [selectedComplains, setSelectedComplains] = useState([]);
 
   useEffect(() => {
-    dispatch(getAllComplains(currentUser._id, "Complain"));
+    if (currentUser?._id) {
+      dispatch(getAllComplains(currentUser._id));
+    }
   }, [currentUser._id, dispatch]);
 
-  if (error) {
-    console.log(error);
-  }
+  const handleSelect = (id) => {
+    setSelectedComplains((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
+
+  const handleDeleteSelected = () => {
+    if (selectedComplains.length > 0) {
+      selectedComplains.forEach(id => dispatch(deleteComplain(id, currentUser._id)));
+      setSelectedComplains([]);
+      dispatch(getAllComplains(currentUser._id));
+    }
+  };
 
   const complainColumns = [
     { id: 'user', label: 'Пользователь', minWidth: 170 },
@@ -26,45 +37,58 @@ const SeeComplains = () => {
     { id: 'date', label: 'Дата', minWidth: 170 },
   ];
 
-  const complainRows = complainsList && complainsList.length > 0 && complainsList.map((complain) => {
+  const complainRows = complainsList?.map((complain) => {
     const date = new Date(complain.date);
-    const dateString = date.toString() !== "Invalid Date" ? date.toISOString().substring(0, 10) : "Неверная дата";
+    const dateString = isNaN(date) ? "Неверная дата" : date.toISOString().substring(0, 10);
     return {
-      user: complain.user.name,
+      user: complain.user?.name || 'Неизвестно',
       complaint: complain.complaint,
       date: dateString,
       id: complain._id,
     };
-  });
+  }) || [];
 
-  const ComplainButtonHaver = ({ row }) => {
-    return (
-      <>
-        <Checkbox {...label} />
-      </>
-    );
-  };
+  const ComplainButtonHaver = ({ row }) => (
+    <Checkbox
+      checked={selectedComplains.includes(row.id)}
+      onChange={() => handleSelect(row.id)}
+    />
+  );
+
+  if (error) {
+    return <Typography color="error">Ошибка загрузки жалоб</Typography>;
+  }
 
   return (
-    <>
+    <Box sx={{ width: '100%', mt: 2 }}>
       {loading ? (
-        <div>Загрузка...</div>
-      ) : (
+        <Typography align="center">Загрузка...</Typography>
+      ) : complainsList?.length > 0 ? (
         <>
-          {response ? (
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
-              Жалоб нет
-            </Box>
-          ) : (
-            <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-              {Array.isArray(complainsList) && complainsList.length > 0 && (
-                <TableTemplate buttonHaver={ComplainButtonHaver} columns={complainColumns} rows={complainRows} />
-              )}
-            </Paper>
-          )}
+          <Stack direction="row" spacing={2} sx={{ mb: 2, justifyContent: 'flex-end' }}>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleDeleteSelected}
+              disabled={selectedComplains.length === 0}
+            >
+              Удалить выбранные
+            </Button>
+          </Stack>
+          <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+            <TableTemplate
+              buttonHaver={ComplainButtonHaver}
+              columns={complainColumns}
+              rows={complainRows}
+            />
+          </Paper>
         </>
+      ) : (
+        <Typography variant="h6" align="center" sx={{ mt: 4 }}>
+          Жалоб нет
+        </Typography>
       )}
-    </>
+    </Box>
   );
 };
 

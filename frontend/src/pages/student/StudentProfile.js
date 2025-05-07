@@ -13,7 +13,8 @@ import {
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 
-const REACT_APP_BASE_URL = 'http://localhost:5001';
+const BASE_URL = 'http://localhost:5001/api';
+
 
 const StudentProfile = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -33,14 +34,14 @@ const StudentProfile = () => {
   const handleSave = async () => {
     try {
       const data = editData.password ? editData : { ...editData, password: undefined };
-
-      await axios.put(`${REACT_APP_BASE_URL}/Student/${currentUser._id}`, data);
+  
+      await axios.put(`${BASE_URL}/student/${currentUser._id}`, data); 
       setSnackbar({ open: true, message: 'Данные обновлены!', severity: 'success' });
     } catch (error) {
       console.error(error);
       setSnackbar({ open: true, message: 'Ошибка при обновлении', severity: 'error' });
     }
-  };
+  };  
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center" mt={4}>

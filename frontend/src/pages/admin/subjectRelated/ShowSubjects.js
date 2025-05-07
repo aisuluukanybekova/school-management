@@ -1,171 +1,237 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from "react-router-dom";
-import { getAllSubjects } from '../../../redux/subjectRelated/subjectHandle';
-import { deleteUser } from '../../../redux/userRelated/userHandle';
-import axios from 'axios';
-import PostAddIcon from '@mui/icons-material/PostAdd';
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from '@mui/icons-material/Edit';
 import {
-  Paper, Box, IconButton, Dialog, DialogTitle,
-  DialogContent, DialogActions, TextField, Button
+  Box, TextField, IconButton, Select, MenuItem, Button, Typography
 } from '@mui/material';
-import TableTemplate from '../../../components/TableTemplate';
-import { BlueButton, GreenButton } from '../../../components/buttonStyles';
-import SpeedDialTemplate from '../../../components/SpeedDialTemplate';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
+import CloseIcon from '@mui/icons-material/Close';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import Popup from '../../../components/Popup';
-
-const REACT_APP_BASE_URL = "http://localhost:5001";
+import TableTemplate from '../../../components/TableTemplate';
 
 const ShowSubjects = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  
-  const { subjectsList, loading, error, response } = useSelector((state) => state.subject);
-  const { currentUser } = useSelector(state => state.user);
-
+  const [records, setRecords] = useState([]);
+  const [editCache, setEditCache] = useState({});
+  const [editMode, setEditMode] = useState({});
+  const [subjects, setSubjects] = useState([]);
+  const [teachers, setTeachers] = useState([]);
+  const [classes, setClasses] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchClass, setSearchClass] = useState('');
+  const [message, setMessage] = useState('');
   const [showPopup, setShowPopup] = useState(false);
-  const [message, setMessage] = useState("");
-  const [editModalOpen, setEditModalOpen] = useState(false);
-  const [editSubject, setEditSubject] = useState({});
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchClass, setSearchClass] = useState("");
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const [res, subRes, teachRes, classRes] = await Promise.all([
+        axios.get('/api/teacherSubjectClass'),
+        axios.get('/api/subjects'),
+        axios.get('/api/teachers'),
+        axios.get('/api/classes')
+      ]);
+
+      setSubjects(subRes.data);
+      setTeachers(teachRes.data);
+      setClasses(classRes.data);
+
+      const mapped = res.data.map(r => ({
+        id: r._id,
+        subjectId: r.subject?._id || '',
+        subject: r.subject?.subName || '',
+        teacherId: r.teacher?._id || '',
+        teacher: r.teacher?.name || '',
+        classId: r.sclassName?._id || '',
+        class: r.sclassName?.sclassName || '',
+        sessions: r.sessions || 0
+      }));
+
+      setRecords(mapped);
+    } catch {
+      setMessage('Ошибка загрузки данных');
+      setShowPopup(true);
+    }
+    setLoading(false);
+  };
 
   useEffect(() => {
-    dispatch(getAllSubjects(currentUser._id));
-  }, [currentUser._id, dispatch]);
+    fetchData();
+  }, []);
 
-  const deleteHandler = (deleteID, address) => {
-    dispatch(deleteUser(deleteID, address))
-      .then(() => dispatch(getAllSubjects(currentUser._id)));
+  const toggleEdit = (id) => {
+    if (editMode[id]) {
+      // отмена: сброс редактируемых значений
+      setEditCache(prev => {
+        const newCache = { ...prev };
+        delete newCache[id];
+        return newCache;
+      });
+    } else {
+      // включение редактирования
+      const original = records.find(r => r.id === id);
+      setEditCache(prev => ({
+        ...prev,
+        [id]: { ...original }
+      }));
+    }
+
+    setEditMode(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
-  const handleEditClick = (row) => {
-    setEditSubject({
-      subName: row.subName,
-      sessions: row.sessions,
-      _id: row.id
-    });
-    setEditModalOpen(true);
+  const updateField = (id, field, value) => {
+    setEditCache(prev => ({
+      ...prev,
+      [id]: { ...prev[id], [field]: value }
+    }));
   };
 
-  const handleSaveEdit = async () => {
+  const saveHandler = async (id) => {
+    const row = editCache[id];
     try {
-      await axios.put(`${REACT_APP_BASE_URL}/api/subjects/${editSubject._id}`, editSubject);
-      setEditModalOpen(false);
-      dispatch(getAllSubjects(currentUser._id));
-    } catch (error) {
-      console.error("Ошибка при обновлении:", error.response?.data || error.message);
+      await axios.put(`/api/teacherSubjectClass/${id}`, {
+        subjectId: row.subjectId,
+        teacherId: row.teacherId,
+        classId: row.classId,
+        sessions: Number(row.sessions)
+      });
+
+      setMessage('Изменения сохранены');
+      setShowPopup(true);
+      setEditMode(prev => ({ ...prev, [id]: false }));
+      setEditCache(prev => {
+        const newCache = { ...prev };
+        delete newCache[id];
+        return newCache;
+      });
+      fetchData();
+    } catch (err) {
+      console.error('Ошибка при сохранении:', err?.response?.data || err.message);
+      setMessage(err?.response?.data?.message || 'Ошибка при сохранении');
+      setShowPopup(true);
     }
   };
 
-  const subjectColumns = [
-    { id: 'subName', label: 'Название предмета', minWidth: 170 },
-    { id: 'sessions', label: 'Количество занятий', minWidth: 170 },
-    { id: 'sclassName', label: 'Класс', minWidth: 170 },
-  ];
-
-  const subjectRows = subjectsList?.map((subject) => ({
-    subName: subject.subName,
-    sessions: subject.sessions,
-    sclassName: subject.sclassName?.sclassName || '',
-    sclassID: subject.sclassName?._id,
-    id: subject._id,
-  })) || [];
-
-  const filteredRows = subjectRows.filter(row =>
-    row.subName.toLowerCase().includes(searchQuery.toLowerCase()) &&
-    row.sclassName.toLowerCase().includes(searchClass.toLowerCase())
-  );
-
-  const SubjectsButtonHaver = ({ row }) => (
-    <>
-      <IconButton onClick={() => deleteHandler(row.id, "Subject")}>
-        <DeleteIcon color="error" />
-      </IconButton>
-      <IconButton onClick={() => handleEditClick(row)}>
-        <EditIcon />
-      </IconButton>
-      <BlueButton variant="contained" onClick={() => navigate(`/Admin/subjects/subject/${row.sclassID}/${row.id}`)}>
-        Подробнее
-      </BlueButton>
-    </>
-  );
-
-  const actions = [
-    {
-      icon: <PostAddIcon color="primary" />,
-      name: 'Добавить предмет',
-      action: () => navigate("/Admin/subjects/chooseclass")
-    },
-    {
-      icon: <DeleteIcon color="error" />,
-      name: 'Удалить все предметы',
-      action: () => deleteHandler(currentUser._id, "Subjects")
+  const deleteHandler = async (id) => {
+    try {
+      await axios.delete(`/api/teacherSubjectClass/${id}`);
+      fetchData();
+      setMessage('Удалено успешно');
+      setShowPopup(true);
+    } catch {
+      setMessage('Ошибка при удалении');
+      setShowPopup(true);
     }
+  };
+
+  const filtered = records.filter(r =>
+    r.subject.toLowerCase().includes(searchQuery.toLowerCase()) &&
+    r.class.toLowerCase().includes(searchClass.toLowerCase())
+  );
+
+  const columns = [
+    { id: 'subjectId', label: 'Предмет' },
+    { id: 'classId', label: 'Класс' },
+    { id: 'teacherId', label: 'Учитель' },
+    { id: 'sessions', label: 'Занятий' }
   ];
+
+  const ButtonHaver = ({ row }) => {
+    const isEditing = editMode[row.id];
+    return (
+      <Box sx={{ display: 'flex', gap: 1 }}>
+        {isEditing ? (
+          <>
+            <IconButton onClick={() => saveHandler(row.id)}><SaveIcon color="success" /></IconButton>
+            <IconButton onClick={() => toggleEdit(row.id)}><CloseIcon color="error" /></IconButton>
+          </>
+        ) : (
+          <>
+            <IconButton onClick={() => toggleEdit(row.id)}><EditIcon /></IconButton>
+            <IconButton onClick={() => deleteHandler(row.id)}><DeleteIcon color="error" /></IconButton>
+          </>
+        )}
+      </Box>
+    );
+  };
+
+  const rows = filtered.map((row) => {
+    const isEditing = editMode[row.id];
+    const data = isEditing ? editCache[row.id] : row;
+
+    return {
+      ...row,
+      subjectId: isEditing ? (
+        <Select
+          fullWidth size="small"
+          value={data.subjectId}
+          onChange={(e) => updateField(row.id, 'subjectId', e.target.value)}
+        >
+          {subjects.map(s => (
+            <MenuItem key={s._id} value={s._id}>{s.subName}</MenuItem>
+          ))}
+        </Select>
+      ) : row.subject,
+      classId: isEditing ? (
+        <Select
+          fullWidth size="small"
+          value={data.classId}
+          onChange={(e) => updateField(row.id, 'classId', e.target.value)}
+        >
+          {classes.map(c => (
+            <MenuItem key={c._id} value={c._id}>{c.sclassName}</MenuItem>
+          ))}
+        </Select>
+      ) : row.class,
+      teacherId: isEditing ? (
+        <Select
+          fullWidth size="small"
+          value={data.teacherId}
+          onChange={(e) => updateField(row.id, 'teacherId', e.target.value)}
+        >
+          {teachers.map(t => (
+            <MenuItem key={t._id} value={t._id}>{t.name}</MenuItem>
+          ))}
+        </Select>
+      ) : row.teacher,
+      sessions: isEditing ? (
+        <TextField
+          type="number"
+          size="small"
+          value={data.sessions}
+          onChange={(e) => updateField(row.id, 'sessions', e.target.value)}
+        />
+      ) : row.sessions
+    };
+  });
 
   return (
     <>
       {loading ? (
-        <div>Загрузка...</div>
+        <Typography>Загрузка...</Typography>
       ) : (
-        <>
-          <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+        <Box>
+          <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
             <TextField
               label="Поиск по предмету"
-              variant="outlined"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
             <TextField
               label="Поиск по классу"
-              variant="outlined"
               value={searchClass}
               onChange={(e) => setSearchClass(e.target.value)}
             />
-            <GreenButton variant="contained" onClick={() => navigate("/Admin/subjects/chooseclass")}>
-              Добавить предмет
-            </GreenButton>
+            <Button variant="contained" onClick={() => navigate('/Admin/subjects/assign')}>Назначить предмет</Button>
+            <Button variant="contained" color="secondary" onClick={() => navigate('/Admin/addsubject')}>Добавить предмет</Button>
           </Box>
 
-          <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-            {Array.isArray(filteredRows) && filteredRows.length > 0 ? (
-              <TableTemplate buttonHaver={SubjectsButtonHaver} columns={subjectColumns} rows={filteredRows} />
-            ) : (
-              <div style={{ padding: "2rem" }}>Ничего не найдено</div>
-            )}
-            <SpeedDialTemplate actions={actions} />
-          </Paper>
-        </>
+          <TableTemplate columns={columns} rows={rows} buttonHaver={ButtonHaver} />
+        </Box>
       )}
-
-      <Dialog open={editModalOpen} onClose={() => setEditModalOpen(false)}>
-        <DialogTitle>Редактировать предмет</DialogTitle>
-        <DialogContent>
-          <TextField
-            fullWidth
-            label="Название предмета"
-            value={editSubject.subName || ""}
-            onChange={(e) => setEditSubject({ ...editSubject, subName: e.target.value })}
-            margin="normal"
-          />
-          <TextField
-            fullWidth
-            label="Количество занятий"
-            type="number"
-            value={editSubject.sessions || ""}
-            onChange={(e) => setEditSubject({ ...editSubject, sessions: e.target.value })}
-            margin="normal"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setEditModalOpen(false)}>Отмена</Button>
-          <Button variant="contained" onClick={handleSaveEdit}>Сохранить</Button>
-        </DialogActions>
-      </Dialog>
-
       <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
     </>
   );

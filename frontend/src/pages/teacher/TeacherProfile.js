@@ -11,8 +11,8 @@ const TeacherProfile = () => {
   const dispatch = useDispatch();
 
   const [editData, setEditData] = useState({
-    name: currentUser.name,
-    email: currentUser.email,
+    name: currentUser?.name || '',
+    email: currentUser?.email || '',
     password: '',
   });
 
@@ -32,9 +32,9 @@ const TeacherProfile = () => {
     }
   };
 
-  const teachSclass = currentUser.teachSclass;
-  const teachSubject = currentUser.teachSubject;
-  const teachSchool = currentUser.school;
+  const teachSclass = currentUser?.teachSclass;
+  const teachSubject = currentUser?.teachSubject;
+  const teachSchool = currentUser?.school;
 
   return (
     <Box display="flex" justifyContent="center" alignItems="flex-start" flexDirection="column" height="100%" p={3}>
@@ -45,9 +45,15 @@ const TeacherProfile = () => {
           </Typography>
 
           <Box mb={2}>
-            <Typography variant="body1">Класс: <strong>{teachSclass.sclassName}</strong></Typography>
-            <Typography variant="body1">Предмет: <strong>{teachSubject.subName}</strong></Typography>
-            <Typography variant="body1">Школа: <strong>{teachSchool.schoolName}</strong></Typography>
+            <Typography variant="body1">
+              Класс: <strong>{teachSclass?.sclassName || '—'}</strong>
+            </Typography>
+            <Typography variant="body1">
+              Предмет: <strong>{teachSubject?.subName || '—'}</strong>
+            </Typography>
+            <Typography variant="body1">
+              Школа: <strong>{teachSchool?.schoolName || '—'}</strong>
+            </Typography>
           </Box>
 
           <TextField
@@ -92,7 +98,7 @@ const TeacherProfile = () => {
         <Typography variant="h6" gutterBottom textAlign="center">
           График посещаемости
         </Typography>
-        <AttendanceChart teacherId={currentUser._id} />
+        <AttendanceChart teacherId={currentUser?._id} />
       </Box>
 
       <Snackbar

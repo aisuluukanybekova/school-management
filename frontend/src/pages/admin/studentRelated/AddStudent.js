@@ -12,8 +12,7 @@ const AddStudent = ({ situation }) => {
   const navigate = useNavigate();
   const params = useParams();
 
-  const userState = useSelector(state => state.user);
-  const { status, currentUser, response, error } = userState;
+  const { status, currentUser, response, error } = useSelector(state => state.user);
   const { sclassesList } = useSelector((state) => state.sclass);
 
   const [name, setName] = useState('');
@@ -21,6 +20,9 @@ const AddStudent = ({ situation }) => {
   const [password, setPassword] = useState('');
   const [className, setClassName] = useState('');
   const [sclassName, setSclassName] = useState('');
+  const [showPopup, setShowPopup] = useState(false);
+  const [message, setMessage] = useState('');
+  const [loader, setLoader] = useState(false);
 
   const adminID = currentUser._id;
   const role = "Student";
@@ -32,46 +34,52 @@ const AddStudent = ({ situation }) => {
     }
   }, [params.id, situation]);
 
-  const [showPopup, setShowPopup] = useState(false);
-  const [message, setMessage] = useState("");
-  const [loader, setLoader] = useState(false);
-
   useEffect(() => {
-    dispatch(getAllSclasses(adminID, "Sclass"));
+    dispatch(getAllSclasses(adminID));
   }, [adminID, dispatch]);
 
-  const changeHandler = (event) => {
-    if (event.target.value === 'Выберите класс') {
-      setClassName('Выберите класс');
-      setSclassName('');
+  const changeHandler = (e) => {
+    const selected = e.target.value;
+    const foundClass = sclassesList.find(c => c.sclassName === selected);
+    if (foundClass) {
+      setClassName(foundClass.sclassName);
+      setSclassName(foundClass._id);
     } else {
-      const selectedClass = sclassesList.find(
-        (classItem) => classItem.sclassName === event.target.value
-      );
-      setClassName(selectedClass.sclassName);
-      setSclassName(selectedClass._id);
+      setClassName('');
+      setSclassName('');
     }
+  };
+
+  const resetForm = () => {
+    setName('');
+    setRollNum('');
+    setPassword('');
+    setClassName('');
+    if (situation === "Student") setSclassName('');
   };
 
   const fields = { name, rollNum, password, sclassName, adminID, role, attendance };
 
-  const submitHandler = (event) => {
-    event.preventDefault();
-    if (sclassName === "") {
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (!sclassName) {
       setMessage("Пожалуйста, выберите класс");
       setShowPopup(true);
-    } else {
-      setLoader(true);
-      dispatch(registerUser(fields, role));
+      return;
     }
+    setLoader(true);
+    dispatch(registerUser(fields, role));
   };
 
   useEffect(() => {
     if (status === 'added') {
+      resetForm();
+      setMessage("Ученик успешно добавлен!");
+      setShowPopup(true);
+      setLoader(false);
       dispatch(underControl());
-      navigate(-1);
     } else if (status === 'failed') {
-      setMessage(response);
+      setMessage(response || "Ошибка при добавлении ученика");
       setShowPopup(true);
       setLoader(false);
     } else if (status === 'error') {
@@ -79,7 +87,7 @@ const AddStudent = ({ situation }) => {
       setShowPopup(true);
       setLoader(false);
     }
-  }, [status, navigate, error, response, dispatch]);
+  }, [status]);
 
   return (
     <>
@@ -93,7 +101,7 @@ const AddStudent = ({ situation }) => {
             type="text"
             placeholder="Введите имя ученика..."
             value={name}
-            onChange={(event) => setName(event.target.value)}
+            onChange={(e) => setName(e.target.value)}
             autoComplete="name"
             required
           />
@@ -107,11 +115,9 @@ const AddStudent = ({ situation }) => {
                 onChange={changeHandler}
                 required
               >
-                <option value="Выберите класс">Выберите класс</option>
-                {sclassesList.map((classItem, index) => (
-                  <option key={index} value={classItem.sclassName}>
-                    {classItem.sclassName}
-                  </option>
+                <option value="">Выберите класс</option>
+                {sclassesList.map((cls) => (
+                  <option key={cls._id} value={cls.sclassName}>{cls.sclassName}</option>
                 ))}
               </select>
             </>
@@ -123,7 +129,7 @@ const AddStudent = ({ situation }) => {
             type="number"
             placeholder="Введите номер ученика..."
             value={rollNum}
-            onChange={(event) => setRollNum(event.target.value)}
+            onChange={(e) => setRollNum(e.target.value)}
             required
           />
 
@@ -133,21 +139,17 @@ const AddStudent = ({ situation }) => {
             type="password"
             placeholder="Введите пароль ученика..."
             value={password}
-            onChange={(event) => setPassword(event.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             autoComplete="new-password"
             required
           />
 
           <button className="registerButton" type="submit" disabled={loader}>
-            {loader ? (
-              <CircularProgress size={24} color="inherit" />
-            ) : (
-              'Добавить'
-            )}
+            {loader ? <CircularProgress size={24} color="inherit" /> : 'Добавить'}
           </button>
         </form>
       </div>
-      <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
+      <Popup message={message} showPopup={showPopup} setShowPopup={setShowPopup} />
     </>
   );
 };

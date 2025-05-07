@@ -49,9 +49,9 @@ const ShowClasses = () => {
     dispatch(getAllSclasses(adminID));
   }, [adminID, dispatch]);
 
-  const deleteHandler = (deleteID, address) => {
-    dispatch(deleteUser(deleteID, address))
-      .then(() => dispatch(getAllSclasses(adminID, "Sclass")));
+  const deleteHandler = (deleteID) => {
+    dispatch(deleteUser(deleteID, "classes"))
+      .then(() => dispatch(getAllSclasses(adminID)));
   };
 
   const handleEditClick = (row) => {
@@ -61,11 +61,15 @@ const ShowClasses = () => {
 
   const handleEditSave = async () => {
     try {
-      await axios.put(`http://localhost:5001/Sclass/${editClass._id}`, { sclassName: editClass.sclassName });
+      await axios.put(`http://localhost:5001/api/classes/${editClass._id}`, { sclassName: editClass.sclassName });
       setEditModalOpen(false);
-      dispatch(getAllSclasses(adminID, "Sclass"));
+      dispatch(getAllSclasses(adminID));
+      setMessage("Изменения сохранены успешно!");
+      setShowPopup(true);
     } catch (err) {
       console.error("Ошибка при редактировании:", err);
+      setMessage("Ошибка при сохранении изменений.");
+      setShowPopup(true);
     }
   };
 
@@ -73,10 +77,27 @@ const ShowClasses = () => {
     { id: 'name', label: 'Название класса', minWidth: 170 },
   ];
 
-  const sclassRows = sclassesList?.map((sclass) => ({
+  const sclassRows = sclassesList
+  ?.slice() // копируем
+  .sort((a, b) => {
+    // Числовая часть + буквенная
+    const parse = str => {
+      const match = str.match(/^(\d+)?\s*([а-яА-Яa-zA-Z]*)/);
+      const num = parseInt(match?.[1] || 0, 10);
+      const letter = match?.[2] || '';
+      return [num, letter.toLowerCase()];
+    };
+    const [numA, letterA] = parse(a.sclassName);
+    const [numB, letterB] = parse(b.sclassName);
+
+    if (numA !== numB) return numA - numB;
+    return letterA.localeCompare(letterB);
+  })
+  .map(sclass => ({
     name: sclass.sclassName,
     id: sclass._id,
   })) || [];
+
 
   const filteredRows = sclassRows.filter((row) =>
     row.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -90,7 +111,7 @@ const ShowClasses = () => {
     return (
       <ButtonContainer>
         <Tooltip title="Удалить класс">
-          <IconButton onClick={() => deleteHandler(row.id, "Sclass")}>
+          <IconButton onClick={() => deleteHandler(row.id)}>
             <DeleteIcon color="error" />
           </IconButton>
         </Tooltip>
@@ -144,7 +165,12 @@ const ShowClasses = () => {
     },
     {
       icon: <DeleteIcon color="error" />, name: 'Удалить все классы',
-      action: () => deleteHandler(adminID, "Sclasses")
+      action: () => {
+        if (window.confirm("Вы уверены, что хотите удалить все классы?")) {
+          dispatch(deleteUser(adminID, "classes"))
+            .then(() => dispatch(getAllSclasses(adminID)));
+        }
+      }
     },
   ];
 
@@ -222,4 +248,4 @@ const ButtonContainer = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   gap: 0.75rem;
-`;
+`; 

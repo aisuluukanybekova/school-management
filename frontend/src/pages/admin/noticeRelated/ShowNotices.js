@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import {
-    Paper, Box, IconButton, Dialog, DialogTitle, DialogContent, DialogActions,
-    TextField, Button
+  Paper, Box, IconButton, Dialog, DialogTitle, DialogContent, DialogActions,
+  TextField, Button
 } from '@mui/material';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from '@mui/icons-material/Edit';
 import { getAllNotices } from '../../../redux/noticeRelated/noticeHandle';
-import { deleteUser } from '../../../redux/userRelated/userHandle';
 import TableTemplate from '../../../components/TableTemplate';
 import { GreenButton } from '../../../components/buttonStyles';
 import SpeedDialTemplate from '../../../components/SpeedDialTemplate';
@@ -18,20 +17,38 @@ import axios from 'axios';
 const ShowNotices = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const { noticesList, loading, error, response } = useSelector((state) => state.notice);
+  const { noticesList, loading } = useSelector((state) => state.notice);
   const { currentUser } = useSelector(state => state.user);
 
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editNotice, setEditNotice] = useState({});
 
   useEffect(() => {
-    dispatch(getAllNotices(currentUser._id, "Notice"));
-  }, [currentUser._id, dispatch]);
+    if (currentUser?._id) {
+      dispatch(getAllNotices(currentUser._id));
+    }
+  }, [currentUser?._id, dispatch]);
 
-  const deleteHandler = (deleteID, address) => {
-    dispatch(deleteUser(deleteID, address))
-      .then(() => dispatch(getAllNotices(currentUser._id, "Notice")));
+  const deleteHandler = async (id) => {
+    if (window.confirm('Вы уверены, что хотите удалить объявление?')) {
+      try {
+        await axios.delete(`http://localhost:5001/api/notices/${id}`);
+        dispatch(getAllNotices(currentUser._id));
+      } catch (err) {
+        console.error("Ошибка при удалении объявления:", err);
+      }
+    }
+  };
+
+  const deleteAllNoticesHandler = async () => {
+    if (window.confirm('Удалить ВСЕ объявления?')) {
+      try {
+        await axios.delete(`http://localhost:5001/api/notices/school/${currentUser._id}`);
+        dispatch(getAllNotices(currentUser._id));
+      } catch (err) {
+        console.error("Ошибка при удалении всех объявлений:", err);
+      }
+    }
   };
 
   const handleEditClick = (row) => {
@@ -41,9 +58,13 @@ const ShowNotices = () => {
 
   const handleEditSave = async () => {
     try {
-      await axios.put(`http://localhost:5001/Notice/${editNotice.id}`, editNotice);
+      await axios.put(`http://localhost:5001/api/notices/${editNotice.id}`, {
+        title: editNotice.title,
+        details: editNotice.details,
+        date: editNotice.date,
+      });
       setEditModalOpen(false);
-      dispatch(getAllNotices(currentUser._id, "Notice"));
+      dispatch(getAllNotices(currentUser._id));
     } catch (err) {
       console.error("Ошибка при обновлении:", err);
     }
@@ -55,23 +76,23 @@ const ShowNotices = () => {
     { id: 'date', label: 'Дата', minWidth: 170 },
   ];
 
-  const noticeRows = noticesList?.map((notice) => {
-    const date = new Date(notice.date);
-    const dateString = isNaN(date) ? "Неверная дата" : date.toISOString().substring(0, 10);
-    return {
-      title: notice.title,
-      details: notice.details,
-      date: dateString,
-      id: notice._id,
-    };
-  }) || [];
+  const noticeRows = Array.isArray(noticesList)
+  ? [...noticesList]
+      .sort((a, b) => new Date(b.date) - new Date(a.date)) // Сортировка по дате
+      .map((notice) => ({
+        title: notice.title,
+        details: notice.details,
+        date: notice.date ? new Date(notice.date).toISOString().substring(0, 10) : "Неверная дата",
+        id: notice._id,
+      }))
+  : [];
 
   const NoticeButtonHaver = ({ row }) => (
     <>
       <IconButton onClick={() => handleEditClick(row)}>
         <EditIcon color="primary" />
       </IconButton>
-      <IconButton onClick={() => deleteHandler(row.id, "Notice")}>
+      <IconButton onClick={() => deleteHandler(row.id)}>
         <DeleteIcon color="error" />
       </IconButton>
     </>
@@ -84,7 +105,7 @@ const ShowNotices = () => {
     },
     {
       icon: <DeleteIcon color="error" />, name: 'Удалить все объявления',
-      action: () => deleteHandler(currentUser._id, "Notices")
+      action: deleteAllNoticesHandler
     }
   ];
 
@@ -94,39 +115,53 @@ const ShowNotices = () => {
         <div>Загрузка...</div>
       ) : (
         <>
-          {response ? (
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
-              <GreenButton variant="contained" onClick={() => navigate("/Admin/addnotice")}>
-                Добавить объявление
-              </GreenButton>
-            </Box>
-          ) : (
-            <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-              {noticesList?.length > 0 && (
-                <TableTemplate buttonHaver={NoticeButtonHaver} columns={noticeColumns} rows={noticeRows} />
-              )}
-              <SpeedDialTemplate actions={actions} />
-            </Paper>
-          )}
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
+            <GreenButton
+              variant="contained"
+              onClick={() => navigate("/Admin/addnotice")}
+              startIcon={<NoteAddIcon />}
+              sx={{ mt: 2, mb: 1 }}
+            >
+              Добавить объявление
+            </GreenButton>
+          </Box>
+
+          <Paper
+            sx={{
+              mt: 2,
+              p: 3,
+              borderRadius: 3,
+              boxShadow: 3,
+              backgroundColor: '#fff',
+              animation: 'fadeIn 0.4s ease'
+            }}
+          >
+            {noticeRows.length > 0 ? (
+              <TableTemplate buttonHaver={NoticeButtonHaver} columns={noticeColumns} rows={noticeRows} />
+            ) : (
+              <Box sx={{ p: 2, textAlign: 'center', color: 'gray' }}>Нет объявлений.</Box>
+            )}
+            <SpeedDialTemplate actions={actions} />
+          </Paper>
         </>
       )}
 
-      <Dialog open={editModalOpen} onClose={() => setEditModalOpen(false)}>
-        <DialogTitle>Редактировать объявление</DialogTitle>
-        <DialogContent>
+      <Dialog open={editModalOpen} onClose={() => setEditModalOpen(false)} fullWidth maxWidth="sm">
+        <DialogTitle sx={{ fontWeight: 'bold' }}>✏️ Редактировать объявление</DialogTitle>
+        <DialogContent dividers>
           <TextField
             fullWidth
             label="Заголовок"
             value={editNotice.title || ''}
             onChange={(e) => setEditNotice({ ...editNotice, title: e.target.value })}
-            margin="dense"
+            margin="normal"
           />
           <TextField
             fullWidth
             label="Описание"
             value={editNotice.details || ''}
             onChange={(e) => setEditNotice({ ...editNotice, details: e.target.value })}
-            margin="dense"
+            margin="normal"
           />
           <TextField
             fullWidth
@@ -134,7 +169,7 @@ const ShowNotices = () => {
             type="date"
             value={editNotice.date || ''}
             onChange={(e) => setEditNotice({ ...editNotice, date: e.target.value })}
-            margin="dense"
+            margin="normal"
             InputLabelProps={{ shrink: true }}
           />
         </DialogContent>

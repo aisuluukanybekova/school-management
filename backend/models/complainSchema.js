@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const complainSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'student',
+        ref: 'Student',
         required: true
     },
     date: {
@@ -21,4 +21,4 @@ const complainSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("complain", complainSchema);
+module.exports = mongoose.model("Сomplain", complainSchema);

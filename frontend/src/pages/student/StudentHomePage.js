@@ -19,12 +19,17 @@ const StudentHomePage = () => {
 
     const [subjectAttendance, setSubjectAttendance] = useState([]);
 
-    const classID = currentUser.sclassName._id;
+    const classID = currentUser?.sclassName?._id || currentUser?.sclassName;
 
     useEffect(() => {
-        dispatch(getUserDetails(currentUser._id, "Student"));
-        dispatch(getSubjectList(classID, "ClassSubjects"));
-    }, [dispatch, currentUser._id, classID]);
+        if (currentUser?._id) {
+            dispatch(getUserDetails(currentUser._id, "students"));
+        }
+
+        if (classID) {
+            dispatch(getSubjectList(classID, "subjects"));
+        }
+    }, [dispatch, currentUser?._id, classID]);
 
     useEffect(() => {
         if (userDetails) {
@@ -32,7 +37,11 @@ const StudentHomePage = () => {
         }
     }, [userDetails]);
 
-    const numberOfSubjects = subjectsList && subjectsList.length;
+    if (!currentUser || !classID) {
+        return <Typography variant="h6">Загрузка пользователя...</Typography>;
+    }
+
+    const numberOfSubjects = subjectsList?.length || 0;
     const overallAttendancePercentage = calculateOverallAttendancePercentage(subjectAttendance);
     const overallAbsentPercentage = 100 - overallAttendancePercentage;
 
@@ -44,7 +53,6 @@ const StudentHomePage = () => {
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-                {/* Total Subjects */}
                 <Grid item xs={12} md={3} lg={3}>
                     <StyledPaper>
                         <img src={Subject} alt="Subjects" />
@@ -53,7 +61,6 @@ const StudentHomePage = () => {
                     </StyledPaper>
                 </Grid>
 
-                {/* Total Assignments */}
                 <Grid item xs={12} md={3} lg={3}>
                     <StyledPaper>
                         <img src={Assignment} alt="Assignments" />
@@ -62,7 +69,6 @@ const StudentHomePage = () => {
                     </StyledPaper>
                 </Grid>
 
-                {/* Attendance Chart */}
                 <Grid item xs={12} md={4} lg={3}>
                     <ChartContainer>
                         {response ? (
@@ -77,7 +83,6 @@ const StudentHomePage = () => {
                     </ChartContainer>
                 </Grid>
 
-                {/* Notices */}
                 <Grid item xs={12}>
                     <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                         <SeeNotice />

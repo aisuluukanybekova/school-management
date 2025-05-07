@@ -15,14 +15,28 @@ const AddNotice = () => {
   const [title, setTitle] = useState('');
   const [details, setDetails] = useState('');
   const [date, setDate] = useState('');
-  const adminID = currentUser._id;
+  const schoolId = currentUser._id;
 
   const [loader, setLoader] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [message, setMessage] = useState("");
 
-  const fields = { title, details, date, adminID };
-  const address = "Notice";
+  // ✅ Адрес endpoint-а
+  const address = "notice";
+
+  // ✅ Правильные поля
+  const fields = {
+    title,
+    details,     // ← исправлено здесь
+    date,
+    schoolId
+  };
+
+  const resetForm = () => {
+    setTitle('');
+    setDetails('');
+    setDate('');
+  };
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -32,8 +46,16 @@ const AddNotice = () => {
 
   useEffect(() => {
     if (status === 'added') {
-      navigate('/Admin/notices');
+      setMessage("Объявление успешно добавлено!");
+      setShowPopup(true);
+      resetForm();
+      setLoader(false);
       dispatch(underControl());
+      navigate("/Admin/notices");
+    } else if (status === 'failed') {
+      setMessage(response || "Ошибка при добавлении объявления");
+      setShowPopup(true);
+      setLoader(false);
     } else if (status === 'error') {
       setMessage("Ошибка сети");
       setShowPopup(true);
@@ -71,7 +93,6 @@ const AddNotice = () => {
           <input
             className="registerInput"
             type="date"
-            placeholder="Введите дату..."
             value={date}
             onChange={(event) => setDate(event.target.value)}
             required

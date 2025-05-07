@@ -16,11 +16,12 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import StudentSideBar from './StudentSideBar';
 import StudentHomePage from './StudentHomePage';
 import StudentProfile from './StudentProfile';
-import StudentSubjects from './StudentSubjects';
-import ViewStdAttendance from './ViewStdAttendance';
+import StudentAttendance from './StudentAttendance';
 import StudentComplain from './StudentComplain';
 import StudentSettings from './StudentSettings';
-
+import StudentSchedule from './StudentSchedule';
+import StudentGrades from './StudentGrades';
+import StudentSubjects from './StudentSubjects';
 // Общие компоненты
 import Logout from '../Logout';
 import AccountMenu from '../../components/AccountMenu';
@@ -59,7 +60,7 @@ const StudentDashboard = () => {
                         noWrap
                         sx={{ flexGrow: 1 }}
                     >
-                        Student Dashboard
+                        Панел ученика(цы)
                     </Typography>
                     <AccountMenu />
                 </Toolbar>
@@ -92,7 +93,9 @@ const StudentDashboard = () => {
                     <Route path="/Student/profile" element={<StudentProfile />} />
                     <Route path="/Student/settings" element={<StudentSettings />} />
                     <Route path="/Student/subjects" element={<StudentSubjects />} />
-                    <Route path="/Student/attendance" element={<ViewStdAttendance />} />
+                    <Route path="/student/grades" element={<StudentGrades />} />
+                    <Route path="/Student/attendance" element={<StudentAttendance />} />
+                    <Route path="/student/schedule" element={<StudentSchedule />} />
                     <Route path="/Student/complain" element={<StudentComplain />} />
                     <Route path="/logout" element={<Logout />} />
                 </Routes>

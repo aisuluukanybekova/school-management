@@ -6,9 +6,11 @@ import {
   ListItemText,
   ListSubheader,
   Tooltip,
-  Box
+  Box,
+  Typography
 } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 import HomeIcon from "@mui/icons-material/Home";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
@@ -23,87 +25,116 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import DateRangeIcon from '@mui/icons-material/DateRange';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+
 const SideBar = () => {
   const location = useLocation();
   const isActive = (path) => location.pathname.startsWith(path);
 
   const navItems = [
-    { text: 'Главная', full: 'Главная', icon: <HomeIcon />, path: '/' },
-    { text: 'Классы', full: 'Классы', icon: <ClassOutlinedIcon />, path: '/Admin/classes' },
-    { text: 'Предметы', full: 'Предметы', icon: <AssignmentIcon />, path: '/Admin/subjects' },
-    { text: 'Учителя', full: 'Учителя', icon: <SupervisorAccountOutlinedIcon />, path: '/Admin/teachers' },
-    { text: 'Расписание', full: 'Расписание учителей', icon: <AssignmentIcon />, path: '/Admin/teacher-schedule' },
-    { text: 'Ученики', full: 'Ученики', icon: <PersonOutlineIcon />, path: '/Admin/students' },
-    { text: 'Объявления', full: 'Объявления', icon: <AnnouncementOutlinedIcon />, path: '/Admin/notices' },
-    { text: 'Жалобы', full: 'Жалобы', icon: <ReportIcon />, path: '/Admin/complains' },
-    { text: 'Журнал', full: 'Журнал оценок', icon: <LibraryBooksIcon />, path: '/Admin/journal' },
-    { text: 'Посещаемость', full: 'Журнал посещаемости', icon: <EventAvailableIcon />, path: '/Admin/attendance' },
-    { text: 'Четверти', full: 'Управление четвертями', icon: <DateRangeIcon />, path: '/Admin/terms' },
-    { text: 'Четверти (таблица)',full: 'Обзор четвертей', icon: <DateRangeIcon />,path: '/Admin/term-overview'}
+    { text: 'Главная', icon: <HomeIcon />, path: '/' },
+    { text: 'Классы', icon: <ClassOutlinedIcon />, path: '/Admin/classes' },
+    { text: 'Предметы', icon: <AssignmentIcon />, path: '/Admin/subjects' },
+    { text: 'Учителя', icon: <SupervisorAccountOutlinedIcon />, path: '/Admin/teachers' },
+    { text: 'Ученики', icon: <PersonOutlineIcon />, path: '/Admin/students' },
+    { text: 'Просмотр оценок', icon: <LibraryBooksIcon />, path: '/Admin/journal' },
+    { text: 'Просмотр посещаемости', icon: <EventAvailableIcon />, path: '/Admin/attendance' },
+    { text: 'Объявления', icon: <AnnouncementOutlinedIcon />, path: '/Admin/notices' },
+    { text: 'Жалобы', icon: <ReportIcon />, path: '/Admin/complains' },
+    { text: 'Четверти', icon: <DateRangeIcon />, path: '/Admin/terms' },
+    { text: 'Обзор четвертей', icon: <DateRangeIcon />, path: '/Admin/term-overview' },
+    { text: 'Расписание', icon: <AssignmentIcon />, path: '/Admin/teacher-schedule' },
+    { text: 'Создать расписание', icon: <AddCircleOutlineIcon />, path: '/Admin/add-schedule' },
   ];
 
   const userItems = [
-    { text: 'Профиль', full: 'Профиль', icon: <AccountCircleOutlinedIcon />, path: '/Admin/profile' },
-    { text: 'Настройки', full: 'Настройки', icon: <SettingsIcon />, path: '/Admin/settings' },
-    { text: 'Выход', full: 'Выход', icon: <ExitToAppIcon />, path: '/logout' },
+    { text: 'Профиль', icon: <AccountCircleOutlinedIcon />, path: '/Admin/profile' },
+    { text: 'Настройки', icon: <SettingsIcon />, path: '/Admin/settings' },
+    { text: 'Выход', icon: <ExitToAppIcon />, path: '/logout' },
   ];
 
   return (
     <Box sx={{ px: 1 }}>
-      {navItems.map(({ text, full, icon, path }) => (
-        <Tooltip title={full} placement="right" key={text} arrow>
-          <ListItemButton
-            component={Link}
-            to={path}
-            selected={isActive(path)}
-            sx={{ borderRadius: 2, my: 0.5 }}
-          >
-            <ListItemIcon sx={{ color: isActive(path) ? 'primary.main' : 'inherit' }}>
-              {icon}
-            </ListItemIcon>
-            <ListItemText
-              primary={text}
-              primaryTypographyProps={{
-                noWrap: true,
-                sx: {
-                  fontSize: '14px',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  display: { xs: 'none', sm: 'block' },
-                }
+      {/* Заголовок вверху */}
+      <Box sx={{ py: 3, textAlign: 'center', display: { xs: 'none', sm: 'block' } }}>
+        <Typography variant="subtitle1" sx={{ fontWeight: 700, color: 'primary.main' }}>
+          Панель администратора
+        </Typography>
+      </Box>
+
+      {navItems.map(({ text, icon, path }) => (
+        <Tooltip title={text} placement="right" key={text} arrow>
+          <motion.div whileHover={{ scale: 1.03 }}>
+            <ListItemButton
+              component={Link}
+              to={path}
+              selected={isActive(path)}
+              sx={{
+                borderRadius: 2,
+                my: 0.5,
+                px: 2,
+                bgcolor: isActive(path) ? 'primary.light' : 'transparent',
+                '&:hover': { bgcolor: 'action.hover' },
               }}
-            />
-          </ListItemButton>
+            >
+              <ListItemIcon sx={{ color: isActive(path) ? 'primary.main' : 'inherit' }}>
+                {icon}
+              </ListItemIcon>
+              <ListItemText
+                primary={text}
+                primaryTypographyProps={{
+                  sx: {
+                    fontSize: '14px',
+                    display: { xs: 'none', sm: 'block' },
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }
+                }}
+              />
+            </ListItemButton>
+          </motion.div>
         </Tooltip>
       ))}
 
       <Divider sx={{ my: 2 }} />
 
-      <ListSubheader component="div" inset>Пользователь</ListSubheader>
-      {userItems.map(({ text, full, icon, path }) => (
-        <Tooltip title={full} placement="right" key={text} arrow>
-          <ListItemButton
-            component={Link}
-            to={path}
-            selected={isActive(path)}
-            sx={{ borderRadius: 2, my: 0.5 }}
-          >
-            <ListItemIcon sx={{ color: isActive(path) ? 'primary.main' : 'inherit' }}>
-              {icon}
-            </ListItemIcon>
-            <ListItemText
-              primary={text}
-              primaryTypographyProps={{
-                noWrap: true,
-                sx: {
-                  fontSize: '14px',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  display: { xs: 'none', sm: 'block' },
-                }
+      <ListSubheader component="div" inset sx={{ display: { xs: 'none', sm: 'block' } }}>
+        Пользователь
+      </ListSubheader>
+
+      {userItems.map(({ text, icon, path }) => (
+        <Tooltip title={text} placement="right" key={text} arrow>
+          <motion.div whileHover={{ scale: 1.03 }}>
+            <ListItemButton
+              component={Link}
+              to={path}
+              selected={isActive(path)}
+              sx={{
+                borderRadius: 2,
+                my: 0.5,
+                px: 2,
+                bgcolor: isActive(path) ? 'primary.light' : 'transparent',
+                '&:hover': { bgcolor: 'action.hover' },
               }}
-            />
-          </ListItemButton>
+            >
+              <ListItemIcon sx={{ color: isActive(path) ? 'primary.main' : 'inherit' }}>
+                {icon}
+              </ListItemIcon>
+              <ListItemText
+                primary={text}
+                primaryTypographyProps={{
+                  sx: {
+                    fontSize: '14px',
+                    display: { xs: 'none', sm: 'block' },
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }
+                }}
+              />
+            </ListItemButton>
+          </motion.div>
         </Tooltip>
       ))}
     </Box>

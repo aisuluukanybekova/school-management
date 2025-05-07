@@ -1,4 +1,6 @@
 const express = require('express');
+const router = express.Router();
+const Subject = require('../models/subjectSchema');
 const {
   createSubject,
   getSubjectsBySchool,
@@ -7,37 +9,35 @@ const {
   updateSubject,
   deleteSubject,
   deleteSubjects,
-  deleteSubjectsByClass
-} = require('../controllers/subject-controller.js');
+  deleteSubjectsByClass,
+  getSubjectWithTopics
+} = require('../controllers/subject-controller');
 
-const router = express.Router();
+// === Более специфичные маршруты ===
 
-// === Сначала более специфичные маршруты ===
-
-// Получить все предметы по школе
 router.get('/school/:id', getSubjectsBySchool);
-
-// Получить все предметы по классу
 router.get('/class/:id', getSubjectsByClass);
-
-// Удалить все предметы по школе
 router.delete('/school/:id', deleteSubjects);
-
-// Удалить все предметы по классу
 router.delete('/class/:id', deleteSubjectsByClass);
 
-// === Потом общие маршруты ===
+// === Специальный маршрут для тем предмета ===
+// ДОЛЖЕН БЫТЬ ДО /:id
+router.get('/:id/with-topics', getSubjectWithTopics);
 
-// Получить детали одного предмета
+// === Общие маршруты ===
+
+router.get('/', async (req, res) => {
+  try {
+    const subjects = await Subject.find();
+    res.status(200).json(subjects);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 router.get('/:id', getSubjectDetail);
-
-// Добавить новый предмет
 router.post('/', createSubject);
-
-// Обновить предмет
 router.put('/:id', updateSubject);
-
-// Удалить один предмет
 router.delete('/:id', deleteSubject);
 
 module.exports = router;

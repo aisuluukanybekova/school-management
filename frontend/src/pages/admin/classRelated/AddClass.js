@@ -19,7 +19,7 @@ const AddClass = () => {
     const { status, currentUser, response, error, tempDetails } = userState;
 
     const adminID = currentUser._id
-    const address = "Sclass"
+    const address = "classes"
 
     const [loader, setLoader] = useState(false)
     const [message, setMessage] = useState("");
@@ -100,16 +100,13 @@ const AddClass = () => {
         </>
     )
 }
-
 export default AddClass
-
 const StyledContainer = styled(Box)`
   flex: 1 1 auto;
   align-items: center;
   display: flex;
   justify-content: center;
 `;
-
 const StyledBox = styled(Box)`
   max-width: 550px;
   padding: 50px 3rem 50px;

@@ -1,93 +1,91 @@
 import React, { useEffect } from 'react';
-import { getTeacherDetails } from '../../../redux/teacherRelated/teacherHandle';
-import { useParams, useNavigate } from 'react-router-dom';
+import { getGroupedTeacherSubjects } from '../../../redux/teacherRelated/teacherHandle';
+import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-    Box,
-    Typography,
-    Button,
-    Paper,
-    Avatar,
-    CircularProgress,
-    Container
+  Box, Typography, Paper, Avatar, CircularProgress, Container
 } from '@mui/material';
 import SchoolIcon from '@mui/icons-material/School';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
 import ClassIcon from '@mui/icons-material/Class';
+import LaptopMacIcon from '@mui/icons-material/LaptopMac';
 import styled from 'styled-components';
 
 const TeacherDetails = () => {
-    const navigate = useNavigate();
-    const params = useParams();
-    const dispatch = useDispatch();
-    const { loading, teacherDetails, error } = useSelector((state) => state.teacher);
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const { teachersList, loading } = useSelector((state) => state.teacher);
 
-    const teacherID = params.id;
+  useEffect(() => {
+    dispatch(getGroupedTeacherSubjects());
+  }, [dispatch]);
 
-    useEffect(() => {
-        dispatch(getTeacherDetails(teacherID));
-    }, [dispatch, teacherID]);
+  const teacher = teachersList.find(t => t._id === id);
 
-    if (error) console.error(error);
+  // Группировка по предметам
+  const grouped = {};
+  teacher?.assignments?.forEach(({ subject, class: cls, sessions }) => {
+    if (!grouped[subject]) {
+      grouped[subject] = [];
+    }
+    grouped[subject].push({ class: cls, sessions });
+  });
 
-    const isSubjectNamePresent = teacherDetails?.teachSubject?.subName;
+  return (
+    <Container maxWidth="sm">
+      <StyledCard elevation={3}>
+        {loading || !teacher ? (
+          <Box display="flex" justifyContent="center" py={4}>
+            <CircularProgress />
+          </Box>
+        ) : (
+          <Box p={3}>
+            <Box display="flex" flexDirection="column" alignItems="center" mb={3}>
+              <Avatar sx={{ width: 80, height: 80, mb: 1 }}>
+                {teacher.name.charAt(0)}
+              </Avatar>
+              <Typography variant="h5" gutterBottom>
+                {teacher.name}
+              </Typography>
+              <Typography variant="subtitle1">
+                Email: <strong>{teacher.email}</strong>
+              </Typography>
+            </Box>
 
-    const handleAddSubject = () => {
-        navigate(`/Admin/teachers/choosesubject/${teacherDetails?.teachSclass?._id}/${teacherDetails?._id}`);
-    };
-
-    return (
-        <Container maxWidth="sm">
-            <StyledCard elevation={3}>
-                {loading ? (
-                    <Box display="flex" justifyContent="center" py={4}>
-                        <CircularProgress />
+            {Object.keys(grouped).length > 0 ? (
+              Object.entries(grouped).map(([subject, entries], idx) => (
+                <Box key={idx} mt={3}>
+                  <InfoRow>
+                    <LaptopMacIcon color="primary" />
+                    <Typography variant="h6" ml={1}>
+                      Предмет: <strong>{subject}</strong>
+                    </Typography>
+                  </InfoRow>
+                  {entries.map((entry, index) => (
+                    <Box key={index} ml={4} mt={1}>
+                      <InfoRow>
+                        <ClassIcon color="primary" />
+                        <Typography variant="subtitle1" ml={1}>
+                          Класс: <strong>{entry.class}</strong>
+                        </Typography>
+                      </InfoRow>
+                      <InfoRow>
+                        <SchoolIcon color="primary" />
+                        <Typography variant="subtitle1" ml={1}>
+                          {entry.sessions} занятий в неделю
+                        </Typography>
+                      </InfoRow>
                     </Box>
-                ) : (
-                    <Box p={3}>
-                        <Box display="flex" flexDirection="column" alignItems="center" mb={3}>
-                            <Avatar sx={{ width: 80, height: 80, mb: 1 }}>
-                                {teacherDetails?.name?.charAt(0)}
-                            </Avatar>
-                            <Typography variant="h5" gutterBottom>
-                                {teacherDetails?.name}
-                            </Typography>
-                        </Box>
-
-                        <InfoRow>
-                            <ClassIcon color="primary" />
-                            <Typography variant="subtitle1" ml={1}>
-                                Класс: <strong>{teacherDetails?.teachSclass?.sclassName}</strong>
-                            </Typography>
-                        </InfoRow>
-
-                        {isSubjectNamePresent ? (
-                            <>
-                                <InfoRow>
-                                    <MenuBookIcon color="primary" />
-                                    <Typography variant="subtitle1" ml={1}>
-                                        Предмет: <strong>{teacherDetails?.teachSubject?.subName}</strong>
-                                    </Typography>
-                                </InfoRow>
-                                <InfoRow>
-                                    <SchoolIcon color="primary" />
-                                    <Typography variant="subtitle1" ml={1}>
-                                        Кол-во занятий: <strong>{teacherDetails?.teachSubject?.sessions}</strong>
-                                    </Typography>
-                                </InfoRow>
-                            </>
-                        ) : (
-                            <Box mt={3} textAlign="center">
-                                <Button variant="contained" onClick={handleAddSubject}>
-                                    Добавить предмет
-                                </Button>
-                            </Box>
-                        )}
-                    </Box>
-                )}
-            </StyledCard>
-        </Container>
-    );
+                  ))}
+                </Box>
+              ))
+            ) : (
+              <Typography align="center" color="text.secondary">Нет назначенных предметов</Typography>
+            )}
+          </Box>
+        )}
+      </StyledCard>
+    </Container>
+  );
 };
 
 export default TeacherDetails;
@@ -101,5 +99,5 @@ const StyledCard = styled(Paper)`
 const InfoRow = styled(Box)`
   display: flex;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 `;

@@ -1,11 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const { getAttendance, saveAttendance } = require('../controllers/attendance-controller');
+const attendanceController = require('../controllers/attendance-controller');
 
-// Получить посещаемость
-router.get('/attendance', getAttendance);
+const {
+  getAttendance,
+  saveAttendance,
+  getStudentAttendance,
+  getAttendanceReport,
+  getAttendanceDebug
+} = attendanceController;
 
-// Сохранить посещаемость
-router.post('/attendance', saveAttendance);
+router.get('/', getAttendance);
+router.post('/', saveAttendance);
+router.get('/student/:studentId', getStudentAttendance);
+router.get('/report', getAttendanceReport);
+router.get('/report/debug', getAttendanceDebug);
 
 module.exports = router;
+
+

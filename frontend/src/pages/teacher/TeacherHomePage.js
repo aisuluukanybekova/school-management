@@ -1,100 +1,140 @@
-import { Container, Grid, Paper } from '@mui/material';
-import SeeNotice from '../../components/SeeNotice';
-import CountUp from 'react-countup';
-import styled from 'styled-components';
-import Students from "../../assets/img1.png";
-import Lessons from "../../assets/subjects.svg";
-import Tests from "../../assets/assignment.svg";
-import Time from "../../assets/time.svg";
-import { getClassStudents, getSubjectDetails } from '../../redux/sclassRelated/sclassHandle';
+import { Container, Grid, Paper, Typography, Avatar, Box } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { getClassStudents, getSubjectDetails } from '../../redux/sclassRelated/sclassHandle';
+import SeeNotice from '../../components/SeeNotice';
+import SchoolIcon from '@mui/icons-material/School';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import axios from 'axios';
+import { motion } from 'framer-motion';
+
+const StatCard = ({ title, value, icon, delay = 0 }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay }}
+  >
+    <Paper
+      elevation={4}
+      sx={{
+        p: 3,
+        display: 'flex',
+        alignItems: 'center',
+        borderRadius: 3,
+        backgroundColor: '#ffffff',
+        boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.05)',
+      }}
+    >
+      <Avatar sx={{ bgcolor: '#1976d2', width: 56, height: 56 }}>
+        {icon}
+      </Avatar>
+      <Box ml={2}>
+        <Typography variant="subtitle2" color="text.secondary">
+          {title}
+        </Typography>
+        <Typography variant="h4" color="green" sx={{ fontWeight: 'bold' }}>
+          {value}
+        </Typography>
+      </Box>
+    </Paper>
+  </motion.div>
+);
 
 const TeacherHomePage = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.user);
+  const { subjectDetails, sclassStudents } = useSelector((state) => state.sclass);
+  const [homeroomClass, setHomeroomClass] = useState(null);
 
-    const { currentUser } = useSelector((state) => state.user);
-    const { subjectDetails, sclassStudents } = useSelector((state) => state.sclass);
+  const classID = currentUser.teachSclass?._id;
+  const subjectID = currentUser.teachSubject?._id;
 
-    const classID = currentUser.teachSclass?._id;
-    const subjectID = currentUser.teachSubject?._id;
+  useEffect(() => {
+    if (classID && subjectID) {
+      dispatch(getSubjectDetails(subjectID, "Subject"));
+      dispatch(getClassStudents(classID));
+    }
+  }, [dispatch, subjectID, classID]);
 
-    useEffect(() => {
-        dispatch(getSubjectDetails(subjectID, "Subject"));
-        dispatch(getClassStudents(classID));
-    }, [dispatch, subjectID, classID]);
+  useEffect(() => {
+    const fetchHomeroomClass = async () => {
+      if (currentUser?.homeroomFor) {
+        try {
+          const res = await axios.get(`/api/classes/${currentUser.homeroomFor._id}`);
+          setHomeroomClass(res.data);
+        } catch (err) {
+          console.error("Ошибка при получении класса классного руководителя:", err);
+        }
+      }
+    };
+    fetchHomeroomClass();
+  }, [currentUser]);
 
-    const numberOfStudents = sclassStudents?.length || 0;
-    const numberOfSessions = subjectDetails?.sessions || 0;
+  const numberOfStudents = sclassStudents?.length || 0;
+  const numberOfSessions = subjectDetails?.sessions || 0;
 
-    return (
-        <>
-            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-                <Grid container spacing={3}>
-                    <Grid item xs={12} md={3} lg={3}>
-                        <StyledPaper>
-                            <img src={Students} alt="Ученики" />
-                            <Title>
-                                Ученики класса
-                            </Title>
-                            <Data start={0} end={numberOfStudents} duration={2.5} />
-                        </StyledPaper>
-                    </Grid>
-                    <Grid item xs={12} md={3} lg={3}>
-                        <StyledPaper>
-                            <img src={Lessons} alt="Уроки" />
-                            <Title>
-                                Всего уроков
-                            </Title>
-                            <Data start={0} end={numberOfSessions} duration={5} />
-                        </StyledPaper>
-                    </Grid>
-                    <Grid item xs={12} md={3} lg={3}>
-                        <StyledPaper>
-                            <img src={Tests} alt="Тесты" />
-                            <Title>
-                                Проведено тестов
-                            </Title>
-                            <Data start={0} end={24} duration={4} />
-                        </StyledPaper>
-                    </Grid>
-                    <Grid item xs={12} md={3} lg={3}>
-                        <StyledPaper>
-                            <img src={Time} alt="Время" />
-                            <Title>
-                                Всего часов
-                            </Title>
-                            <Data start={0} end={30} duration={4} suffix="ч" />
-                        </StyledPaper>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                            <SeeNotice />
-                        </Paper>
-                    </Grid>
-                </Grid>
-            </Container>
-        </>
-    );
+  return (
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <Grid container spacing={3}>
+        {/* Сообщение о классном руководителе */}
+        {homeroomClass && (
+          <Grid item xs={12}>
+            <Paper
+              sx={{
+                p: 3,
+                backgroundColor: '#e3f2fd',
+                borderLeft: '6px solid #1976d2',
+                borderRadius: 3,
+              }}
+            >
+              <Typography variant="h6">
+                👨‍🏫 Вы классный руководитель класса:{" "}
+                <strong>{homeroomClass.sclassName}</strong>
+              </Typography>
+            </Paper>
+          </Grid>
+        )}
+
+        {/* Карточки статистики */}
+        <Grid item xs={12} sm={6} md={4}>
+          <StatCard
+            title="Ученики класса"
+            value={numberOfStudents}
+            icon={<SchoolIcon />}
+            delay={0.1}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <StatCard
+            title="Всего уроков"
+            value={numberOfSessions}
+            icon={<MenuBookIcon />}
+            delay={0.3}
+          />
+        </Grid>
+
+        {/* Объявления */}
+        <Grid item xs={12}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+          >
+            <Paper
+              elevation={4}
+              sx={{
+                p: 3,
+                borderRadius: 3,
+                backgroundColor: '#fafafa',
+              }}
+            >
+              <SeeNotice />
+            </Paper>
+          </motion.div>
+        </Grid>
+      </Grid>
+    </Container>
+  );
 };
-
-const StyledPaper = styled(Paper)`
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  height: 200px;
-  justify-content: space-between;
-  align-items: center;
-  text-align: center;
-`;
-
-const Title = styled.p`
-  font-size: 1.25rem;
-`;
-
-const Data = styled(CountUp)`
-  font-size: calc(1.3rem + .6vw);
-  color: green;
-`;
 
 export default TeacherHomePage;

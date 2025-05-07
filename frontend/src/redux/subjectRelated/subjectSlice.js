@@ -42,6 +42,11 @@ const subjectSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.response = null;
+    },
+    clearSubjectState: (state) => {
+      state.subjectDetails = {};
+      state.response = null;
+      state.error = null;
     }
   },
 });
@@ -52,7 +57,8 @@ export const {
   getFailed,
   getError,
   postDone,
-  doneSuccess
+  doneSuccess,
+  clearSubjectState
 } = subjectSlice.actions;
 
 export const subjectReducer = subjectSlice.reducer;

@@ -1,150 +1,155 @@
 const bcrypt = require('bcrypt');
 const Student = require('../models/studentSchema.js');
-const Subject = require('../models/subjectSchema.js');
 
-// === Регистрация студента ===
+// Регистрация студента
 const studentRegister = async (req, res) => {
   try {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPass = await bcrypt.hash(req.body.password, salt);
-
-    const existingStudent = await Student.findOne({
-      rollNum: req.body.rollNum,
-      school: req.body.adminID,
-      sclassName: req.body.sclassName,
-    });
+    const { rollNum, password, sclassName, adminID } = req.body;
+    const existingStudent = await Student.findOne({ rollNum, school: adminID, sclassName });
 
     if (existingStudent) {
-      res.send({ message: 'Roll Number already exists' });
-    } else {
-      const student = new Student({
-        ...req.body,
-        school: req.body.adminID,
-        password: hashedPass,
-      });
-
-      const result = await student.save();
-      result.password = undefined;
-      res.send(result);
+      return res.status(400).send({ message: 'Номер ученика уже существует' });
     }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPass = await bcrypt.hash(password, salt);
+
+    const student = new Student({ ...req.body, password: hashedPass, school: adminID });
+
+    const result = await student.save();
+
+    const safeResult = {
+      _id: result._id,
+      name: result.name,
+      rollNum: result.rollNum,
+      sclassName: result.sclassName,
+      school: result.school,
+    };
+
+    res.send(safeResult);
   } catch (err) {
-    res.status(500).json(err);
+    console.error(err);
+    res.status(500).json({ message: 'Ошибка регистрации', error: err.message });
   }
 };
 
-// === Вход студента ===
+// Логин студента
 const studentLogIn = async (req, res) => {
   try {
-    let student = await Student.findOne({ rollNum: req.body.rollNum, name: req.body.studentName });
-    if (student) {
-      const validated = await bcrypt.compare(req.body.password, student.password);
-      if (validated) {
-        student = await student.populate("school", "schoolName");
-        student = await student.populate("sclassName", "sclassName");
-        student.password = undefined;
-        student.examResult = undefined;
-        student.attendance = undefined;
-        res.send(student);
-      } else {
-        res.send({ message: "Invalid password" });
-      }
-    } else {
-      res.send({ message: "Student not found" });
+    const { rollNum, studentName, password } = req.body;
+    let student = await Student.findOne({ rollNum, name: studentName });
+
+    if (!student) {
+      return res.status(404).send({ message: 'Ученик не найден' });
     }
+
+    const validated = await bcrypt.compare(password, student.password);
+
+    if (!validated) {
+      return res.status(400).send({ message: 'Неверный пароль' });
+    }
+
+    const populatedStudent = await Student.findById(student._id)
+      .populate("school", "schoolName")
+      .populate("sclassName", "sclassName")
+      .select("-password");
+
+    res.send(populatedStudent);
   } catch (err) {
-    res.status(500).json(err);
+    console.error(err);
+    res.status(500).json({ message: 'Ошибка входа', error: err.message });
   }
 };
 
-// === Получить всех студентов школы ===
+// Получить всех студентов школы
 const getStudents = async (req, res) => {
   try {
     const students = await Student.find({ school: req.params.id }).populate("sclassName", "sclassName");
-    if (students.length > 0) {
-      const modified = students.map((s) => ({ ...s._doc, password: undefined }));
-      res.send(modified);
-    } else {
-      res.send({ message: "No students found" });
-    }
+    const cleanStudents = students.map((s) => ({
+      _id: s._id,
+      name: s.name,
+      rollNum: s.rollNum,
+      sclassName: s.sclassName,
+      school: s.school
+    }));
+    res.send(cleanStudents);
   } catch (err) {
-    res.status(500).json(err);
+    console.error(err);
+    res.status(500).json({ message: 'Ошибка получения студентов' });
   }
 };
 
-// === Получить студентов по классу ===
+// Получить студентов по классу
 const getStudentsByClass = async (req, res) => {
   try {
     const students = await Student.find({ sclassName: req.params.id }).populate("sclassName", "sclassName");
-    if (students.length > 0) {
-      const modified = students.map((s) => ({ ...s._doc, password: undefined }));
-      res.send(modified);
-    } else {
-      res.send({ message: "No students found" });
-    }
+    const cleanStudents = students.map((s) => ({
+      _id: s._id,
+      name: s.name,
+      rollNum: s.rollNum,
+      sclassName: s.sclassName,
+      school: s.school
+    }));
+    res.send(cleanStudents);
   } catch (err) {
-    res.status(500).json(err);
+    console.error(err);
+    res.status(500).json({ message: 'Ошибка получения студентов класса' });
   }
 };
 
-// === Получить одного студента ===
+// Получить одного студента
 const getStudentDetail = async (req, res) => {
   try {
     const student = await Student.findById(req.params.id)
       .populate("school", "schoolName")
       .populate("sclassName", "sclassName")
-      .populate("examResult.subName", "subName")
-      .populate("attendance.subName", "subName sessions");
+      .select("-password");
 
     if (student) {
-      student.password = undefined;
       res.send(student);
     } else {
-      res.send({ message: "No student found" });
+      res.status(404).send({ message: 'Ученик не найден' });
     }
   } catch (err) {
-    res.status(500).json(err);
+    console.error(err);
+    res.status(500).json({ message: 'Ошибка получения ученика', error: err.message });
   }
 };
 
-// === Удалить одного студента ===
+// Удалить одного ученика
 const deleteStudent = async (req, res) => {
   try {
-    const result = await Student.findByIdAndDelete(req.params.id);
-    res.send(result);
+    await Student.findByIdAndDelete(req.params.id);
+    res.send({ message: 'Ученик удален' });
   } catch (error) {
-    res.status(500).json(error);
+    console.error(error);
+    res.status(500).json({ message: 'Ошибка удаления ученика' });
   }
 };
 
-// === Удалить всех студентов школы ===
+// Удалить всех учеников школы
 const deleteStudents = async (req, res) => {
   try {
-    const result = await Student.deleteMany({ school: req.params.id });
-    if (result.deletedCount === 0) {
-      res.send({ message: "No students found to delete" });
-    } else {
-      res.send(result);
-    }
+    await Student.deleteMany({ school: req.params.id });
+    res.send({ message: 'Все ученики удалены' });
   } catch (error) {
-    res.status(500).json(error);
+    console.error(error);
+    res.status(500).json({ message: 'Ошибка удаления всех учеников' });
   }
 };
 
-// === Удалить студентов по классу ===
+// Удалить учеников по классу
 const deleteStudentsByClass = async (req, res) => {
   try {
-    const result = await Student.deleteMany({ sclassName: req.params.id });
-    if (result.deletedCount === 0) {
-      res.send({ message: "No students found to delete" });
-    } else {
-      res.send(result);
-    }
+    await Student.deleteMany({ sclassName: req.params.id });
+    res.send({ message: 'Ученики класса удалены' });
   } catch (error) {
-    res.status(500).json(error);
+    console.error(error);
+    res.status(500).json({ message: 'Ошибка удаления учеников по классу' });
   }
 };
 
-// === Обновить студента ===
+// Обновить ученика
 const updateStudent = async (req, res) => {
   try {
     if (req.body.password) {
@@ -152,121 +157,17 @@ const updateStudent = async (req, res) => {
       req.body.password = await bcrypt.hash(req.body.password, salt);
     }
 
-    const result = await Student.findByIdAndUpdate(
+    const updated = await Student.findByIdAndUpdate(
       req.params.id,
       { $set: req.body },
       { new: true }
     );
 
-    result.password = undefined;
-    res.send(result);
+    updated.password = undefined;
+    res.send(updated);
   } catch (error) {
-    res.status(500).json(error);
-  }
-};
-
-// === Обновить оценку ===
-const updateExamResult = async (req, res) => {
-  const { subName, marksObtained, date } = req.body;
-  try {
-    const student = await Student.findById(req.params.id);
-    if (!student) return res.send({ message: 'Student not found' });
-
-    const existingResult = student.examResult.find((r) => r.subName.toString() === subName);
-
-    if (existingResult) {
-      existingResult.marksObtained = marksObtained;
-      existingResult.date = date;
-    } else {
-      student.examResult.push({ subName, marksObtained, date });
-    }
-
-    const result = await student.save();
-    res.send(result);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
-
-// === Посещаемость студента ===
-const studentAttendance = async (req, res) => {
-  const { subName, status, date } = req.body;
-  try {
-    const student = await Student.findById(req.params.id);
-    if (!student) return res.send({ message: 'Student not found' });
-
-    const subject = await Subject.findById(subName);
-
-    const existing = student.attendance.find((a) =>
-      a.date.toDateString() === new Date(date).toDateString() &&
-      a.subName.toString() === subName
-    );
-
-    if (existing) {
-      existing.status = status;
-    } else {
-      const attended = student.attendance.filter((a) => a.subName.toString() === subName).length;
-      if (attended >= subject.sessions) return res.send({ message: 'Maximum attendance limit reached' });
-
-      student.attendance.push({ date, status, subName });
-    }
-
-    const result = await student.save();
-    res.send(result);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
-
-// === Очистить посещаемость по предмету ===
-const clearAllStudentsAttendanceBySubject = async (req, res) => {
-  try {
-    const result = await Student.updateMany(
-      { 'attendance.subName': req.params.id },
-      { $pull: { attendance: { subName: req.params.id } } }
-    );
-    res.send(result);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
-
-// === Очистить всю посещаемость по школе ===
-const clearAllStudentsAttendance = async (req, res) => {
-  try {
-    const result = await Student.updateMany(
-      { school: req.params.id },
-      { $set: { attendance: [] } }
-    );
-    res.send(result);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
-
-// === Удалить посещаемость по предмету для 1 ученика ===
-const removeStudentAttendanceBySubject = async (req, res) => {
-  try {
-    const result = await Student.updateOne(
-      { _id: req.params.id },
-      { $pull: { attendance: { subName: req.body.subId } } }
-    );
-    res.send(result);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
-
-// === Очистить всю посещаемость для 1 ученика ===
-const removeStudentAttendance = async (req, res) => {
-  try {
-    const result = await Student.updateOne(
-      { _id: req.params.id },
-      { $set: { attendance: [] } }
-    );
-    res.send(result);
-  } catch (error) {
-    res.status(500).json(error);
+    console.error(error);
+    res.status(500).json({ message: 'Ошибка обновления ученика' });
   }
 };
 
@@ -279,11 +180,5 @@ module.exports = {
   deleteStudents,
   deleteStudent,
   updateStudent,
-  studentAttendance,
-  deleteStudentsByClass,
-  updateExamResult,
-  clearAllStudentsAttendanceBySubject,
-  clearAllStudentsAttendance,
-  removeStudentAttendanceBySubject,
-  removeStudentAttendance,
+  deleteStudentsByClass
 };

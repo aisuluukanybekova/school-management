@@ -3,16 +3,16 @@ const { adminRegister, adminLogIn, getAdminDetail, updateAdmin } = require('../c
 
 const router = express.Router();
 
-// ✅ Регистрация
+// Регистрация
 router.post('/register', adminRegister);
 
-// ✅ Логин
+// Логин
 router.post('/login', adminLogIn);
 
-// ✅ Получить данные
+// Получить данные
 router.get('/:id', getAdminDetail);
 
-// ✅ Обновить данные
+// Обновить данные
 router.put('/:id', updateAdmin);
 
 module.exports = router;

@@ -1,36 +1,52 @@
-// frontend/src/redux/subjectRelated/subjectHandle.js
-
-import axios from 'axios';
-import { getRequest, getSuccess, getFailed, getError } from './subjectSlice';
+import axios from "axios";
+import { getRequest, getSuccess, getFailed, getError } from "./subjectSlice";
 
 const BASE_URL = "http://localhost:5001/api/subjects";
 
-// === Получить все предметы по школе ===
+// Получить все предметы по школе
 export const getAllSubjects = (schoolId) => async (dispatch) => {
   dispatch(getRequest());
   try {
-    const result = await axios.get(`${BASE_URL}/school/${schoolId}`);
-    if (result.data.message) {
-      dispatch(getFailed(result.data.message));
+    const res = await axios.get(`${BASE_URL}/school/${schoolId}`);
+    if (res.data.message) {
+      dispatch(getFailed(res.data.message));
     } else {
-      dispatch(getSuccess(result.data));
+      dispatch(getSuccess(res.data));
     }
-  } catch (error) {
-    dispatch(getError(error.message || "Ошибка сети"));
+  } catch (err) {
+    dispatch(getError(err.message || "Ошибка загрузки предметов"));
   }
 };
 
-// === Получить предметы по классу ===
-export const getSubjectsByClass = (classId) => async (dispatch) => {
+// Добавить предмет
+export const addSubject = (payload) => async (dispatch) => {
   dispatch(getRequest());
   try {
-    const result = await axios.get(`${BASE_URL}/class/${classId}`);
-    if (result.data.message) {
-      dispatch(getFailed(result.data.message));
-    } else {
-      dispatch(getSuccess(result.data));
-    }
-  } catch (error) {
-    dispatch(getError(error.message || "Ошибка сети"));
+    await axios.post(`${BASE_URL}`, payload);
+    dispatch(getAllSubjects(payload.school));
+  } catch (err) {
+    dispatch(getError(err.message || "Ошибка при добавлении предмета"));
+  }
+};
+
+// Обновить предмет
+export const updateSubject = (id, data) => async (dispatch) => {
+  dispatch(getRequest());
+  try {
+    await axios.put(`${BASE_URL}/${id}`, data);
+    dispatch(getAllSubjects(data.school));
+  } catch (err) {
+    dispatch(getError(err.message || "Ошибка при обновлении предмета"));
+  }
+};
+
+// Удалить предмет
+export const deleteSubject = (id, schoolId) => async (dispatch) => {
+  dispatch(getRequest());
+  try {
+    await axios.delete(`${BASE_URL}/${id}`);
+    dispatch(getAllSubjects(schoolId));
+  } catch (err) {
+    dispatch(getError(err.message || "Ошибка при удалении предмета"));
   }
 };

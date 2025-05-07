@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
 const noticeSchema = new mongoose.Schema({
     title: {
@@ -15,8 +15,9 @@ const noticeSchema = new mongoose.Schema({
     },
     school: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'admin'
+        ref: 'admins', 
+        required: true
     },
 }, { timestamps: true });
 
-module.exports = mongoose.model("notice", noticeSchema)
+module.exports = mongoose.model("Notice", noticeSchema);

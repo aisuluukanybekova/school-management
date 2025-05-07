@@ -1,102 +1,137 @@
-// 📂 src/pages/Admin/Teachers/ShowTeachers.jsx
-
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
 import {
   Paper, Box, IconButton, Dialog, DialogTitle, DialogContent,
-  DialogActions, TextField, Button, Grid
+  DialogActions, TextField, Button, Grid, Typography,
+  FormControl, MenuItem
 } from '@mui/material';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import EditIcon from '@mui/icons-material/Edit';
+import SchoolIcon from '@mui/icons-material/School';
 
 import { deleteUser } from '../../../redux/userRelated/userHandle';
 import { getAllTeachers } from '../../../redux/teacherRelated/teacherHandle';
-import { BlueButton, GreenButton } from '../../../components/buttonStyles';
+import { BlueButton } from '../../../components/buttonStyles';
 import SpeedDialTemplate from '../../../components/SpeedDialTemplate';
 import TableTemplate from '../../../components/TableTemplate';
 import Popup from '../../../components/Popup';
 
-const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:5001";
+const BASE_URL = "http://localhost:5001/api/teachers";
 
 const ShowTeachers = () => {
-  // Redux
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { teachersList, loading } = useSelector((state) => state.teacher);
   const { currentUser } = useSelector((state) => state.user);
 
-  // Local state
   const [editTeacher, setEditTeacher] = useState({});
   const [editModalOpen, setEditModalOpen] = useState(false);
+
+  const [homeroomModalOpen, setHomeroomModalOpen] = useState(false);
+  const [classes, setClasses] = useState([]);
+  const [selectedClass, setSelectedClass] = useState('');
+
   const [searchName, setSearchName] = useState("");
-  const [searchSubject, setSearchSubject] = useState("");
-  const [searchClass, setSearchClass] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    dispatch(getAllTeachers(currentUser._id));
-  }, [currentUser._id, dispatch]);
+    if (currentUser?.school?._id) {
+      dispatch(getAllTeachers(currentUser.school._id));
+      axios.get(`/api/classes/school/${currentUser.school._id}`).then(res => setClasses(res.data));
+    }
+  }, [dispatch, currentUser]);
 
-  // Handlers
-  const deleteHandler = (id, address) => {
-    dispatch(deleteUser(id, address)).then(() => {
-      dispatch(getAllTeachers(currentUser._id));
-      setMessage("Преподаватель удален успешно.");
+  const deleteHandler = async (id, address) => {
+    try {
+      const url = address === "Teachers"
+        ? `/api/teachers/school/${id}`
+        : `/api/teachers/${id}`;
+      await axios.delete(url);
+      dispatch(getAllTeachers(currentUser.school._id));
+      setMessage("Преподаватель(и) удалён(ы) успешно.");
       setShowPopup(true);
-    });
+    } catch (err) {
+      console.error("Ошибка при удалении:", err);
+      setMessage("Ошибка при удалении преподавателя.");
+      setShowPopup(true);
+    }
   };
 
   const handleEditClick = (row) => {
-    setEditTeacher({ name: row.name, _id: row.id });
+    setEditTeacher({ name: row.name, _id: row._id });
     setEditModalOpen(true);
   };
 
   const handleSaveEdit = async () => {
     try {
-      await axios.put(`${REACT_APP_BASE_URL}/Teacher/${editTeacher._id}`, editTeacher);
+      await axios.put(`${BASE_URL}/${editTeacher._id}`, editTeacher);
       setEditModalOpen(false);
-      dispatch(getAllTeachers(currentUser._id));
+      dispatch(getAllTeachers(currentUser.school._id));
       setMessage("Преподаватель обновлен успешно.");
       setShowPopup(true);
     } catch (error) {
       console.error("Ошибка при обновлении преподавателя:", error);
+      setMessage("Ошибка при обновлении преподавателя");
+      setShowPopup(true);
     }
   };
 
-  // Table setup
+  const handleAssignHomeroom = (row) => {
+    setEditTeacher(row);
+    setSelectedClass(row.homeroomFor?._id || '');
+    setHomeroomModalOpen(true);
+  };
+
+  const handleSaveHomeroom = async () => {
+    try {
+      await axios.put(`${BASE_URL}/${editTeacher._id}`, { homeroomFor: selectedClass });
+      setHomeroomModalOpen(false);
+      dispatch(getAllTeachers(currentUser.school._id));
+      setMessage("Классное руководство обновлено.");
+      setShowPopup(true);
+    } catch (error) {
+      console.error("Ошибка при сохранении homeroomFor", error);
+      setMessage("Ошибка при сохранении классного руководства");
+      setShowPopup(true);
+    }
+  };
+
   const teacherColumns = [
     { id: 'name', label: 'Имя', minWidth: 170 },
-    { id: 'teachSubject', label: 'Предмет', minWidth: 170 },
-    { id: 'teachSclass', label: 'Класс', minWidth: 170 },
+    { id: 'email', label: 'Email', minWidth: 200 },
   ];
 
-  const teacherRows = teachersList.map((teacher) => ({
-    name: teacher.name,
-    teachSubject: teacher.teachSubject?.subName || '—',
-    teachSclass: teacher.teachSclass?.sclassName || '—',
-    id: teacher._id,
-  }));
+  const teacherRows = Array.isArray(teachersList)
+    ? [...teachersList]
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((t) => ({
+          _id: t._id,
+          name: t.name,
+          email: t.email,
+          homeroomFor: t.homeroomFor
+        }))
+    : [];
 
   const filteredRows = teacherRows.filter(row =>
-    row.name.toLowerCase().includes(searchName.toLowerCase()) &&
-    row.teachSubject.toLowerCase().includes(searchSubject.toLowerCase()) &&
-    row.teachSclass.toLowerCase().includes(searchClass.toLowerCase())
+    row.name.toLowerCase().includes(searchName.toLowerCase())
   );
 
   const TeacherButtonHaver = ({ row }) => (
     <>
-      <IconButton onClick={() => deleteHandler(row.id, "Teacher")}>
+      <IconButton onClick={() => deleteHandler(row._id, "Teacher")}>
         <PersonRemoveIcon color="error" />
       </IconButton>
       <IconButton onClick={() => handleEditClick(row)}>
         <EditIcon />
       </IconButton>
-      <BlueButton variant="contained" onClick={() => navigate(`/Admin/teachers/teacher/${row.id}`)}>
+      <IconButton onClick={() => handleAssignHomeroom(row)}>
+        <SchoolIcon color="primary" />
+      </IconButton>
+      <BlueButton variant="contained" onClick={() => navigate(`/Admin/teachers/teacher/${row._id}`)}>
         Просмотр
       </BlueButton>
     </>
@@ -104,12 +139,14 @@ const ShowTeachers = () => {
 
   const actions = [
     {
-      icon: <PersonAddAlt1Icon color="primary" />, name: 'Добавить преподавателя',
-      action: () => navigate("/Admin/teachers/chooseclass")
+      icon: <PersonAddAlt1Icon color="primary" />,
+      name: 'Добавить преподавателя',
+      action: () => navigate("/Admin/teachers/addteacher")
     },
     {
-      icon: <PersonRemoveIcon color="error" />, name: 'Удалить всех преподавателей',
-      action: () => deleteHandler(currentUser._id, "Teachers")
+      icon: <PersonRemoveIcon color="error" />,
+      name: 'Удалить всех преподавателей',
+      action: () => deleteHandler(currentUser.school._id, "Teachers")
     },
   ];
 
@@ -122,15 +159,27 @@ const ShowTeachers = () => {
           <Box sx={{ mb: 2 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} md={4}>
-                <TextField label="Поиск по имени" fullWidth value={searchName} onChange={(e) => setSearchName(e.target.value)} />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <TextField label="Поиск по предмету" fullWidth value={searchSubject} onChange={(e) => setSearchSubject(e.target.value)} />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <TextField label="Поиск по классу" fullWidth value={searchClass} onChange={(e) => setSearchClass(e.target.value)} />
+                <TextField
+                  label="Поиск по имени"
+                  fullWidth
+                  value={searchName}
+                  onChange={(e) => setSearchName(e.target.value)}
+                />
               </Grid>
             </Grid>
+          </Box>
+
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+              Список преподавателей
+            </Typography>
+            <BlueButton
+              variant="contained"
+              onClick={() => navigate("/Admin/teachers/addteacher")}
+              sx={{ fontWeight: 'bold', px: 3, py: 1 }}
+            >
+              Добавить преподавателя
+            </BlueButton>
           </Box>
 
           <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -144,7 +193,7 @@ const ShowTeachers = () => {
         </>
       )}
 
-      {/* Dialog - Edit Teacher */}
+      {/* Редактирование имени */}
       <Dialog open={editModalOpen} onClose={() => setEditModalOpen(false)}>
         <DialogTitle>Редактировать преподавателя</DialogTitle>
         <DialogContent>
@@ -159,6 +208,32 @@ const ShowTeachers = () => {
         <DialogActions>
           <Button onClick={() => setEditModalOpen(false)}>Отмена</Button>
           <Button variant="contained" onClick={handleSaveEdit}>Сохранить</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Модалка для homeroom */}
+      <Dialog open={homeroomModalOpen} onClose={() => setHomeroomModalOpen(false)}>
+        <DialogTitle>Назначить классное руководство</DialogTitle>
+        <DialogContent>
+          <FormControl fullWidth sx={{ mt: 2 }}>
+            <TextField
+              select
+              label="Выберите класс"
+              value={selectedClass}
+              onChange={(e) => setSelectedClass(e.target.value)}
+            >
+              <MenuItem value="">Не назначать</MenuItem>
+              {classes.map((cls) => (
+                <MenuItem key={cls._id} value={cls._id}>
+                  {cls.sclassName}
+                </MenuItem>
+              ))}
+            </TextField>
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setHomeroomModalOpen(false)}>Отмена</Button>
+          <Button variant="contained" onClick={handleSaveHomeroom}>Сохранить</Button>
         </DialogActions>
       </Dialog>
 

@@ -1,23 +1,19 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { getAllStudents } from '../../../redux/studentRelated/studentHandle';
-import { Paper, Box, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, ButtonGroup, InputAdornment, MenuItem } from '@mui/material';
-import { KeyboardArrowUp, KeyboardArrowDown } from '@mui/icons-material';
+import { Paper, Box, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, TextField, InputAdornment, MenuItem } from '@mui/material';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import EditIcon from '@mui/icons-material/Edit';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Grow from '@mui/material/Grow';
-import Popper from '@mui/material/Popper';
-import MenuList from '@mui/material/MenuList';
 import SearchIcon from '@mui/icons-material/Search';
-import { BlackButton, BlueButton, GreenButton } from '../../../components/buttonStyles';
+import { BlueButton, GreenButton } from '../../../components/buttonStyles';
 import TableTemplate from '../../../components/TableTemplate';
 import SpeedDialTemplate from '../../../components/SpeedDialTemplate';
 import Popup from '../../../components/Popup';
 import axios from 'axios';
 import { deleteUser } from '../../../redux/userRelated/userHandle';
+import { Button } from '@mui/material';
 
 const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:5001";
 
@@ -45,7 +41,7 @@ const ShowStudents = () => {
 
   const handleSaveEdit = async () => {
     try {
-      await axios.put(`${REACT_APP_BASE_URL}/Student/${editStudent._id}`, editStudent);
+      await axios.put(`${REACT_APP_BASE_URL}/api/students/${editStudent._id}`, editStudent);
       setEditModalOpen(false);
       dispatch(getAllStudents(currentUser._id));
     } catch (error) {
@@ -53,21 +49,33 @@ const ShowStudents = () => {
     }
   };
 
-  const classOptions = ['Все', ...new Set(studentsList.map(s => s.sclassName?.sclassName).filter(Boolean))];
-
-  const filteredStudents = studentsList.filter(student => {
+  const classOptions = ['Все', ...[...new Set(
+    studentsList.map(s => s.sclassName?.sclassName).filter(Boolean)
+  )].sort((a, b) => a.localeCompare(b, 'ru', { numeric: true }))];  
+  
+  const filteredStudents = [...studentsList]
+  .sort((a, b) => a.name.localeCompare(b.name)) // сортировка по имени
+  .filter(student => {
     const nameMatch = student.name.toLowerCase().includes(searchQuery.toLowerCase());
     const classMatch = selectedClass === 'Все' || (student?.sclassName?.sclassName === selectedClass);
     return nameMatch && classMatch;
   });
 
-  const studentRows = filteredStudents.map((student) => ({
+  const studentRows = [...filteredStudents]
+  .sort((a, b) => {
+    const classA = a.sclassName?.sclassName || '';
+    const classB = b.sclassName?.sclassName || '';
+    const classCompare = classA.localeCompare(classB, 'ru', { numeric: true });
+    if (classCompare !== 0) return classCompare;
+    return a.name.localeCompare(b.name, 'ru');
+  })
+  .map((student) => ({
     name: student.name,
     rollNum: student.rollNum,
     sclassName: student.sclassName?.sclassName || '',
     id: student._id,
   }));
-
+  
   const studentColumns = [
     { id: 'name', label: 'Имя', minWidth: 170 },
     { id: 'rollNum', label: 'Номер ученика', minWidth: 100 },
@@ -75,16 +83,6 @@ const ShowStudents = () => {
   ];
 
   const StudentButtonHaver = ({ row }) => {
-    const options = ['Отметить посещаемость', 'Выставить оценки'];
-    const [open, setOpen] = useState(false);
-    const anchorRef = useRef(null);
-    const [selectedIndex, setSelectedIndex] = useState(0);
-
-    const handleClick = () => {
-      if (selectedIndex === 0) navigate("/Admin/students/student/attendance/" + row.id);
-      else if (selectedIndex === 1) navigate("/Admin/students/student/marks/" + row.id);
-    };
-
     const handleEditClick = () => {
       setEditStudent({ name: row.name, rollNum: row.rollNum, _id: row.id });
       setEditModalOpen(true);
@@ -92,39 +90,16 @@ const ShowStudents = () => {
 
     return (
       <>
-        <IconButton onClick={() => deleteHandler(row.id, "Student")}><PersonRemoveIcon color="error" /></IconButton>
+        <IconButton onClick={() => deleteHandler(row.id, "students")}><PersonRemoveIcon color="error" /></IconButton>
         <IconButton onClick={handleEditClick}><EditIcon /></IconButton>
         <BlueButton variant="contained" onClick={() => navigate("/Admin/students/student/" + row.id)}>Просмотр</BlueButton>
-        <ButtonGroup variant="contained" ref={anchorRef}>
-          <Button onClick={handleClick}>{options[selectedIndex]}</Button>
-          <BlackButton size="small" onClick={() => setOpen(prev => !prev)}>
-            {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-          </BlackButton>
-        </ButtonGroup>
-        <Popper open={open} anchorEl={anchorRef.current} transition disablePortal sx={{ zIndex: 1 }}>
-          {({ TransitionProps, placement }) => (
-            <Grow {...TransitionProps} style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
-              <Paper>
-                <ClickAwayListener onClickAway={() => setOpen(false)}>
-                  <MenuList autoFocusItem>
-                    {options.map((option, index) => (
-                      <MenuItem key={option} selected={index === selectedIndex} onClick={() => { setSelectedIndex(index); setOpen(false); }}>
-                        {option}
-                      </MenuItem>
-                    ))}
-                  </MenuList>
-                </ClickAwayListener>
-              </Paper>
-            </Grow>
-          )}
-        </Popper>
       </>
     );
   };
 
   const actions = [
     { icon: <PersonAddAlt1Icon color="primary" />, name: 'Добавить ученика', action: () => navigate("/Admin/addstudents") },
-    { icon: <PersonRemoveIcon color="error" />, name: 'Удалить всех учеников', action: () => deleteHandler(currentUser._id, "Students") },
+    { icon: <PersonRemoveIcon color="error" />, name: 'Удалить всех учеников', action: () => deleteHandler(currentUser._id, "students") },
   ];
 
   return (
