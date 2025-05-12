@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Grid, Paper, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { calculateOverallAttendancePercentage } from '../../components/attendanceCalculator';
-import CustomPieChart from '../../components/CustomPieChart';
 import { getUserDetails } from '../../redux/userRelated/userHandle';
 import styled from 'styled-components';
 import SeeNotice from '../../components/SeeNotice';
 import CountUp from 'react-countup';
-import Subject from "../../assets/subjects.svg";
-import Assignment from "../../assets/assignment.svg";
+import SchoolIcon from '@mui/icons-material/School';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import { getSubjectList } from '../../redux/sclassRelated/sclassHandle';
 
 const StudentHomePage = () => {
@@ -38,51 +36,31 @@ const StudentHomePage = () => {
     }, [userDetails]);
 
     if (!currentUser || !classID) {
-        return <Typography variant="h6">Загрузка пользователя...</Typography>;
+        return <Typography variant="h6">Загрузка данных пользователя...</Typography>;
     }
 
     const numberOfSubjects = subjectsList?.length || 0;
-    const overallAttendancePercentage = calculateOverallAttendancePercentage(subjectAttendance);
-    const overallAbsentPercentage = 100 - overallAttendancePercentage;
-
-    const chartData = [
-        { name: 'Present', value: overallAttendancePercentage },
-        { name: 'Absent', value: overallAbsentPercentage }
-    ];
+    
+  
 
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={3} lg={3}>
                     <StyledPaper>
-                        <img src={Subject} alt="Subjects" />
-                        <Title>Total Subjects</Title>
+                        <SchoolIcon fontSize="large" color="primary" />
+                        <Title>Всего предметов</Title>
                         <Data start={0} end={numberOfSubjects} duration={2.5} />
                     </StyledPaper>
                 </Grid>
 
                 <Grid item xs={12} md={3} lg={3}>
                     <StyledPaper>
-                        <img src={Assignment} alt="Assignments" />
-                        <Title>Total Assignments</Title>
+                        <AssignmentTurnedInIcon fontSize="large" color="secondary" />
+                        <Title>Всего заданий</Title>
                         <Data start={0} end={15} duration={4} />
                     </StyledPaper>
                 </Grid>
-
-                <Grid item xs={12} md={4} lg={3}>
-                    <ChartContainer>
-                        {response ? (
-                            <Typography variant="h6">No Attendance Found</Typography>
-                        ) : loading ? (
-                            <Typography variant="h6">Loading...</Typography>
-                        ) : subjectAttendance.length > 0 ? (
-                            <CustomPieChart data={chartData} />
-                        ) : (
-                            <Typography variant="h6">No Attendance Found</Typography>
-                        )}
-                    </ChartContainer>
-                </Grid>
-
                 <Grid item xs={12}>
                     <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                         <SeeNotice />

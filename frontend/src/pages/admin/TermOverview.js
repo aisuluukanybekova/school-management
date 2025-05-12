@@ -37,7 +37,7 @@ const TermOverview = ({ schoolId }) => {
   return (
     <Box p={4}>
       <Typography variant="h5" gutterBottom fontWeight="bold">
-        📅 Четверти и учебные дни
+        Учебные дни
       </Typography>
 
       {error ? (

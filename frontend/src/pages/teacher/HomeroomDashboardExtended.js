@@ -3,11 +3,12 @@ import axios from 'axios';
 import {
   Box, Typography, Table, TableHead, TableBody, TableRow,
   TableCell, Paper, CircularProgress, FormControl,
-  InputLabel, Select, MenuItem, Button, TableSortLabel, TextField
+  InputLabel, Select, MenuItem, Button, TableSortLabel, TextField, Tabs, Tab
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
+  ResponsiveContainer, LineChart, Line, Legend
 } from 'recharts';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -24,6 +25,7 @@ const HomeroomDashboardExtended = () => {
   const [subjects, setSubjects] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: 'name', direction: 'asc' });
   const [searchTerm, setSearchTerm] = useState('');
+  const [tabIndex, setTabIndex] = useState(0);
 
   const classId = typeof teacher.homeroomFor === 'object'
     ? teacher.homeroomFor._id
@@ -46,13 +48,10 @@ const HomeroomDashboardExtended = () => {
     const fetchData = async () => {
       try {
         if (!classId || !term) return;
-
         setLoading(true);
         const params = { term };
         if (selectedSubject) params.subjectId = selectedSubject;
-
         const res = await axios.get(`/api/homeroom/class/${classId}/summary`, { params });
-
         const sorted = [...res.data.students].sort((a, b) =>
           a.name.localeCompare(b.name, 'ru', { sensitivity: 'base' })
         );
@@ -133,6 +132,22 @@ const HomeroomDashboardExtended = () => {
     absents: s.absentCount
   }));
 
+  const termAverageData = [1, 2, 3, 4].map(t => {
+    const res = data.filter(s => s.term === t || s.term === undefined);
+    const totalGrades = res.flatMap(s => s.grades.map(g => g.avg));
+    const avg = totalGrades.length ? totalGrades.reduce((a, b) => a + b, 0) / totalGrades.length : 0;
+    return { term: `Четверть ${t}`, avg: Number(avg.toFixed(2)) };
+  });
+
+  const gradeSegments = [5, 4, 3, 2].map(grade => ({
+    grade,
+    count: filteredData.filter(s => {
+      const all = s.grades.map(g => g.avg);
+      const avg = all.reduce((a, b) => a + b, 0) / (all.length || 1);
+      return Math.round(avg) === grade;
+    }).length
+  }));
+
   if (loading) return <CircularProgress sx={{ m: 4 }} />;
 
   return (
@@ -175,92 +190,110 @@ const HomeroomDashboardExtended = () => {
         />
       </Box>
 
-      <Paper sx={{ overflowX: 'auto', borderRadius: 2, boxShadow: 2 }}>
-        <Table size="small">
-          <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
-            <TableRow>
-              <TableCell><strong>№</strong></TableCell>
-              <TableCell sortDirection={sortConfig.key === 'name' ? sortConfig.direction : false}>
-                <TableSortLabel
-                  active={sortConfig.key === 'name'}
-                  direction={sortConfig.direction}
-                  onClick={() => handleSort('name')}
-                >
-                  ФИО
-                </TableSortLabel>
-              </TableCell>
-              <TableCell><strong>Телефон</strong></TableCell>
-              <TableCell sortDirection={sortConfig.key === 'absentCount' ? sortConfig.direction : false}>
-                <TableSortLabel
-                  active={sortConfig.key === 'absentCount'}
-                  direction={sortConfig.direction}
-                  onClick={() => handleSort('absentCount')}
-                >
-                  Пропуски
-                </TableSortLabel>
-              </TableCell>
-              <TableCell sortDirection={sortConfig.key === 'avg' ? sortConfig.direction : false}>
-                <TableSortLabel
-                  active={sortConfig.key === 'avg'}
-                  direction={sortConfig.direction}
-                  onClick={() => handleSort('avg')}
-                >
-                  Оценки
-                </TableSortLabel>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredData.length === 0 ? (
+      <Tabs value={tabIndex} onChange={(_, val) => setTabIndex(val)} sx={{ mb: 3 }}>
+        <Tab label="Таблица" />
+        <Tab label="Диаграммы" />
+      </Tabs>
+
+      {tabIndex === 0 ? (
+        <Paper sx={{ overflowX: 'auto', borderRadius: 2, boxShadow: 2 }}>
+          <Table size="small">
+            <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
               <TableRow>
-                <TableCell colSpan={5} align="center">Нет совпадений</TableCell>
+                <TableCell><strong>№</strong></TableCell>
+                <TableCell><TableSortLabel active={sortConfig.key === 'name'} direction={sortConfig.direction} onClick={() => handleSort('name')}>ФИО</TableSortLabel></TableCell>
+                <TableCell><strong>Телефон</strong></TableCell>
+                <TableCell><TableSortLabel active={sortConfig.key === 'absentCount'} direction={sortConfig.direction} onClick={() => handleSort('absentCount')}>Пропуски</TableSortLabel></TableCell>
+                <TableCell><TableSortLabel active={sortConfig.key === 'avg'} direction={sortConfig.direction} onClick={() => handleSort('avg')}>Оценки</TableSortLabel></TableCell>
               </TableRow>
-            ) : (
-              filteredData.map((s, i) => (
-                <TableRow key={s._id}>
-                  <TableCell>{i + 1}</TableCell>
-                  <TableCell>{s.name}</TableCell>
-                  <TableCell>{s.phone || '-'}</TableCell>
-                  <TableCell>{s.absentCount}</TableCell>
-                  <TableCell>{s.grades.map(g => g.avg).join(', ') || '—'}</TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </Paper>
+            </TableHead>
+            <TableBody>
+              {filteredData.length === 0 ? (
+                <TableRow><TableCell colSpan={5} align="center">Нет совпадений</TableCell></TableRow>
+              ) : (
+                filteredData.map((s, i) => (
+                  <TableRow key={s._id}>
+                    <TableCell>{i + 1}</TableCell>
+                    <TableCell>{s.name}</TableCell>
+                    <TableCell>{s.phone || '-'}</TableCell>
+                    <TableCell>{s.absentCount}</TableCell>
+                    <TableCell>{s.grades.map(g => g.avg).join(', ') || '—'}</TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </Paper>
+      ) : (
+        <Box>
+          {selectedSubject && chartData.length > 0 && (
+            <Box mt={4}>
+              <Typography variant="h6" fontWeight="bold" gutterBottom>
+                Успеваемость по предмету (Горизонтально)
+              </Typography>
+              <ResponsiveContainer width="100%" height={500}>
+                <BarChart layout="vertical" data={chartData} margin={{ top: 20, right: 30, left: 100, bottom: 20 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis type="number" domain={[0, 5]} />
+                  <YAxis type="category" dataKey="name" width={120} />
+                  <Tooltip />
+                  <Bar dataKey="avg" fill="#1976d2" radius={[0, 4, 4, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </Box>
+          )}
 
-      {selectedSubject && chartData.length > 0 && (
-        <Box mt={4}>
-          <Typography variant="h6" fontWeight="bold" gutterBottom>
-            Успеваемость по предмету
-          </Typography>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" angle={-45} textAnchor="end" interval={0} height={80} />
-              <YAxis allowDecimals={false} domain={[0, 5]} />
-              <Tooltip />
-              <Bar dataKey="avg" fill="#1976d2" radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </Box>
-      )}
+          {chartData.length > 0 && (
+            <Box mt={6}>
+              <Typography variant="h6" fontWeight="bold" gutterBottom>
+                Пропуски по ученикам (Горизонтально)
+              </Typography>
+              <ResponsiveContainer width="100%" height={500}>
+                <BarChart layout="vertical" data={chartData} margin={{ top: 20, right: 30, left: 100, bottom: 20 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis type="number" />
+                  <YAxis type="category" dataKey="name" width={120} />
+                  <Tooltip />
+                  <Bar dataKey="absents" fill="#ef5350" radius={[0, 4, 4, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </Box>
+          )}
 
-      {chartData.length > 0 && (
-        <Box mt={6}>
-          <Typography variant="h6" fontWeight="bold" gutterBottom>
-            Пропуски по ученикам
-          </Typography>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" angle={-45} textAnchor="end" interval={0} height={80} />
-              <YAxis allowDecimals={false} />
-              <Tooltip />
-              <Bar dataKey="absents" fill="#ef5350" radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+          {termAverageData.length > 0 && (
+            <Box mt={6}>
+              <Typography variant="h6" fontWeight="bold" gutterBottom>
+                Средний балл по четвертям
+              </Typography>
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={termAverageData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="term" />
+                  <YAxis domain={[0, 5]} />
+                  <Tooltip />
+                  <Legend />
+                  <Line type="monotone" dataKey="avg" stroke="#82ca9d" strokeWidth={2} />
+                </LineChart>
+              </ResponsiveContainer>
+            </Box>
+          )}
+
+          {gradeSegments.length > 0 && (
+            <Box mt={6}>
+              <Typography variant="h6" fontWeight="bold" gutterBottom>
+                Распределение по средним оценкам (Группы)
+              </Typography>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={gradeSegments}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="grade" label={{ value: 'Оценка', position: 'insideBottom', offset: -5 }} />
+                  <YAxis allowDecimals={false} />
+                  <Tooltip />
+                  <Bar dataKey="count" fill="#8884d8" />
+                </BarChart>
+              </ResponsiveContainer>
+            </Box>
+          )}
         </Box>
       )}
     </Box>

@@ -23,7 +23,9 @@ const scheduleSchema = new mongoose.Schema({
   day: {
     type: String,
     required: true,
-    enum: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+    enum: [
+      'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'
+    ],
   },
   startTime: {
     type: String,
@@ -43,7 +45,7 @@ const scheduleSchema = new mongoose.Schema({
   shift: {
     type: String,
     enum: ['first', 'second'],
-    default: 'first', // указываем смену для корректного распределения
+    default: 'first',
   },
   topic: {
     type: String,

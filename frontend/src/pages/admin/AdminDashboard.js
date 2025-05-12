@@ -12,8 +12,9 @@ import AdminHomePage from './AdminHomePage';
 import AdminSettings from './AdminSettings';
 import GradebookJournal from './Journal/GradebookJournal';
 import AttendanceJournal from './Journal/AttendanceJournal';
-import AdminTermManager from './AdminTermManager';
-import TermOverview from './TermOverview';
+import GradebookReport from './Journal/GradebookReport';
+import AttendanceReportPage from './Journal/AttendanceReportPage';
+import TermTabs from './TermTabs';
 import ScheduleTable from './teacherSchedule/ScheduleTable';
 import AddSchedulePage from './teacherSchedule/AddSchedulePage';
 
@@ -21,9 +22,7 @@ import AddSchedulePage from './teacherSchedule/AddSchedulePage';
 import AddStudent from './studentRelated/AddStudent';
 import ShowStudents from './studentRelated/ShowStudents';
 import SeeComplains from './studentRelated/SeeComplains';
-import ViewStudent from './studentRelated/ViewStudent';
-import StudentAttendance from './studentRelated/StudentAttendance';
-import StudentExamMarks from './studentRelated/StudentExamMarks';
+import StudentProfile from './studentRelated/StudentProfile'; 
 
 // Subjects
 import ShowSubjects from './subjectRelated/ShowSubjects';
@@ -79,10 +78,11 @@ const AdminDashboard = () => {
           {/* Журналы */}
           <Route path="/admin/journal" element={<GradebookJournal />} />
           <Route path="/admin/attendance" element={<AttendanceJournal />} />
+          <Route path="/Admin/report" element={<GradebookReport />} />
+          <Route path="/Admin/attendance-report" element={<AttendanceReportPage />} />
 
           {/* Четверти */}
-          <Route path="/Admin/terms" element={<AdminTermManager schoolId={admin?.schoolId || admin?.school?._id} />} />
-          <Route path="/Admin/term-overview" element={<TermOverview schoolId={admin?.school?._id} />} />
+          <Route path="/Admin/terms" element={<TermTabs />} />
 
           {/* Расписание */}
           <Route path="/Admin/teacher-schedule" element={<ScheduleTable />} />
@@ -92,10 +92,8 @@ const AdminDashboard = () => {
           {/* Ученики */}
           <Route path="/Admin/addstudents" element={<AddStudent situation="Student" />} />
           <Route path="/Admin/students" element={<ShowStudents />} />
-          <Route path="/Admin/students/student/:id" element={<ViewStudent />} />
-          <Route path="/Admin/students/student/attendance/:id" element={<StudentAttendance situation="Student" />} />
-          <Route path="/Admin/students/student/marks/:id" element={<StudentExamMarks situation="Student" />} />
           <Route path="/Admin/complains" element={<SeeComplains />} />
+          <Route path="/Admin/students/student/:id" element={<StudentProfile />} /> 
 
           {/* Учителя */}
           <Route path="/Admin/teachers" element={<ShowTeachers />} />

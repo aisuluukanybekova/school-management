@@ -18,19 +18,21 @@ import ClassOutlinedIcon from '@mui/icons-material/ClassOutlined';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import GradeIcon from '@mui/icons-material/Grade';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import SmartToyIcon from '@mui/icons-material/SmartToy'; 
 
 const StudentSideBar = () => {
   const location = useLocation();
   const isActive = (path) => location.pathname.startsWith(path);
 
-  const navItems = [
-    { text: 'Главная', full: 'Главная', icon: <HomeIcon />, path: '/' },
-    { text: 'Предметы', full: 'Предметы', icon: <AssignmentIcon />, path: '/Student/subjects' },
-    { text: 'Посещаемость', full: 'Посещаемость', icon: <ClassOutlinedIcon />, path: '/Student/attendance' },
-    { text: 'Успеваемость', full: 'Успеваемость', icon: <GradeIcon />, path: '/Student/grades' },
-    { text: 'Расписание', full: 'Моё расписание', icon: <CalendarMonthIcon />, path: '/Student/schedule' },
-    { text: 'Жалоба', full: 'Жалоба', icon: <AnnouncementOutlinedIcon />, path: '/Student/complain' },
-  ];
+   const navItems = [
+  { text: 'Главная', full: 'Главная', icon: <HomeIcon />, path: '/' },
+  { text: 'Предметы', full: 'Предметы', icon: <AssignmentIcon />, path: '/Student/subjects' },
+  { text: 'Посещаемость', full: 'Посещаемость', icon: <ClassOutlinedIcon />, path: '/Student/attendance' },
+  { text: 'Успеваемость', full: 'Успеваемость', icon: <GradeIcon />, path: '/student/grades' },
+  { text: 'Расписание', full: 'Моё расписание', icon: <CalendarMonthIcon />, path: '/student/schedule' },
+  { text: 'Жалоба', full: 'Жалоба', icon: <AnnouncementOutlinedIcon />, path: '/Student/complain' },
+  { text: 'AI Помощник', full: 'Учебный бот ChatGPT', icon: <SmartToyIcon />, path: '/student/ai-tutor' },
+];
 
   const userItems = [
     { text: 'Профиль', full: 'Профиль', icon: <AccountCircleOutlinedIcon />, path: '/Student/profile' },

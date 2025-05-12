@@ -42,7 +42,6 @@ const SideBar = () => {
     { text: 'Объявления', icon: <AnnouncementOutlinedIcon />, path: '/Admin/notices' },
     { text: 'Жалобы', icon: <ReportIcon />, path: '/Admin/complains' },
     { text: 'Четверти', icon: <DateRangeIcon />, path: '/Admin/terms' },
-    { text: 'Обзор четвертей', icon: <DateRangeIcon />, path: '/Admin/term-overview' },
     { text: 'Расписание', icon: <AssignmentIcon />, path: '/Admin/teacher-schedule' },
     { text: 'Создать расписание', icon: <AddCircleOutlineIcon />, path: '/Admin/add-schedule' },
   ];

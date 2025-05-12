@@ -87,12 +87,11 @@ const getGradesByStudent = async (req, res) => {
     all.forEach(entry => {
       const studentEntry = entry.grades.find(g => g.studentId.toString() === studentId);
       if (studentEntry) {
-        result.push({
-          subject: entry.subjectId?.subName || 'Неизвестный предмет',
-          class: entry.classId?.sclassName || '',
-          term: entry.term,
-          values: Array.isArray(studentEntry.values) ? studentEntry.values : []  //  вот здесь защита
-        });
+      result.push({
+  subjectId: entry.subjectId?._id?.toString(), // 🧠 это критично!
+  term: entry.term,
+  values: Array.isArray(studentEntry.values) ? studentEntry.values : []
+});
       }
     });
 

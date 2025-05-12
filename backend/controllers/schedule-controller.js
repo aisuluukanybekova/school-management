@@ -1,7 +1,18 @@
+const mongoose = require('mongoose');
 const Schedule = require('../models/scheduleSchema');
 const Term = require('../models/termSchema');
 const TimeSlot = require('../models/timeSlotSchema');
 const TeacherSubjectClass = require('../models/teacherSubjectClass');
+
+const ruToEnDay = {
+  "Понедельник": "Monday",
+  "Вторник": "Tuesday",
+  "Среда": "Wednesday",
+  "Четверг": "Thursday",
+  "Пятница": "Friday",
+  "Суббота": "Saturday",
+  "Воскресенье": "Sunday"
+};
 
 // Расписание на день с полной валидацией
 exports.createFullDaySchedule = async (req, res) => {
@@ -11,6 +22,8 @@ exports.createFullDaySchedule = async (req, res) => {
     if (!classId || !day || !Array.isArray(lessons) || lessons.length === 0) {
       return res.status(400).json({ success: false, message: 'Неверные данные для создания расписания.' });
     }
+
+    const convertedDay = ruToEnDay[day] || day;
 
     const timeSlots = await TimeSlot.find({ shift }).sort({ number: 1 });
     if (!timeSlots.length) {
@@ -39,7 +52,7 @@ exports.createFullDaySchedule = async (req, res) => {
       if (slot.type === 'break') {
         scheduleEntries.push({
           classId,
-          day,
+          day: convertedDay,
           startTime: slot.startTime,
           endTime: slot.endTime,
           type: 'break'
@@ -58,23 +71,10 @@ exports.createFullDaySchedule = async (req, res) => {
         });
       }
 
-      if (
-        lessonIndex > 0 &&
-        lessons[lessonIndex].subjectId === lessons[lessonIndex - 1].subjectId &&
-        lessons[lessonIndex].teacherId === lessons[lessonIndex - 1].teacherId
-      ) {
-        return res.status(400).json({
-          success: false,
-          message: `Один и тот же урок не может быть подряд (${lessonIndex} и ${lessonIndex + 1})`
-        });
-      }
-
       const conflict = await Schedule.findOne({
         teacherId,
-        day,
-        $or: [
-          { startTime: { $lt: endTime }, endTime: { $gt: startTime } }
-        ]
+        day: convertedDay,
+        $or: [{ startTime: { $lt: endTime }, endTime: { $gt: startTime } }]
       });
 
       if (conflict) {
@@ -114,7 +114,7 @@ exports.createFullDaySchedule = async (req, res) => {
         classId,
         subjectId,
         teacherId,
-        day,
+        day: convertedDay,
         startTime,
         endTime,
         type: 'lesson'
@@ -132,7 +132,7 @@ exports.createFullDaySchedule = async (req, res) => {
   }
 };
 
-// Расписание на неделю с полной валидацией по лимитам сессий
+// Расписание на неделю
 exports.createFullWeekSchedule = async (req, res) => {
   try {
     const { classId, weekLessons } = req.body;
@@ -159,6 +159,8 @@ exports.createFullWeekSchedule = async (req, res) => {
     const bulkOps = [];
 
     for (const [day, lessons] of Object.entries(weekLessons)) {
+      const convertedDay = ruToEnDay[day] || day;
+
       for (const lesson of lessons) {
         const { subjectId, teacherId, startTime, endTime } = lesson;
 
@@ -168,16 +170,14 @@ exports.createFullWeekSchedule = async (req, res) => {
 
         const conflict = await Schedule.findOne({
           teacherId,
-          day,
-          $or: [
-            { startTime: { $lt: endTime }, endTime: { $gt: startTime } }
-          ]
+          day: convertedDay,
+          $or: [{ startTime: { $lt: endTime }, endTime: { $gt: startTime } }]
         });
 
         if (conflict) {
           return res.status(400).json({
             success: false,
-            message: `Конфликт: Учитель занят ${day} с ${conflict.startTime} до ${conflict.endTime}`
+            message: `Конфликт: Учитель занят ${convertedDay} с ${conflict.startTime} до ${conflict.endTime}`
           });
         }
 
@@ -213,7 +213,7 @@ exports.createFullWeekSchedule = async (req, res) => {
               classId,
               subjectId,
               teacherId,
-              day,
+              day: convertedDay,
               startTime,
               endTime,
               type: 'lesson'
@@ -235,7 +235,6 @@ exports.createFullWeekSchedule = async (req, res) => {
     res.status(500).json({ success: false, message: 'Ошибка сервера: ' + error.message });
   }
 };
-
 
 //  Получить расписание по ID класса
 exports.getScheduleByClass = async (req, res) => {
@@ -262,6 +261,7 @@ exports.deleteSchedule = async (req, res) => {
   }
 };
 // Обновить элемент расписания
+
 exports.updateSchedule = async (req, res) => {
   try {
     const { subjectId, teacherId, startTime, endTime, day, classId } = req.body;
@@ -271,6 +271,16 @@ exports.updateSchedule = async (req, res) => {
       return res.status(400).json({ message: 'Не все поля указаны для обновления.' });
     }
 
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: 'Неверный ID элемента расписания.' });
+    }
+
+    const currentLesson = await Schedule.findById(id);
+    if (!currentLesson) {
+      return res.status(404).json({ message: 'Текущий урок не найден.' });
+    }
+
+    // Проверка конфликта по времени
     const conflict = await Schedule.findOne({
       _id: { $ne: id },
       teacherId,
@@ -288,51 +298,52 @@ exports.updateSchedule = async (req, res) => {
 
     const assignments = await TeacherSubjectClass.find({ sclassName: classId });
     const found = assignments.find(a =>
-      a.subject?.toString() === subjectId.toString() &&
-      a.teacher?.toString() === teacherId.toString()
+      a.subject?.toString?.() === subjectId.toString() &&
+      a.teacher?.toString?.() === teacherId.toString()
     );
 
     const maxSessions = found?.sessions || 1;
 
-    const currentLesson = await Schedule.findById(id);
-    if (!currentLesson) {
-      return res.status(404).json({ message: 'Текущий урок не найден.' });
-    }
+    const allLessons = await Schedule.find({
+      teacherId,
+      subjectId,
+      classId,
+      type: 'lesson'
+    });
 
-    const isSame = (
-      currentLesson.subjectId.toString() === subjectId.toString() &&
-      currentLesson.teacherId.toString() === teacherId.toString()
+    // Посчитать количество занятий, исключая текущий, но только если его параметры изменились
+    let effectiveLessons = allLessons.filter(lesson => lesson._id.toString() !== id);
+
+    // Если текущее занятие меняет subjectId или teacherId, его надо исключить из подсчета
+    const isChangingAssignment = (
+      currentLesson.subjectId.toString() !== subjectId.toString() ||
+      currentLesson.teacherId.toString() !== teacherId.toString()
     );
 
-    if (!isSame) {
-      const existingLessons = await Schedule.find({
-        teacherId,
-        subjectId,
-        classId,
-        type: 'lesson',
-        _id: { $ne: id }
-      });
-
-      if (existingLessons.length >= maxSessions) {
-        return res.status(400).json({
-          message: `Лимит: Этот учитель уже ведёт данный предмет ${maxSessions} раз в неделю`
-        });
-      }
+    if (!isChangingAssignment) {
+      effectiveLessons.push(currentLesson); // оставить в подсчёте, если связка та же
     }
 
-    const updated = await Schedule.findByIdAndUpdate(id, {
-      subjectId,
-      teacherId,
-      startTime,
-      endTime
-    }, { new: true });
+    if (effectiveLessons.length >= maxSessions) {
+      return res.status(400).json({
+        message: `Лимит: Этот учитель уже ведёт данный предмет ${maxSessions} раз в неделю`
+      });
+    }
 
-    res.json({ success: true, updated });
+    const updated = await Schedule.findByIdAndUpdate(
+      id,
+      { subjectId, teacherId, startTime, endTime, day },
+      { new: true }
+    );
+
+    return res.json({ success: true, updated });
+
   } catch (err) {
     console.error('Ошибка при обновлении расписания:', err.message);
-    res.status(500).json({ message: 'Ошибка сервера', error: err.message });
+    return res.status(500).json({ message: 'Ошибка сервера', error: err.message });
   }
 };
+
 
 // Получить расписание по учителю + классу + предмету
 exports.getScheduleByTeacherClassSubject = async (req, res) => {
@@ -431,3 +442,4 @@ exports.getLessonDatesInTerm = async (req, res) => {
     res.status(500).json({ message: 'Ошибка сервера', error: err.message });
   }
 };
+

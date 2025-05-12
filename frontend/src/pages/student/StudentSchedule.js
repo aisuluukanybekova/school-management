@@ -1,4 +1,3 @@
-// components/student/StudentSchedule.js
 import React, { useState, useEffect } from 'react';
 import {
   Box, Typography, Table, TableHead, TableRow, TableCell,
@@ -9,6 +8,15 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 const daysOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница'];
+const dayMap = {
+  Monday: 'Понедельник',
+  Tuesday: 'Вторник',
+  Wednesday: 'Среда',
+  Thursday: 'Четверг',
+  Friday: 'Пятница',
+  Saturday: 'Суббота',
+  Sunday: 'Воскресенье'
+};
 
 const StudentSchedule = () => {
   const student = useSelector((state) => state.user.currentUser);
@@ -25,7 +33,15 @@ const StudentSchedule = () => {
   const fetchSchedule = async (classId) => {
     try {
       const res = await axios.get(`/api/schedule/class/${classId}`);
-      setSchedules(res.data.schedules || []);
+      const raw = res.data.schedules || [];
+
+      // Преобразуем англ. дни недели в русские для соответствия селектору
+      const normalized = raw.map(s => ({
+        ...s,
+        day: dayMap[s.day] || s.day
+      }));
+
+      setSchedules(normalized);
     } catch (err) {
       console.error('Ошибка загрузки расписания:', err);
       setError('Ошибка загрузки расписания');
@@ -39,7 +55,7 @@ const StudentSchedule = () => {
   return (
     <Box p={4}>
       <Typography variant="h5" gutterBottom fontWeight="bold">
-        🕒 Моё расписание
+        Моё расписание
       </Typography>
 
       {error && (

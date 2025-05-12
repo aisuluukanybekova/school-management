@@ -6,31 +6,29 @@ import {
     getError
 } from './complainSlice';
 
-const REACT_APP_BASE_URL = "http://localhost:5001/api"; 
+const BASE_URL = "http://localhost:5001/api";
 
 // Получить все жалобы по школе
 export const getAllComplains = (schoolId) => async (dispatch) => {
     dispatch(getRequest());
-
     try {
-        const result = await axios.get(`${REACT_APP_BASE_URL}/complains/school/${schoolId}`);
-        if (result.data.message) {
-            dispatch(getFailed(result.data.message));
+        const res = await axios.get(`${BASE_URL}/complain/school/${schoolId}`);
+        if (res.data.message) {
+            dispatch(getFailed(res.data.message));
         } else {
-            dispatch(getSuccess(result.data));
+            dispatch(getSuccess(res.data));
         }
     } catch (error) {
-        dispatch(getError(error.response?.data?.message || error.message));
+        dispatch(getError(error?.response?.data?.message || error.message));
     }
 };
 
 // Удалить одну жалобу
 export const deleteComplain = (id, schoolId) => async (dispatch) => {
     try {
-        await axios.delete(`${REACT_APP_BASE_URL}/complains/${id}`);
-        dispatch(getAllComplains(schoolId)); // Обновляем список
+        await axios.delete(`${BASE_URL}/complain/${id}`);
+        dispatch(getAllComplains(schoolId));
     } catch (error) {
-        console.error("Ошибка при удалении жалобы:", error);
-        dispatch(getError(error.response?.data?.message || error.message));
+        dispatch(getError(error?.response?.data?.message || error.message));
     }
 };

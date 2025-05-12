@@ -98,7 +98,7 @@ const AdminTermManager = () => {
   return (
     <Box p={4}>
       <Typography variant="h5" gutterBottom fontWeight="bold">
-        📘 Управление учебными четвертями
+        Четверти
       </Typography>
 
       <TableContainer component={Paper} elevation={4}>

@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box, Typography, Select, MenuItem, FormControl, InputLabel,
-  Button, Table, TableHead, TableRow, TableCell, TableBody
+  Box, FormControl, InputLabel, Select, MenuItem,
+  Button, Snackbar, Typography
 } from '@mui/material';
+import MuiAlert from '@mui/material/Alert';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
 
 axios.defaults.baseURL = 'http://localhost:5001';
 
 const TeacherAttendanceJournal = () => {
   const teacher = useSelector((state) => state.user.currentUser);
+  const schoolId = teacher?.school?._id || teacher?.schoolId;
 
   const [assignments, setAssignments] = useState([]);
   const [students, setStudents] = useState([]);
@@ -24,8 +24,6 @@ const TeacherAttendanceJournal = () => {
   const [selectedTerm, setSelectedTerm] = useState('1');
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
-  const schoolId = teacher?.school?._id || teacher?.schoolId;
-
   useEffect(() => {
     const fetchInitial = async () => {
       try {
@@ -36,7 +34,7 @@ const TeacherAttendanceJournal = () => {
         setAssignments(assignRes.data);
         setTerms(termRes.data);
       } catch (err) {
-        console.error('Ошибка при загрузке начальных данных:', err);
+        console.error('Ошибка при загрузке данных:', err);
       }
     };
     if (teacher && schoolId) fetchInitial();
@@ -65,7 +63,6 @@ const TeacherAttendanceJournal = () => {
         params: { classId: selectedClass, subjectId: selectedSubject, term: selectedTerm }
       });
 
-      // Приводим к нужной структуре: [{ studentId, values: [{ date, status }] }]
       const grouped = {};
       for (const record of res.data.records || []) {
         if (!grouped[record.studentId]) grouped[record.studentId] = [];
@@ -90,48 +87,50 @@ const TeacherAttendanceJournal = () => {
         `/api/schedule/by-teacher-class-subject/${teacher._id}/${selectedClass}/${selectedSubject}`
       );
 
-      if (!terms || terms.length === 0) return;
       const term = terms.find(t => t.termNumber === Number(selectedTerm));
       if (!term) return;
 
-      const validLessons = scheduleRes.schedules
-        .filter(l => l.type === 'lesson')
-        .map(l => {
-          const base = new Date(term.startDate);
-          const endDate = new Date(term.endDate);
-          const dayOffset = ['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'].indexOf(l.day);
-          const lessons = [];
-          while (base <= endDate) {
-            if (base.getDay() === dayOffset) lessons.push(new Date(base));
-            base.setDate(base.getDate() + 1);
-          }
-          return lessons;
-        })
-        .flat();
+      const start = new Date(term.startDate);
+      const end = new Date(term.endDate);
 
-      const sorted = [...new Set(validLessons.map(d => d.toISOString().split('T')[0]))].sort();
-      setLessonDates(sorted);
+      const enDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const scheduleDays = [...new Set(scheduleRes.schedules.map(s => s.day))];
+
+      const dates = [];
+
+      let current = new Date(start);
+      while (current <= end) {
+        const currentDayName = enDays[current.getDay()];
+        if (scheduleDays.includes(currentDayName)) {
+          dates.push(current.toISOString().split('T')[0]);
+        }
+        current.setDate(current.getDate() + 1);
+      }
+
+      setLessonDates(dates);
     } catch (err) {
-      console.error('Ошибка загрузки уроков:', err);
+      console.error('Ошибка загрузки дат уроков:', err);
     }
   };
 
-  const handleChange = (studentId, date, value) => {
-    const updated = [...attendance];
-    let entry = updated.find(a => a.studentId === studentId);
-    if (!entry) {
-      entry = { studentId, values: [] };
-      updated.push(entry);
-    }
+  const toggleAttendance = (studentId, date) => {
+    setAttendance(prev => {
+      const updated = [...prev];
+      let entry = updated.find(a => a.studentId === studentId);
+      if (!entry) {
+        entry = { studentId, values: [] };
+        updated.push(entry);
+      }
 
-    // Удалим старую запись на эту дату
-    entry.values = entry.values.filter(v => v.date !== date);
+      const isAbsent = entry.values.some(v => v.date === date && v.status === 'Отсутствовал');
+      entry.values = entry.values.filter(v => v.date !== date);
 
-    if (value === 'От') {
-      entry.values.push({ date, status: 'Отсутствовал' });
-    }
+      if (!isAbsent) {
+        entry.values.push({ date, status: 'Отсутствовал' });
+      }
 
-    setAttendance(updated);
+      return updated;
+    });
   };
 
   const isAbsent = (studentId, date) => {
@@ -166,7 +165,7 @@ const TeacherAttendanceJournal = () => {
 
   return (
     <Box p={3}>
-      <Typography variant="h5">Журнал посещаемости (Учитель)</Typography>
+      <Typography variant="h5">📋 Журнал посещаемости (Учитель)</Typography>
 
       <Box display="flex" gap={2} mt={2} mb={2}>
         <FormControl fullWidth>
@@ -197,41 +196,73 @@ const TeacherAttendanceJournal = () => {
         </FormControl>
       </Box>
 
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Ученик</TableCell>
-            {lessonDates.map(date => (
-              <TableCell key={date}>{new Date(date).toLocaleDateString()}</TableCell>
-            ))}
-            <TableCell><strong>Пропущено</strong></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {students.map(student => {
-            const count = lessonDates.reduce((acc, date) => acc + (isAbsent(student._id, date) ? 1 : 0), 0);
-            return (
-              <TableRow key={student._id}>
-                <TableCell>{student.name}</TableCell>
-                {lessonDates.map(date => (
-                  <TableCell key={date}>
-                    <Select
-                      size="small"
-                      displayEmpty
-                      value={isAbsent(student._id, date) ? 'От' : ''}
-                      onChange={e => handleChange(student._id, date, e.target.value)}
-                    >
-                      <MenuItem value=""> </MenuItem>
-                      <MenuItem value="От">&mdash;</MenuItem>
-                    </Select>
-                  </TableCell>
-                ))}
-                <TableCell>{count}</TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+      <Box sx={{ overflowX: 'auto', border: '1px solid #ccc', borderRadius: 2 }}>
+        {/* Заголовки */}
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: `50px 200px repeat(${lessonDates.length}, 100px) 100px`,
+            backgroundColor: '#000',
+            color: '#fff',
+            fontWeight: 'bold',
+            position: 'sticky',
+            top: 0,
+            zIndex: 3
+          }}
+        >
+          <Box sx={{ border: '1px solid #ccc', p: 1, position: 'sticky', left: 0, zIndex: 4 }}>№</Box>
+          <Box sx={{ border: '1px solid #ccc', p: 1, position: 'sticky', left: 50, zIndex: 4 }}>Ученик</Box>
+          {lessonDates.map(date => (
+            <Box key={date} sx={{ border: '1px solid #ccc', p: 1, fontSize: '0.75rem', textAlign: 'center' }}>
+              {new Date(date).toLocaleDateString('ru-RU')}
+            </Box>
+          ))}
+          <Box sx={{ border: '1px solid #ccc', p: 1 }}>Пропущено</Box>
+        </Box>
+
+        {/* Строки */}
+        {students.map((student, idx) => {
+          const count = lessonDates.reduce(
+            (acc, date) => acc + (isAbsent(student._id, date) ? 1 : 0), 0
+          );
+
+          return (
+            <Box
+              key={student._id}
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: `50px 200px repeat(${lessonDates.length}, 100px) 100px`,
+                backgroundColor: '#fff'
+              }}
+            >
+              <Box sx={{ border: '1px solid #ccc', p: 1, textAlign: 'center', position: 'sticky', left: 0, zIndex: 2 }}>{idx + 1}</Box>
+              <Box sx={{ border: '1px solid #ccc', p: 1, fontWeight: 500, position: 'sticky', left: 50, zIndex: 2 }}>{student.name}</Box>
+
+              {lessonDates.map(date => {
+                const absent = isAbsent(student._id, date);
+                return (
+                  <Box
+                    key={date}
+                    onClick={() => toggleAttendance(student._id, date)}
+                    sx={{
+                      border: '1px solid #ccc',
+                      p: 1,
+                      textAlign: 'center',
+                      cursor: 'pointer',
+                      backgroundColor: absent ? '#f8d7da' : '#f5f5f5',
+                      userSelect: 'none'
+                    }}
+                  >
+                    {absent ? '—' : ''}
+                  </Box>
+                );
+              })}
+
+              <Box sx={{ border: '1px solid #ccc', p: 1, textAlign: 'center', fontWeight: 600 }}>{count}</Box>
+            </Box>
+          );
+        })}
+      </Box>
 
       <Snackbar
         open={snackbar.open}

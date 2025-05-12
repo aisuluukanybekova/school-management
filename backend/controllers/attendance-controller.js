@@ -99,10 +99,7 @@ const getAttendanceReport = async (req, res) => {
       return res.status(400).json({ message: 'classId, subjectId и term обязательны' });
     }
 
-    if (
-      !mongoose.Types.ObjectId.isValid(classId) ||
-      !mongoose.Types.ObjectId.isValid(subjectId)
-    ) {
+    if (!mongoose.Types.ObjectId.isValid(classId) || !mongoose.Types.ObjectId.isValid(subjectId)) {
       return res.status(400).json({ message: 'Неверный classId или subjectId' });
     }
 
@@ -111,9 +108,10 @@ const getAttendanceReport = async (req, res) => {
 
     const start = new Date(termDoc.startDate);
     const end = new Date(termDoc.endDate);
+    start.setUTCHours(0, 0, 0, 0);
+    end.setUTCHours(0, 0, 0, 0);
 
     const schedule = await Schedule.find({ classId, subjectId, type: 'lesson' });
-
     const weekdays = [...new Set(schedule.map(s => s.day))];
 
     const dayMap = {
@@ -121,6 +119,7 @@ const getAttendanceReport = async (req, res) => {
       Thursday: 4, Friday: 5, Saturday: 6
     };
 
+    // 🗓 Генерация всех дат уроков по расписанию
     const lessonDates = [];
     weekdays.forEach(day => {
       const target = dayMap[day];
@@ -128,28 +127,36 @@ const getAttendanceReport = async (req, res) => {
 
       let current = new Date(start);
       while (current <= end) {
-        if (current.getDay() === target) {
+        if (current.getUTCDay() === target) {
           lessonDates.push(new Date(current));
         }
-        current.setDate(current.getDate() + 1);
+        current.setUTCDate(current.getUTCDate() + 1);
       }
     });
 
     const totalLessons = lessonDates.length;
+
     const journal = await AttendanceJournal.findOne({ classId, subjectId, term });
     const absences = journal?.records || [];
-    const students = await Student.find({ classId });
+
+    const allStudents = await Student.find().populate('sclassName');
+    const students = allStudents.filter(s =>
+      s.sclassName?._id?.toString() === classId.toString()
+    );
 
     const report = students.map(student => {
-      const missed = absences.filter(r => r.studentId.toString() === student._id.toString()).length;
-      const attended = totalLessons - missed;
+      const missed = absences.filter(r =>
+        r.studentId.toString() === student._id.toString()
+      ).length;
+
+      const present = totalLessons - missed;
 
       return {
-        studentName: student.name || 'Без имени',
+        studentName: `${student.surname || ''} ${student.name || ''}`.trim(),
         totalLessons,
-        present: attended,
+        present,
         absent: missed,
-        percent: totalLessons > 0 ? +(attended / totalLessons * 100).toFixed(1) : 0
+        percent: totalLessons > 0 ? +(present / totalLessons * 100).toFixed(1) : 0
       };
     });
 
@@ -228,3 +235,4 @@ module.exports = {
   getAttendanceReport,
   getAttendanceDebug
 };
+ 

@@ -10,42 +10,83 @@ const daysOfWeek = [
   'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'
 ];
 
+const ruToEnDay = {
+  'Понедельник': 'Monday',
+  'Вторник': 'Tuesday',
+  'Среда': 'Wednesday',
+  'Четверг': 'Thursday',
+  'Пятница': 'Friday',
+  'Суббота': 'Saturday'
+};
+
 const TeacherSchedule = () => {
   const teacher = useSelector((state) => state.user.currentUser);
   const [schedule, setSchedule] = useState([]);
   const [topics, setTopics] = useState([]);
   const [selectedDay, setSelectedDay] = useState(daysOfWeek[0]);
+  const [terms, setTerms] = useState([]);
+  const [term, setTerm] = useState('1');
+
+  const schoolId = teacher?.school?._id || teacher?.schoolId;
 
   useEffect(() => {
-    const fetchScheduleAndTopics = async () => {
+    const fetchTerms = async () => {
+      try {
+        const res = await axios.get(`/api/terms/${schoolId}`);
+        setTerms(res.data);
+      } catch (err) {
+        console.error('Ошибка загрузки четвертей:', err);
+      }
+    };
+    if (schoolId) fetchTerms();
+  }, [schoolId]);
+
+  useEffect(() => {
+    const fetchData = async () => {
       try {
         const res = await axios.get(`/api/schedule/by-teacher/${teacher._id}`);
         const schedules = res.data.schedules || [];
-
         setSchedule(schedules);
 
-        // Получить темы по всем уникальным classId/subjectId из расписания
-        const classIds = [...new Set(schedules.map(s => s.classId?._id))];
-        const subjectIds = [...new Set(schedules.map(s => s.subjectId?._id))];
+        const assignments = schedules
+          .filter(s => s.classId && s.subjectId)
+          .map(s => ({
+            classId: s.classId._id,
+            subjectId: s.subjectId._id
+          }));
 
-        const topicRes = await axios.get(`/api/lesson-topics`, {
-          params: {
-            classId: classIds[0], // предполагаем один класс для учителя
-            subjectId: subjectIds[0],
-            term: 1 // Можно также передавать term динамически
-          }
+        const uniquePairs = Array.from(
+          new Set(assignments.map(a => `${a.classId}_${a.subjectId}`))
+        ).map(str => {
+          const [classId, subjectId] = str.split('_');
+          return { classId, subjectId };
         });
 
-        setTopics(topicRes.data);
+        const allTopics = [];
+
+        for (const pair of uniquePairs) {
+          const topicRes = await axios.get(`/api/lesson-topics`, {
+            params: {
+              classId: pair.classId,
+              subjectId: pair.subjectId,
+              term: Number(term)
+            }
+          });
+          allTopics.push(...topicRes.data);
+        }
+
+        setTopics(allTopics);
       } catch (err) {
         console.error('Ошибка загрузки расписания или тем:', err);
       }
     };
 
-    if (teacher?._id) fetchScheduleAndTopics();
-  }, [teacher]);
+    if (teacher?._id && term) fetchData();
+  }, [teacher, term]);
 
-  const filtered = schedule.filter(s => s.day === selectedDay && s.type === 'lesson');
+  const filtered = schedule.filter(
+    s => s.day === ruToEnDay[selectedDay] && s.type === 'lesson'
+  );
 
   const getLessonDetails = (lesson) => {
     const match = topics.find(
@@ -63,16 +104,29 @@ const TeacherSchedule = () => {
 
   return (
     <Box p={3}>
-      <Typography variant="h5" gutterBottom>Моё расписание</Typography>
+      <Typography variant="h5" gutterBottom>🧑‍🏫 Моё расписание</Typography>
 
-      <FormControl sx={{ my: 2, minWidth: 200 }}>
-        <InputLabel>День недели</InputLabel>
-        <Select value={selectedDay} onChange={e => setSelectedDay(e.target.value)} label="День недели">
-          {daysOfWeek.map((day) => (
-            <MenuItem key={day} value={day}>{day}</MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+      <Box display="flex" gap={2} mb={3}>
+        <FormControl sx={{ minWidth: 200 }}>
+          <InputLabel>День недели</InputLabel>
+          <Select value={selectedDay} onChange={e => setSelectedDay(e.target.value)}>
+            {daysOfWeek.map((day) => (
+              <MenuItem key={day} value={day}>{day}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        <FormControl sx={{ minWidth: 200 }}>
+          <InputLabel>Четверть</InputLabel>
+          <Select value={term} onChange={e => setTerm(e.target.value)}>
+            {terms.map(t => (
+              <MenuItem key={t.termNumber} value={String(t.termNumber)}>
+                Четверть {t.termNumber}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
 
       <TableContainer component={Paper}>
         <Table>
@@ -86,21 +140,22 @@ const TeacherSchedule = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filtered.map((lesson, index) => {
-              const { topic, homework } = getLessonDetails(lesson);
-              return (
-                <TableRow key={index}>
-                  <TableCell>{lesson.startTime} - {lesson.endTime}</TableCell>
-                  <TableCell>{lesson.classId?.sclassName || '—'}</TableCell>
-                  <TableCell>{lesson.subjectId?.subName || '—'}</TableCell>
-                  <TableCell>{topic}</TableCell>
-                  <TableCell>{homework}</TableCell>
-                </TableRow>
-              );
-            })}
-            {filtered.length === 0 && (
+            {filtered.length > 0 ? (
+              filtered.map((lesson, index) => {
+                const { topic, homework } = getLessonDetails(lesson);
+                return (
+                  <TableRow key={index}>
+                    <TableCell>{lesson.startTime} - {lesson.endTime}</TableCell>
+                    <TableCell>{lesson.classId?.sclassName || '—'}</TableCell>
+                    <TableCell>{lesson.subjectId?.subName || '—'}</TableCell>
+                    <TableCell>{topic}</TableCell>
+                    <TableCell>{homework}</TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
               <TableRow>
-                <TableCell colSpan={5}>Нет уроков на этот день</TableCell>
+                <TableCell colSpan={5} align="center">Нет уроков на этот день</TableCell>
               </TableRow>
             )}
           </TableBody>

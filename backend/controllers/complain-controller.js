@@ -1,44 +1,37 @@
-const Complain = require('../models/complainSchema.js');
+const Complain = require('../models/complainSchema');
 
-// Создание жалобы
-const complainCreate = async (req, res) => {
+exports.complainCreate = async (req, res) => {
   try {
-    const { user, school, complaint } = req.body;
+    const { user, school, date, complaint } = req.body;
 
-if (!user || !school || !complaint) {
-  return res.status(400).json({ message: 'Необходимо заполнить все поля: user, school, complaint' });
-}
-const complain = new Complain({ user, school, complaint });
-
-    const result = await complain.save();
-
-    res.status(201).json(result);
-  } catch (error) {
-    console.error('Ошибка при создании жалобы:', error.message);
-    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
-  }
-};
-
-// Получить все жалобы по школе
-const complainList = async (req, res) => {
-  try {
-    const schoolId = req.params.schoolId;
-
-    const complains = await Complain.find({ school: schoolId })
-      .populate("user", "name role");
-
-    if (complains.length === 0) {
-      return res.status(404).json({ message: "Жалобы не найдены" });
+    if (!user || !school || !complaint || !date) {
+      return res.status(400).json({ message: 'Все поля обязательны' });
     }
 
-    res.status(200).json(complains);
+    const newComplain = new Complain({ user, school, date, complaint });
+    const saved = await newComplain.save();
+    res.status(201).json(saved);
   } catch (error) {
-    console.error('Ошибка при получении жалоб:', error.message);
-    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
+    console.error('Ошибка создания жалобы:', error.message);
+    res.status(500).json({ message: 'Ошибка сервера' });
   }
 };
 
-module.exports = {
-  complainCreate,
-  complainList
+exports.complainList = async (req, res) => {
+  try {
+    const { schoolId } = req.params;
+    const data = await Complain.find({ school: schoolId }).populate('user', 'name role');
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: 'Ошибка получения жалоб' });
+  }
+};
+
+exports.complainDelete = async (req, res) => {
+  try {
+    await Complain.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Жалоба удалена' });
+  } catch (error) {
+    res.status(500).json({ message: 'Ошибка удаления жалобы' });
+  }
 };

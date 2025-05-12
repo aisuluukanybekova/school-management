@@ -12,7 +12,26 @@ import { useSelector } from 'react-redux';
 
 axios.defaults.baseURL = 'http://localhost:5001';
 
+// Русские дни для интерфейса
 const daysOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Вся неделя'];
+
+// Сопоставление для фильтрации
+const ruToEnDay = {
+  "Понедельник": "Monday",
+  "Вторник": "Tuesday",
+  "Среда": "Wednesday",
+  "Четверг": "Thursday",
+  "Пятница": "Friday"
+};
+
+// Для отображения обратно в таблице, если нужно
+const enToRuDay = {
+  "Monday": "Понедельник",
+  "Tuesday": "Вторник",
+  "Wednesday": "Среда",
+  "Thursday": "Четверг",
+  "Friday": "Пятница"
+};
 
 const ScheduleTable = () => {
   const admin = useSelector((state) => state.user.currentUser);
@@ -51,7 +70,7 @@ const ScheduleTable = () => {
       setSchedules(
         selectedDay === 'Вся неделя'
           ? all
-          : all.filter((item) => item.day === selectedDay)
+          : all.filter((item) => item.day === ruToEnDay[selectedDay])
       );
     } catch {
       setError('Не удалось загрузить расписание.');
@@ -64,11 +83,12 @@ const ScheduleTable = () => {
     doc.setFontSize(16);
 
     if (selectedDay === 'Вся неделя') {
-      daysOfWeek.slice(0, 5).forEach((day, idx) => {
-        const daySchedules = schedules.filter(s => s.day === day);
+      Object.keys(ruToEnDay).forEach((ruDay, idx) => {
+        const enDay = ruToEnDay[ruDay];
+        const daySchedules = schedules.filter(s => s.day === enDay);
 
         if (idx !== 0) doc.addPage();
-        doc.text(`Расписание: ${day}`, 14, 20);
+        doc.text(`Расписание: ${ruDay}`, 14, 20);
 
         autoTable(doc, {
           startY: 30,
@@ -78,8 +98,8 @@ const ScheduleTable = () => {
             entry.startTime,
             entry.endTime,
             entry.type === 'lesson' ? 'Урок' : 'Перемена',
-            entry.type === 'lesson' ? entry.subjectId?.subName || '' : '-',
-            entry.type === 'lesson' ? entry.teacherId?.name || '' : '-',
+            entry.subjectId?.subName || '-',
+            entry.teacherId?.name || '-',
           ])
         });
       });
@@ -95,8 +115,8 @@ const ScheduleTable = () => {
           entry.startTime,
           entry.endTime,
           entry.type === 'lesson' ? 'Урок' : 'Перемена',
-          entry.type === 'lesson' ? entry.subjectId?.subName || '' : '-',
-          entry.type === 'lesson' ? entry.teacherId?.name || '' : '-',
+          entry.subjectId?.subName || '-',
+          entry.teacherId?.name || '-',
         ])
       });
       doc.save(`Расписание_${selectedDay}.pdf`);
@@ -150,10 +170,10 @@ const ScheduleTable = () => {
       {selectedDay !== 'Вся неделя' ? (
         <ScheduleTableComponent data={schedules} />
       ) : (
-        daysOfWeek.slice(0, 5).map((day) => (
-          <Box key={day} mb={4}>
-            <Typography variant="h6" gutterBottom>{day}</Typography>
-            <ScheduleTableComponent data={schedules.filter((s) => s.day === day)} />
+        Object.keys(ruToEnDay).map((ruDay) => (
+          <Box key={ruDay} mb={4}>
+            <Typography variant="h6" gutterBottom>{ruDay}</Typography>
+            <ScheduleTableComponent data={schedules.filter((s) => s.day === ruToEnDay[ruDay])} />
           </Box>
         ))
       )}
@@ -194,4 +214,3 @@ const ScheduleTableComponent = ({ data }) => (
 );
 
 export default ScheduleTable;
- 

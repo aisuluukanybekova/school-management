@@ -9,7 +9,6 @@ const app = express();
 dotenv.config();
 
 // Подключение маршрутов
-const Routes = require('./routes/route');
 const adminRoutes = require('./routes/adminRoutes');
 const teacherRoutes = require('./routes/teacherRoutes');
 const studentRoutes = require('./routes/studentRoutes');
@@ -25,6 +24,9 @@ const complainRoutes = require('./routes/complainRoutes');
 const lessonTopics = require('./routes/lessonTopics');
 const homeroom = require('./routes/homeroom');
 const timeSlot =require('./routes/timeSlot');
+const aiTutorRoutes = require('./routes/aiTutorRoutes');
+
+
 const PORT = process.env.PORT || 5001;
 
 // Middlewares
@@ -57,6 +59,10 @@ app.use('/api/complains', complainRoutes);
 app.use('/api/lesson-topics', lessonTopics);
 app.use('/api/homeroom', homeroom);
 app.use('/api/timeslots', timeSlot);
+app.use('/api/tutor', aiTutorRoutes);
+
+
+
 
 // Обработка неправильных маршрутов
 app.use((req, res, next) => {

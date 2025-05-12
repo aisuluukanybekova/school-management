@@ -4,7 +4,7 @@ import { updateUser } from '../../redux/userRelated/userHandle';
 import {
   Card, CardContent, Typography, TextField, Button, Box, Snackbar, Alert,
 } from '@mui/material';
-import AttendanceChart from '../../components/charts/AttendanceChart';
+
 
 const TeacherProfile = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -93,23 +93,6 @@ const TeacherProfile = () => {
           </Box>
         </CardContent>
       </Card>
-
-      <Box width="100%" maxWidth="600px" alignSelf="center">
-        <Typography variant="h6" gutterBottom textAlign="center">
-          График посещаемости
-        </Typography>
-        <AttendanceChart teacherId={currentUser?._id} />
-      </Box>
-
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={3000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-      >
-        <Alert severity={snackbar.severity} onClose={() => setSnackbar({ ...snackbar, open: false })}>
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
     </Box>
   );
 };

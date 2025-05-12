@@ -1,15 +1,13 @@
 const express = require('express');
+const router = express.Router();
 const {
   complainCreate,
-  complainList
+  complainList,
+  complainDelete
 } = require('../controllers/complain-controller');
 
-const router = express.Router();
-
-// Создать жалобу
 router.post('/', complainCreate);
-
-// Получить список жалоб по ID школы
 router.get('/school/:schoolId', complainList);
+router.delete('/:id', complainDelete);
 
 module.exports = router;

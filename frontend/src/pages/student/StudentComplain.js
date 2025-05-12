@@ -4,32 +4,28 @@ import Popup from '../../components/Popup';
 import { BlueButton } from '../../components/buttonStyles';
 import { addStuff } from '../../redux/userRelated/userHandle';
 import { useDispatch, useSelector } from 'react-redux';
+import { getAllComplains, deleteComplain } from '../../redux/complainRelated/complainHandle';
 
 const StudentComplain = () => {
     const [complaint, setComplaint] = useState("");
     const [date, setDate] = useState("");
 
     const dispatch = useDispatch();
-
     const { status, currentUser, error } = useSelector(state => state.user);
 
-    const user = currentUser._id;
-    const school = currentUser.school._id;
-    const address = "Complain";
+    const user = currentUser?._id;
+    const school = currentUser?.school?._id;
+    const address = "сomplain";
 
     const [loader, setLoader] = useState(false);
     const [message, setMessage] = useState("");
     const [showPopup, setShowPopup] = useState(false);
 
-    const fields = {
-        user,
-        date,
-        complaint,
-        school,
-    };
+    const fields = { user, date, complaint, school };
 
     const submitHandler = (event) => {
         event.preventDefault();
+        if (!complaint || !date) return;
         setLoader(true);
         dispatch(addStuff(fields, address));
     };
@@ -41,13 +37,16 @@ const StudentComplain = () => {
             setMessage("Жалоба отправлена успешно!");
             setComplaint("");
             setDate("");
-        }
-        else if (error) {
+        } else if (error) {
             setLoader(false);
             setShowPopup(true);
-            setMessage("Ошибка сети. Попробуй позже 🫠");
+            setMessage("Ошибка сети. Попробуйте позже.");
         }
     }, [status, error]);
+
+    if (!user || !school) {
+        return <Typography variant="h6">Загрузка данных пользователя...</Typography>;
+    }
 
     return (
         <>
@@ -103,7 +102,7 @@ const StudentComplain = () => {
                             sx={{ mt: 3 }}
                             variant="contained"
                             type="submit"
-                            disabled={loader}
+                            disabled={loader || !complaint || !date}
                         >
                             {loader ? <CircularProgress size={24} color="inherit" /> : "Отправить"}
                         </BlueButton>

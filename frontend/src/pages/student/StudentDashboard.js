@@ -22,6 +22,9 @@ import StudentSettings from './StudentSettings';
 import StudentSchedule from './StudentSchedule';
 import StudentGrades from './StudentGrades';
 import StudentSubjects from './StudentSubjects';
+import StudentTutorChat from './StudentTutorChat';
+
+
 // Общие компоненты
 import Logout from '../Logout';
 import AccountMenu from '../../components/AccountMenu';
@@ -60,7 +63,7 @@ const StudentDashboard = () => {
                         noWrap
                         sx={{ flexGrow: 1 }}
                     >
-                        Панел ученика(цы)
+                        Панел ученика
                     </Typography>
                     <AccountMenu />
                 </Toolbar>
@@ -97,6 +100,7 @@ const StudentDashboard = () => {
                     <Route path="/Student/attendance" element={<StudentAttendance />} />
                     <Route path="/student/schedule" element={<StudentSchedule />} />
                     <Route path="/Student/complain" element={<StudentComplain />} />
+                    <Route path="/student/ai-tutor" element={<StudentTutorChat />} />
                     <Route path="/logout" element={<Logout />} />
                 </Routes>
             </Box>

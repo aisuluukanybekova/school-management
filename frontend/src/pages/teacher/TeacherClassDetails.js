@@ -25,22 +25,20 @@ const TeacherClassForm = () => {
 
   const teacherId = currentUser?._id;
 
-const fetchTeacherClasses = async () => {
-  try {
-    const res = await axios.get(`http://localhost:5001/api/teacherSubjectClass/by-teacher/${teacherId}`);
-
-    setTeacherClasses(res.data);
-  } catch (err) {
-    console.error('Ошибка загрузки классов учителя:', err);
-  }
-};
-
+  const fetchTeacherClasses = async () => {
+    try {
+      const res = await axios.get(`${REACT_APP_BASE_URL}/api/teacherSubjectClass/by-teacher/${teacherId}`);
+      setTeacherClasses(res.data);
+    } catch (err) {
+      console.error('Ошибка загрузки классов учителя:', err);
+    }
+  };
 
   useEffect(() => {
-    if (currentUser?._id) {
+    if (teacherId) {
       fetchTeacherClasses();
     }
-  }, [currentUser]);
+  }, [teacherId]);
 
   useEffect(() => {
     if (selectedClass) {
@@ -52,7 +50,7 @@ const fetchTeacherClasses = async () => {
 
   const studentColumns = [
     { id: 'name', label: 'Имя', minWidth: 170 },
-    { id: 'rollNum', label: 'Номер зачетки', minWidth: 100 },
+    { id: 'rollNum', label: 'Номер', minWidth: 100 },
   ];
 
   const studentRows = sclassStudents.map((s) => ({
@@ -86,7 +84,7 @@ const fetchTeacherClasses = async () => {
             <TableTemplate
               columns={studentColumns}
               rows={studentRows}
-              buttonHaver={() => null} // или замени на нужный тебе компонент действий
+              // Колонка "Действия" не будет показана
             />
           </Paper>
         ) : (

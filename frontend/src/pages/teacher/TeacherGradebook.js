@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box, Typography, FormControl, InputLabel, Select, MenuItem,
-  Button, TextField, Table, TableBody, TableCell, TableHead,
-  TableRow, TableContainer, Paper
+  Box, FormControl, InputLabel, Select, MenuItem,
+  Button, TextField
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
@@ -24,9 +23,9 @@ const TeacherGradebookJournal = () => {
   const [selectedTerm, setSelectedTerm] = useState('1');
 
   const getAverageColor = (avg) => {
-    if (avg >= 4.5) return '#d4edda';
-    if (avg >= 3.5) return '#dbeeff';
-    if (avg >= 2.5) return '#fff3cd';
+    if (avg >= 5) return '#d4edda';
+    if (avg === 4) return '#dbeeff';
+    if (avg === 3) return '#fff3cd';
     return '#f8d7da';
   };
 
@@ -47,12 +46,22 @@ const TeacherGradebookJournal = () => {
   }, [teacher, schoolId]);
 
   useEffect(() => {
+    const loadData = async () => {
+      try {
+        const termReady = terms.length > 0;
+        if (termReady) {
+          await fetchStudents();
+          await fetchGrades();
+          await fetchLessonDates();
+        }
+      } catch (err) {
+        console.error('Ошибка загрузки данных:', err);
+      }
+    };
     if (selectedClass && selectedSubject && selectedTerm) {
-      fetchStudents();
-      fetchGrades();
-      fetchLessonDates();
+      loadData();
     }
-  }, [selectedClass, selectedSubject, selectedTerm]);
+  }, [selectedClass, selectedSubject, selectedTerm, terms]);
 
   const fetchLessonDates = async () => {
     try {
@@ -66,7 +75,7 @@ const TeacherGradebookJournal = () => {
 
       const termStart = new Date(term.startDate);
       const termEnd = new Date(term.endDate);
-      const dayNames = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+      const enDayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
       const allDates = [];
 
@@ -74,7 +83,7 @@ const TeacherGradebookJournal = () => {
         const d = new Date(termStart);
         while (d <= termEnd) {
           const current = new Date(d);
-          if (dayNames[current.getDay()] === s.day) {
+          if (enDayNames[current.getDay()] === s.day) {
             allDates.push(current.toISOString().split('T')[0]);
           }
           d.setDate(d.getDate() + 1);
@@ -108,7 +117,6 @@ const TeacherGradebookJournal = () => {
           term: Number(selectedTerm)
         }
       });
-
       const gradebook = res.data;
       setGrades(Array.isArray(gradebook?.grades) ? gradebook.grades : []);
     } catch (err) {
@@ -118,6 +126,11 @@ const TeacherGradebookJournal = () => {
   };
 
   const handleGradeChange = (studentId, date, grade) => {
+    if (isNaN(grade) || grade < 2 || grade > 5) {
+      alert('Оценка должна быть целым числом от 2 до 5');
+      return;
+    }
+
     setGrades(prev => {
       const updated = [...prev];
       let entry = updated.find(e => e.studentId === studentId);
@@ -146,7 +159,7 @@ const TeacherGradebookJournal = () => {
       });
       alert('Оценки сохранены');
     } catch (err) {
-      console.error('Ошибка сохранения:', err);
+      console.error('Ошибка при сохранении:', err);
       alert('Ошибка при сохранении оценок');
     }
   };
@@ -155,8 +168,7 @@ const TeacherGradebookJournal = () => {
 
   return (
     <Box p={3}>
-      <Typography variant="h5" gutterBottom>Журнал оценок (Учитель)</Typography>
-
+      {/* Фильтры */}
       <Box display="flex" gap={2} mt={2} mb={2}>
         <FormControl fullWidth>
           <InputLabel>Класс</InputLabel>
@@ -186,87 +198,158 @@ const TeacherGradebookJournal = () => {
         </FormControl>
       </Box>
 
-      {currentTerm ? (
-        <Typography variant="subtitle2" gutterBottom>
-          Период: {new Date(currentTerm.startDate).toLocaleDateString()} — {new Date(currentTerm.endDate).toLocaleDateString()}
-        </Typography>
-      ) : (
-        <Typography color="error">Нет данных по четверти</Typography>
+      {currentTerm && (
+        <Box mb={2}>
+          Период: {new Date(currentTerm.startDate).toLocaleDateString('ru-RU')} — {new Date(currentTerm.endDate).toLocaleDateString('ru-RU')}
+        </Box>
       )}
 
-      <TableContainer component={Paper} sx={{ mt: 3, border: '1px solid #ccc' }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell sx={{ border: '1px solid #ccc', fontWeight: 'bold', textAlign: 'center' }}>Ученик</TableCell>
-              {lessonDates.map(date => (
-                <TableCell key={date} sx={{ border: '1px solid #ccc', fontWeight: 'bold', textAlign: 'center' }}>
-                  {new Date(date).toLocaleDateString()}
-                </TableCell>
-              ))}
-              <TableCell sx={{ border: '1px solid #ccc', fontWeight: 'bold', textAlign: 'center' }}>Средняя</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {students.map(student => {
-              const row = grades.find(g => g.studentId === student._id) || { values: [] };
-              const valuesOnly = row.values.filter(v => v.grade);
-              const average =
-                valuesOnly.length > 0
-                  ? (valuesOnly.reduce((sum, v) => sum + v.grade, 0) / valuesOnly.length).toFixed(2)
-                  : null;
+      {/* Таблица */}
+      <Box sx={{ overflowX: 'auto', border: '1px solid #ccc', borderRadius: 2 }}>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: `50px 200px repeat(${lessonDates.length}, 100px) 100px`,
+            backgroundColor: '#000',
+            color: '#fff',
+            fontWeight: 'bold',
+            textAlign: 'center',
+            position: 'sticky',
+            top: 0,
+            zIndex: 3
+          }}
+        >
+          <Box sx={{ border: '1px solid #ccc', p: 1, position: 'sticky', left: 0, zIndex: 4 }}>№</Box>
+          <Box sx={{ border: '1px solid #ccc', p: 1, position: 'sticky', left: 50, zIndex: 4 }}>Ученик</Box>
+          {lessonDates.map(date => (
+            <Box
+              key={date}
+              sx={{
+                border: '1px solid #ccc',
+                p: 1,
+                fontSize: '0.75rem',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                minWidth: '80px',
+                textAlign: 'center',
+                backgroundColor: '#000',
+                color: '#fff'
+              }}
+            >
+              {new Date(date).toLocaleDateString('ru-RU')}
+            </Box>
+          ))}
+          <Box sx={{ border: '1px solid #ccc', p: 1, position: 'sticky', right: 0, zIndex: 4 }}>Итог</Box>
+        </Box>
 
-              return (
-                <TableRow key={student._id}>
-                  <TableCell sx={{ border: '1px solid #ccc', textAlign: 'center', fontWeight: 500 }}>
-                    {student.name}
-                  </TableCell>
-                  {lessonDates.map(date => {
-                    const g = row.values.find(v => new Date(v.date).toISOString().split('T')[0] === date);
-                    return (
-                      <TableCell key={date} sx={{ border: '1px solid #ccc', textAlign: 'center' }}>
-                        <Box sx={{
-                          backgroundColor:
-                            g?.grade === 5 ? '#d4edda' :
-                            g?.grade === 4 ? '#dbeeff' :
-                            g?.grade === 3 ? '#fff3cd' :
-                            'transparent',
-                          borderRadius: 1,
-                          padding: '2px 4px'
-                        }}>
-                          <TextField
-                            type="number"
-                            value={g?.grade || ''}
-                            size="small"
-                            variant="standard"
-                            InputProps={{
-                              disableUnderline: true,
-                              sx: {
-                                textAlign: 'center',
-                                width: '2.5rem',
-                                input: { textAlign: 'center' }
-                              }
-                            }}
-                            onChange={e => handleGradeChange(student._id, date, parseInt(e.target.value))}
-                          />
-                        </Box>
-                      </TableCell>
-                    );
-                  })}
-                  <TableCell sx={{
-                    border: '1px solid #ccc',
-                    textAlign: 'center',
-                    fontWeight: 600,
-                    backgroundColor: average ? getAverageColor(parseFloat(average)) : 'transparent'
-                  }}>
-                    {average || '-'}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
+        {students.sort((a, b) => a.name.localeCompare(b.name, 'ru')).map((student, index) => {
+          const gradeEntry = grades.find(g => g.studentId === student._id) || { values: [] };
+          const valuesOnly = gradeEntry.values.filter(v => v.grade);
+          const average = valuesOnly.length > 0
+            ? Math.round(valuesOnly.reduce((sum, v) => sum + v.grade, 0) / valuesOnly.length)
+            : null;
+
+          return (
+            <Box
+              key={student._id}
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: `50px 200px repeat(${lessonDates.length}, 100px) 100px`,
+                backgroundColor: '#fff'
+              }}
+            >
+              <Box sx={{ border: '1px solid #ccc', p: 1, textAlign: 'center', position: 'sticky', left: 0, zIndex: 2 }}>{index + 1}</Box>
+              <Box sx={{ border: '1px solid #ccc', p: 1, fontWeight: 500, position: 'sticky', left: 50, zIndex: 2 }}>{student.name}</Box>
+
+              {lessonDates.map(date => {
+                const g = gradeEntry.values.find(v => v.date === date);
+                return (
+                  <Box
+                    key={date}
+                    sx={{
+                      border: '1px solid #ccc',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      p: 1,
+                      backgroundColor:
+                        g?.grade === 5 ? '#d4edda' :
+                        g?.grade === 4 ? '#dbeeff' :
+                        g?.grade === 3 ? '#fff3cd' :
+                        g?.grade === 2 ? '#f8d7da' :
+                        '#f5f5f5'
+                    }}
+                  >
+                    <TextField
+                      type="number"
+                      inputProps={{ min: 2, max: 5 }}
+                      value={g?.grade || ''}
+                      size="small"
+                      variant="standard"
+                      InputProps={{
+                        disableUnderline: true,
+                        sx: {
+                          width: '2.5rem',
+                          input: { textAlign: 'center' }
+                        }
+                      }}
+                      onChange={e =>
+                        handleGradeChange(student._id, date, parseInt(e.target.value))
+                      }
+                    />
+                  </Box>
+                );
+              })}
+
+              <Box
+                sx={{
+                  p: 1,
+                  textAlign: 'center',
+                  fontWeight: 600,
+                  position: 'sticky',
+                  right: 0,
+                  backgroundColor: average ? getAverageColor(average) : '#fff',
+                  border: '1px solid #ccc',
+                  zIndex: 3
+                }}
+              >
+                {average || '-'}
+              </Box>
+            </Box>
+          );
+        })}
+      </Box>
+
+      {/* Статистика */}
+      {students.length > 0 && (
+        <Box mt={4} p={2} sx={{ border: '1px dashed #999', borderRadius: 2, backgroundColor: '#f9f9f9' }}>
+          <Box fontWeight="bold" mb={1}>📊 Статистика по итоговым оценкам:</Box>
+          {(() => {
+            const counters = { 5: 0, 4: 0, 3: 0, 2: 0, none: 0 };
+            students.forEach(student => {
+              const entry = grades.find(g => g.studentId === student._id);
+              const values = entry?.values?.filter(v => v.grade) || [];
+              if (!values.length) {
+                counters.none += 1;
+              } else {
+                const avg = Math.round(values.reduce((a, b) => a + b.grade, 0) / values.length);
+                if (avg >= 2 && avg <= 5) counters[avg]++;
+              }
+            });
+
+            return (
+              <Box display="flex" gap={3} flexWrap="wrap">
+                <Box>Отличников (5): <strong>{counters[5]}</strong></Box>
+                <Box>Хорошистов (4): <strong>{counters[4]}</strong></Box>
+                <Box>Троечников (3): <strong>{counters[3]}</strong></Box>
+                <Box>Двоечников (2): <strong>{counters[2]}</strong></Box>
+                <Box>Без оценок: <strong>{counters.none}</strong></Box>
+              </Box>
+            );
+          })()}
+        </Box>
+      )}
 
       <Button variant="contained" sx={{ mt: 2 }} onClick={saveGrades}>
         Сохранить

@@ -8,6 +8,16 @@ import { useSelector } from 'react-redux';
 
 const daysOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница'];
 
+const ruToEnDay = {
+  'Понедельник': 'Monday',
+  'Вторник': 'Tuesday',
+  'Среда': 'Wednesday',
+  'Четверг': 'Thursday',
+  'Пятница': 'Friday'
+};
+
+const deepClone = (arr) => JSON.parse(JSON.stringify(arr));
+
 const EditSchedulePage = () => {
   const admin = useSelector((state) => state.user.currentUser);
   const schoolId = admin.schoolId || admin.school?._id;
@@ -16,6 +26,7 @@ const EditSchedulePage = () => {
   const [selectedClass, setSelectedClass] = useState('');
   const [selectedDay, setSelectedDay] = useState('');
   const [schedule, setSchedule] = useState([]);
+  const [originalSchedule, setOriginalSchedule] = useState([]);
   const [assignedSubjects, setAssignedSubjects] = useState([]);
   const [message, setMessage] = useState({ type: '', text: '' });
 
@@ -36,20 +47,25 @@ const EditSchedulePage = () => {
 
   const sanitizeSchedule = (rawLessons) => {
     return rawLessons.map(l => ({
-      ...l,
-      subjectId: typeof l.subjectId === 'object' ? l.subjectId._id : l.subjectId,
-      teacherId: typeof l.teacherId === 'object' ? l.teacherId._id : l.teacherId,
-      classId: l.classId?._id || l.classId // гарантия наличия classId
+      _id: l._id,
+      subjectId: typeof l.subjectId === 'object' ? l.subjectId._id : String(l.subjectId),
+      teacherId: typeof l.teacherId === 'object' ? l.teacherId._id : String(l.teacherId),
+      classId: l.classId?._id || l.classId,
+      startTime: l.startTime,
+      endTime: l.endTime,
+      day: l.day
     }));
   };
 
   const loadSchedule = async () => {
     try {
       const { data } = await axios.get(`/api/schedule/class/${selectedClass}`);
-      const filtered = data.schedules
-        .filter(s => s.day.trim() === selectedDay.trim() && s.type === 'lesson');
+      const filtered = data.schedules.filter(
+        s => s.day.trim() === ruToEnDay[selectedDay] && s.type === 'lesson'
+      );
       const cleaned = sanitizeSchedule(filtered);
       setSchedule(cleaned);
+      setOriginalSchedule(deepClone(cleaned));
       setMessage({ type: '', text: '' });
     } catch {
       setMessage({ type: 'error', text: 'Ошибка загрузки расписания' });
@@ -59,13 +75,30 @@ const EditSchedulePage = () => {
   const handleChange = (index, field, value) => {
     const updated = [...schedule];
     updated[index][field] = value;
-    if (field === 'subjectId') updated[index].teacherId = ''; // сброс при смене предмета
+    if (field === 'subjectId') updated[index].teacherId = '';
     setSchedule(updated);
   };
 
   const getTeachersForSubject = (subjectId) => {
     const assigned = assignedSubjects.find(a => a.subjectId === subjectId);
     return assigned?.teachers || [];
+  };
+
+  const isLessonChanged = (lesson, index) => {
+    const originalIndex = originalSchedule.findIndex(l => l._id === lesson._id);
+    const original = originalSchedule[originalIndex];
+    if (!original) return true;
+
+    const isContentChanged =
+      original.subjectId !== lesson.subjectId ||
+      original.teacherId !== lesson.teacherId ||
+      original.startTime !== lesson.startTime ||
+      original.endTime !== lesson.endTime ||
+      original.day !== lesson.day;
+
+    const isPositionChanged = originalIndex !== index;
+
+    return isContentChanged || isPositionChanged;
   };
 
   const saveChanges = async () => {
@@ -79,18 +112,28 @@ const EditSchedulePage = () => {
     }
 
     try {
-      const updates = schedule.map(s =>
-        axios.put(`/api/schedule/${s._id}`, {
-          subjectId: s.subjectId,
-          teacherId: s.teacherId,
-          startTime: s.startTime,
-          endTime: s.endTime,
-          day: s.day,
-          classId: s.classId
-        })
-      );
+      const updates = schedule
+        .filter((s, i) => isLessonChanged(s, i))
+        .map(s => {
+          console.log('Обновление:', s);
+          return axios.put(`/api/schedule/${s._id}`, {
+            subjectId: s.subjectId,
+            teacherId: s.teacherId,
+            startTime: s.startTime,
+            endTime: s.endTime,
+            day: s.day,
+            classId: s.classId
+          });
+        });
+
+      if (updates.length === 0) {
+        setMessage({ type: 'info', text: 'Изменения не обнаружены.' });
+        return;
+      }
+
       await Promise.all(updates);
       setMessage({ type: 'success', text: 'Расписание успешно обновлено ✅' });
+      await loadSchedule();
     } catch (err) {
       console.error("❌ Ошибка при сохранении:", err?.response?.data);
       setMessage({ type: 'error', text: err?.response?.data?.message || 'Ошибка при сохранении' });
@@ -142,7 +185,10 @@ const EditSchedulePage = () => {
               </TableHead>
               <TableBody>
                 {schedule.map((lesson, index) => (
-                  <TableRow key={lesson._id}>
+                  <TableRow
+                    key={lesson._id}
+                    sx={{ backgroundColor: isLessonChanged(lesson, index) ? '#fff9c4' : 'inherit' }}
+                  >
                     <TableCell>{lesson.startTime} - {lesson.endTime}</TableCell>
                     <TableCell>
                       <Select

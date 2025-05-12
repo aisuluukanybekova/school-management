@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Box, Typography, Alert, Stack, Table, TableHead,
   TableRow, TableCell, TableBody, Paper, TableContainer,
-  FormControl, InputLabel, Select, MenuItem
+  FormControl, InputLabel, Select, MenuItem, Chip
 } from '@mui/material';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,68 +10,114 @@ import { getSubjectsWithTeachers } from '../../redux/sclassRelated/sclassHandle'
 
 axios.defaults.baseURL = 'http://localhost:5001';
 
-const StudentGrades = () => {
+const StudentGradesWithSchedule = () => {
   const dispatch = useDispatch();
   const student = useSelector((state) => state.user.currentUser);
   const { subjectsList } = useSelector((state) => state.sclass);
 
-  const [allGrades, setAllGrades] = useState([]);
+  const [lessonDates, setLessonDates] = useState([]);
+  const [gradesMap, setGradesMap] = useState({});
+  const [filteredSubject, setFilteredSubject] = useState('');
+  const [filteredTerm, setFilteredTerm] = useState('');
   const [error, setError] = useState('');
-  const [selectedSubject, setSelectedSubject] = useState('');
-  const [selectedTerm, setSelectedTerm] = useState('');
-  const [filteredGrades, setFilteredGrades] = useState([]);
+
+  const subjectOptions = subjectsList.map((s) => ({ id: s.subjectId, name: s.subjectName }));
+  const termOptions = [1, 2, 3, 4];
 
   useEffect(() => {
-    if (student?._id) {
-      fetchGrades();
-    }
-
     if (student?.sclassName?._id) {
       dispatch(getSubjectsWithTeachers(student.sclassName._id));
     }
-  }, [student, dispatch]);
+    if (student?._id) {
+      fetchGrades(student._id);
+    }
+  }, [dispatch, student]);
 
-  const fetchGrades = async () => {
+  useEffect(() => {
+    if (filteredSubject && filteredTerm) {
+      fetchLessonDates(student?.sclassName?._id, filteredSubject, filteredTerm);
+    } else {
+      setLessonDates([]);
+    }
+  }, [filteredSubject, filteredTerm]);
+
+  const fetchLessonDates = async (classId, subjectId, term) => {
     try {
-      const res = await axios.get(`/api/journal/student/${student._id}`);
-      setAllGrades(res.data.grades || []);
+      const res = await axios.get(`/api/schedule/lesson-dates`, {
+        params: { classId, subjectId, term }
+      });
+      setLessonDates(res.data || []);
+    } catch (err) {
+      console.error('Ошибка получения дат по расписанию:', err);
+      setError('Не удалось загрузить даты по расписанию.');
+    }
+  };
+
+  const fetchGrades = async (studentId) => {
+    try {
+      const res = await axios.get(`/api/journal/student/${studentId}`);
+      const gradeDocs = Array.isArray(res.data?.grades) ? res.data.grades : [];
+      const map = {};
+
+      gradeDocs.forEach(entry => {
+        const subjectIdRaw = entry.subjectId || entry.subject;
+        const subjectId = typeof subjectIdRaw === 'object' ? subjectIdRaw._id : subjectIdRaw;
+        const term = entry.term;
+
+        if (!entry.values || !subjectId || !term) return;
+
+        entry.values.forEach(({ date, grade }) => {
+          const d = new Date(date);
+          d.setHours(0, 0, 0, 0);
+          const key = `${subjectId}-${term}-${d.toISOString().slice(0, 10)}`;
+          map[key] = { grade };
+        });
+      });
+
+      setGradesMap(map);
     } catch (err) {
       console.error('Ошибка загрузки оценок:', err);
       setError('Не удалось загрузить оценки');
     }
   };
 
-  useEffect(() => {
-    if (selectedSubject && selectedTerm) {
-      const gradesForSubjectAndTerm = allGrades.find(
-        (g) => g.subject === selectedSubject && String(g.term) === String(selectedTerm)
-      );
-
-      setFilteredGrades([
-        {
-          subject: selectedSubject,
-          term: selectedTerm,
-          values: gradesForSubjectAndTerm?.values || []
-        }
-      ]);
-    } else {
-      setFilteredGrades([]);
-    }
-  }, [selectedSubject, selectedTerm, allGrades]);
-
-  const getAverage = (values) => {
-    if (!values?.length) return null;
-    const sum = values.reduce((acc, v) => acc + v.grade, 0);
-    return (sum / values.length).toFixed(2);
+  const getGradeColor = (grade) => {
+    if (grade >= 5) return 'success';
+    if (grade === 4) return 'warning';
+    return 'error';
   };
 
-  const subjectOptions = subjectsList.map((s) => s.subjectName);
-  const termOptions = [1, 2, 3, 4];
+  const formatDate = (isoDate) => {
+    const d = new Date(isoDate);
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year = String(d.getFullYear()).slice(2);
+    return `${day}.${month}.${year}`;
+  };
+
+ const calculateAverageGrade = () => {
+  const grades = lessonDates.map((dateIso) => {
+    const d = new Date(dateIso);
+    d.setHours(0, 0, 0, 0);
+    const key = `${filteredSubject}-${filteredTerm}-${d.toISOString().slice(0, 10)}`;
+    return gradesMap[key]?.grade;
+  }).filter(g => typeof g === 'number');
+
+  if (!grades.length) return null;
+
+  const sum = grades.reduce((a, b) => a + b, 0);
+  const avg = sum / grades.length;
+
+  return Math.round(avg); //  округляем до целого
+};
+
+
+  const average = calculateAverageGrade();
 
   return (
     <Box p={4}>
       <Typography variant="h5" gutterBottom fontWeight="bold">
-        📘 Мои оценки
+        Журнал по расписанию
       </Typography>
 
       {error && (
@@ -82,82 +128,83 @@ const StudentGrades = () => {
 
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mb: 3 }}>
         <FormControl fullWidth>
-          <InputLabel id="subject-select-label">Предмет</InputLabel>
+          <InputLabel>Предмет</InputLabel>
           <Select
-            labelId="subject-select-label"
-            value={selectedSubject}
-            label="Предмет"
-            onChange={(e) => setSelectedSubject(e.target.value)}
+            value={filteredSubject}
+            onChange={(e) => setFilteredSubject(e.target.value)}
           >
-            {subjectOptions.map((subject, index) => (
-              <MenuItem key={index} value={subject}>
-                {subject}
-              </MenuItem>
+            <MenuItem value="">Выберите предмет</MenuItem>
+            {subjectOptions.map((s) => (
+              <MenuItem key={s.id} value={s.id}>{s.name}</MenuItem>
             ))}
           </Select>
         </FormControl>
 
         <FormControl fullWidth>
-          <InputLabel id="term-select-label">Четверть</InputLabel>
+          <InputLabel>Четверть</InputLabel>
           <Select
-            labelId="term-select-label"
-            value={selectedTerm}
-            label="Четверть"
-            onChange={(e) => setSelectedTerm(e.target.value)}
+            value={filteredTerm}
+            onChange={(e) => setFilteredTerm(e.target.value)}
           >
-            {termOptions.map((term) => (
-              <MenuItem key={term} value={term}>
-                Четверть {term}
-              </MenuItem>
+            <MenuItem value="">Выберите четверть</MenuItem>
+            {termOptions.map((t) => (
+              <MenuItem key={t} value={t}>Четверть {t}</MenuItem>
             ))}
           </Select>
         </FormControl>
       </Stack>
 
-      {filteredGrades.length > 0 && selectedSubject && selectedTerm ? (
-        filteredGrades.map((subject, index) => (
-          <Box key={index} mb={4}>
-            <Typography variant="h6">
-              {subject.subject} — Четверть {subject.term}
-            </Typography>
-            <TableContainer component={Paper}>
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Дата</TableCell>
-                    <TableCell>Оценка</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {subject.values.map((v, i) => (
+      {lessonDates.length > 0 ? (
+        <>
+          <TableContainer component={Paper}>
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Дата</TableCell>
+                  <TableCell>Оценка</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {lessonDates.map((dateIso, i) => {
+                  const d = new Date(dateIso);
+                  d.setHours(0, 0, 0, 0);
+                  const dateKey = `${filteredSubject}-${filteredTerm}-${d.toISOString().slice(0, 10)}`;
+                  const gradeEntry = gradesMap[dateKey];
+                  return (
                     <TableRow key={i}>
-                      <TableCell>{new Date(v.date).toLocaleDateString()}</TableCell>
-                      <TableCell>{v.grade}</TableCell>
+                      <TableCell>{formatDate(d)}</TableCell>
+                      <TableCell>
+                        {gradeEntry?.grade
+                          ? <Chip label={gradeEntry.grade} color={getGradeColor(gradeEntry.grade)} />
+                          : '—'}
+                      </TableCell>
                     </TableRow>
-                  ))}
-                  <TableRow>
-                    <TableCell>
-                      <strong>Средняя</strong>
-                    </TableCell>
-                    <TableCell>
-                      <strong>{getAverage(subject.values) || '-'}</strong>
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Box>
-        ))
-      ) : (
-        selectedSubject &&
-        selectedTerm && <Typography>Нет оценок по выбранному предмету и четверти</Typography>
-      )}
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
 
-      {!selectedSubject && !selectedTerm && allGrades.length === 0 && !error && (
-        <Typography>Пока нет оценок</Typography>
+          {average !== null && (
+            <Box mt={3}>
+              <Typography variant="subtitle1" fontWeight="bold">
+                Итоговая оценка за четверть:
+              </Typography>
+              <Chip
+                label={average}
+                color={getGradeColor(average)}
+                sx={{ fontSize: '1.1rem', px: 2, py: 1 }}
+              />
+            </Box>
+          )}
+        </>
+      ) : (
+        filteredSubject && filteredTerm && (
+          <Typography>Нет уроков по выбранному предмету и четверти</Typography>
+        )
       )}
     </Box>
   );
 };
 
-export default StudentGrades;
+export default StudentGradesWithSchedule;

@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box, Typography, FormControl, InputLabel, MenuItem, Select,
-  Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Alert
+  Box, Typography,
+  FormControl, InputLabel, MenuItem, Select,
+  Paper, Table, TableBody, TableCell,
+  TableContainer, TableHead, TableRow,
+  Alert, Button
 } from '@mui/material';
 import axios from 'axios';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
+import { useNavigate } from 'react-router-dom';
 
 axios.defaults.baseURL = 'http://localhost:5001';
 
@@ -13,11 +19,21 @@ const GradebookJournal = () => {
   const [students, setStudents] = useState([]);
   const [grades, setGrades] = useState({});
   const [allDates, setAllDates] = useState([]);
+  const [error, setError] = useState('');
 
   const [selectedClass, setSelectedClass] = useState('');
   const [selectedSubject, setSelectedSubject] = useState('');
   const [selectedTerm, setSelectedTerm] = useState('');
-  const [error, setError] = useState('');
+
+  const navigate = useNavigate();
+
+  const formatDate = (iso) => {
+    const d = new Date(iso);
+    const dd = String(d.getDate()).padStart(2, '0');
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const yy = String(d.getFullYear()).slice(2);
+    return `${dd}.${mm}.${yy}`;
+  };
 
   useEffect(() => {
     axios.get('/api/classes')
@@ -26,24 +42,21 @@ const GradebookJournal = () => {
   }, []);
 
   useEffect(() => {
-    if (selectedClass) {
-      axios.get(`/api/teacherSubjectClass/assigned/${selectedClass}`)
-        .then(res => {
-          const mapped = res.data.map(item => ({
-            _id: item.subjectId,
-            subName: item.subjectName
-          }));
-          setSubjects(mapped);
-        })
-        .catch(() => console.error('Ошибка загрузки предметов'));
+    if (!selectedClass) return;
+    axios.get(`/api/teacherSubjectClass/assigned/${selectedClass}`)
+      .then(res => {
+        setSubjects(res.data.map(item => ({
+          _id: item.subjectId,
+          subName: item.subjectName
+        })));
+      })
+      .catch(() => console.error('Ошибка загрузки предметов'));
 
-      axios.get(`/api/students/class/${selectedClass}`)
-        .then(res => {
-          const sorted = [...res.data].sort((a, b) => a.name.localeCompare(b.name));
-          setStudents(sorted);
-        })
-        .catch(() => console.error('Ошибка загрузки учеников'));
-    }
+    axios.get(`/api/students/class/${selectedClass}`)
+      .then(res => {
+        setStudents(res.data.sort((a, b) => a.name.localeCompare(b.name)));
+      })
+      .catch(() => console.error('Ошибка загрузки учеников'));
   }, [selectedClass]);
 
   const fetchGrades = async () => {
@@ -51,134 +64,120 @@ const GradebookJournal = () => {
       setError('Выберите класс, предмет и четверть');
       return;
     }
-  
     try {
-      // 📅 Получение всех дат уроков по расписанию
-      const { data: dates } = await axios.get('/api/schedule/dates', {
-        params: {
-          classId: selectedClass,
-          subjectId: selectedSubject,
-          term: selectedTerm
-        }
-      });
-  
-      console.log("📅 Даты из расписания:", dates);
-      const formattedDates = dates.map(d => new Date(d).toISOString().split('T')[0]);
-  
-      // 📝 Получение оценок
-      const res = await axios.get(`/api/journal/grades`, {
+      const { data: dates } = await axios.get('/api/schedule/lesson-dates', {
         params: { classId: selectedClass, subjectId: selectedSubject, term: selectedTerm }
       });
-  
-      console.log("🎯 Ответ с оценками:", res.data);
-  
-      const raw = res.data?.grades || res.data?.gradebook?.grades || [];
-  
-      // 🔄 Преобразование в плоский массив
-      const flat = [];
-      raw.forEach(entry => {
-        if (Array.isArray(entry.values)) {
-          entry.values.forEach(({ date, grade }) => {
-            flat.push({
-              studentId: entry.studentId,
-              date: date.slice(0, 10),
-              grade,
-            });
-          });
-        }
+      setAllDates(dates.map(d => d.split('T')[0]));
+
+      const res = await axios.get('/api/journal/grades', {
+        params: { classId: selectedClass, subjectId: selectedSubject, term: selectedTerm }
       });
-  
+      const raw = res.data.grades || res.data.gradebook?.grades || [];
+
+      // Построим map для быстрого доступа
       const map = {};
-      flat.forEach(g => {
-        const key = `${g.studentId}_${g.date}`;
-        map[key] = g.grade;
+      raw.forEach(ent => {
+        ent.values?.forEach(({ date, grade }) => {
+          map[`${ent.studentId}_${date.slice(0,10)}`] = grade;
+        });
       });
-  
       setGrades(map);
-      setAllDates(formattedDates);
       setError('');
-  
-    } catch (err) {
-      console.error(' Ошибка:', err);
-      setError('Ошибка загрузки оценок или дат расписания');
+    } catch (e) {
+      console.error(e);
+      setError('Ошибка загрузки оценок или расписания');
     }
-  };  
+  };
+
+  const fetchReportAndOpen = async () => {
+    try {
+      const res = await axios.get('/api/journal/grades', {
+        params: { classId: selectedClass, subjectId: selectedSubject, term: selectedTerm }
+      });
+      const raw = res.data.grades || res.data.gradebook?.grades || [];
+
+      const data = students.map(st => {
+        const vals = raw.find(r => r.studentId === st._id)?.values || [];
+        const nums = vals.map(v => Number(v.grade)).filter(g => !isNaN(g));
+        const count = nums.length;
+        const avg = count ? (nums.reduce((a,b)=>a+b,0)/count).toFixed(2) : '-';
+        return {
+          name: st.name,
+          rollNum: st.rollNum || '',
+          count, average: avg, grades: nums
+        };
+      });
+      localStorage.setItem('gradebook_report', JSON.stringify(data));
+      navigate('/Admin/report');
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const exportReportToExcel = () => {
+    const data = JSON.parse(localStorage.getItem('gradebook_report') || '[]');
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Отчёт');
+    const buf = XLSX.write(wb, { bookType:'xlsx', type:'array' });
+    saveAs(new Blob([buf]), 'Grade_Report.xlsx');
+  };
 
   return (
     <Box p={4}>
       <Typography variant="h5" fontWeight="bold" gutterBottom>
-        📝 Успеваемость учеников
+        Успеваемость учеников
       </Typography>
-
-      <Box display="flex" gap={2} flexWrap="wrap" mb={3}>
-        <FormControl sx={{ minWidth: 200 }}>
+      <Box display="flex" flexWrap="wrap" gap={2} mb={3}>
+        <FormControl sx={{ minWidth:160 }}>
           <InputLabel>Класс</InputLabel>
-          <Select
-            value={selectedClass}
-            label="Класс"
-            onChange={(e) => setSelectedClass(e.target.value)}
-          >
-            {classes.map((c) => (
-              <MenuItem key={c._id} value={c._id}>{c.sclassName}</MenuItem>
-            ))}
+          <Select value={selectedClass} label="Класс" onChange={e=>setSelectedClass(e.target.value)}>
+            {classes.map(c=> <MenuItem key={c._id} value={c._id}>{c.sclassName}</MenuItem>)}
           </Select>
         </FormControl>
-
-        <FormControl sx={{ minWidth: 200 }}>
+        <FormControl sx={{ minWidth:160 }}>
           <InputLabel>Предмет</InputLabel>
-          <Select
-            value={selectedSubject}
-            label="Предмет"
-            onChange={(e) => setSelectedSubject(e.target.value)}
-          >
-            {subjects.map((s) => (
-              <MenuItem key={s._id} value={s._id}>{s.subName}</MenuItem>
-            ))}
+          <Select value={selectedSubject} label="Предмет" onChange={e=>setSelectedSubject(e.target.value)}>
+            {subjects.map(s=> <MenuItem key={s._id} value={s._id}>{s.subName}</MenuItem>)}
           </Select>
         </FormControl>
-
-        <FormControl sx={{ minWidth: 150 }}>
+        <FormControl sx={{ minWidth:140 }}>
           <InputLabel>Четверть</InputLabel>
-          <Select
-            value={selectedTerm}
-            label="Четверть"
-            onChange={(e) => setSelectedTerm(e.target.value)}
-          >
-            {[1, 2, 3, 4].map(term => (
-              <MenuItem key={term} value={term}>Четверть {term}</MenuItem>
-            ))}
+          <Select value={selectedTerm} label="Четверть" onChange={e=>setSelectedTerm(e.target.value)}>
+            {[1,2,3,4].map(t=> <MenuItem key={t} value={t}>Четверть {t}</MenuItem>)}
           </Select>
         </FormControl>
-
-        <Box display="flex" alignItems="center">
-          <button onClick={fetchGrades}>🔍 Показать</button>
+        <Box display="flex" gap={1}>
+          <Button variant="outlined" onClick={fetchGrades}> Показать</Button>
+          <Button variant="contained" color="info" onClick={fetchReportAndOpen}>Отчёт</Button>
+          <Button variant="contained" color="success" onClick={exportReportToExcel}>Excel</Button>
         </Box>
       </Box>
-
       {error && <Alert severity="error">{error}</Alert>}
-
-      {students.length > 0 && allDates.length > 0 ? (
-        <TableContainer component={Paper} sx={{ maxHeight: 500 }}>
-          <Table size="small" stickyHeader sx={{ border: '1px solid #ccc' }}>
+      {students.length>0 && allDates.length>0 ? (
+        <TableContainer component={Paper} sx={{
+          width:'100%', borderRadius:2, overflowX:'auto',
+          boxShadow:'0 2px 10px rgba(0,0,0,0.05)'
+        }}>
+          <Table stickyHeader size="small">
             <TableHead>
-              <TableRow sx={{ backgroundColor: '#f0f0f0' }}>
-                <TableCell sx={{ border: '1px solid #ddd', fontWeight: 'bold' }}>№</TableCell>
-                <TableCell sx={{ border: '1px solid #ddd', fontWeight: 'bold' }}>Ученик</TableCell>
-                {allDates.map((date, i) => (
-                  <TableCell key={i} sx={{ border: '1px solid #ddd', fontWeight: 'bold' }}>
-                    {new Date(date).toLocaleDateString()}
-                  </TableCell>
+              <TableRow>
+                <TableCell sx={headerCell}>№</TableCell>
+                <TableCell sx={headerCell}>Ученик</TableCell>
+                {allDates.map((d,i)=>(
+                  <TableCell key={i} sx={headerCell}>{formatDate(d)}</TableCell>
                 ))}
               </TableRow>
             </TableHead>
             <TableBody>
-              {students.map((s, index) => (
-                <TableRow key={s._id}>
-                  <TableCell sx={{ border: '1px solid #eee' }}>{index + 1}</TableCell>
-                  <TableCell sx={{ border: '1px solid #eee' }}>{s.name}</TableCell>
-                  {allDates.map(date => (
-                    <TableCell key={date} sx={{ border: '1px solid #eee' }}>
-                      {grades[`${s._id}_${date}`] ?? '—'}
+              {students.map((s,idx)=>(
+                <TableRow key={s._id} hover>
+                  <TableCell sx={bodyCell}>{idx+1}</TableCell>
+                  <TableCell sx={bodyCell}>{s.name}</TableCell>
+                  {allDates.map(d=>(
+                    <TableCell key={d} sx={bodyCellCenter}>
+                      {grades[`${s._id}_${d}`] ?? ''}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -186,11 +185,28 @@ const GradebookJournal = () => {
             </TableBody>
           </Table>
         </TableContainer>
-      ) : (
+      ): (
         <Typography mt={3}>Нет оценок или данных</Typography>
       )}
     </Box>
   );
+};
+
+// Общие стили ячеек
+const headerCell = {
+  backgroundColor: '#212121',
+  color: 'white',
+  fontWeight: 'bold',
+  border: '1px solid #ccc',
+  whiteSpace: 'nowrap'
+};
+const bodyCell = {
+  border: '1px solid #ccc',
+  whiteSpace: 'nowrap'
+};
+const bodyCellCenter = {
+  ...bodyCell,
+  textAlign: 'center'
 };
 
 export default GradebookJournal;
