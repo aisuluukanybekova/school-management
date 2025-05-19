@@ -103,20 +103,24 @@ const AttendanceJournal = () => {
       });
   };
 
-  const handleNavigateToReport = () => {
-    if (!selectedClass || !selectedSubject || !selectedTerm) {
-      setError('Пожалуйста, выберите класс, предмет и четверть');
-      return;
-    }
+const handleNavigateToReport = () => {
+  if (!selectedClass || !selectedSubject || !selectedTerm) {
+    setError('Пожалуйста, выберите класс, предмет и четверть');
+    return;
+  }
 
-    navigate('/Admin/attendance-report', {
-      state: {
-        classId: selectedClass,
-        subjectId: selectedSubject,
-        term: selectedTerm
-      }
-    });
-  };
+  const subjectName = subjects.find(s => s._id === selectedSubject)?.subName || 'Предмет не указан';
+
+  navigate('/Admin/attendance-report', {
+    state: {
+      classId: selectedClass,
+      subjectId: selectedSubject,
+      term: selectedTerm,
+      subjectName //  Добавляем название предмета
+    }
+  });
+};
+
 
   const exportToExcel = () => {
     const ws = XLSX.utils.json_to_sheet(report);

@@ -24,7 +24,7 @@ import { getAllSclasses } from '../../../redux/sclassRelated/sclassHandle';
 import { BlueButton, GreenButton } from '../../../components/buttonStyles';
 import TableTemplate from '../../../components/TableTemplate';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
-import PostAddIcon from '@mui/icons-material/PostAdd';
+//import PostAddIcon from '@mui/icons-material/PostAdd';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import AddCardIcon from '@mui/icons-material/AddCard';
 import styled from 'styled-components';
@@ -105,7 +105,7 @@ const ShowClasses = () => {
 
   const SclassButtonHaver = ({ row }) => {
     const actions = [
-      { icon: <PostAddIcon />, name: 'Добавить предметы', action: () => navigate("/Admin/addsubject/" + row.id) },
+     // { icon: <PostAddIcon />, name: 'Добавить предметы', action: () => navigate("/Admin/addsubject/" + row.id) },
       { icon: <PersonAddAlt1Icon />, name: 'Добавить ученика', action: () => navigate("/Admin/class/addstudents/" + row.id) },
     ];
     return (

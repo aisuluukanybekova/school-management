@@ -1,4 +1,4 @@
-// complainSlice.js
+// redux/complainRelated/complainSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -41,6 +41,5 @@ export const {
   getError,
   clearComplainState
 } = complainSlice.actions;
-
 
 export default complainSlice.reducer;

@@ -15,7 +15,7 @@ const StudentComplain = () => {
 
     const user = currentUser?._id;
     const school = currentUser?.school?._id;
-    const address = "сomplain";
+    const address = "complains";
 
     const [loader, setLoader] = useState(false);
     const [message, setMessage] = useState("");

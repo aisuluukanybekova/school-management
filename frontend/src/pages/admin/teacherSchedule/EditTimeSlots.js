@@ -109,7 +109,13 @@ const EditTimeSlots = () => {
     <Box p={4}>
       <Typography variant="h6" mb={2}>Редактирование времени уроков и перемен</Typography>
 
-      <Stack direction="row" spacing={2} alignItems="center" mb={3}>
+      <Stack
+        direction="row"
+        spacing={2}
+        alignItems="center"
+        mb={3}
+        sx={{ flexWrap: 'wrap', gap: 2 }}
+      >
         <Select value={shift} onChange={(e) => setShift(e.target.value)} size="small">
           <MenuItem value="first">Первая смена</MenuItem>
           <MenuItem value="second">Вторая смена</MenuItem>
@@ -125,7 +131,13 @@ const EditTimeSlots = () => {
           onChange={e => setAutoParams(prev => ({ ...prev, shortBreak: Number(e.target.value) }))} />
         <TextField label="Длинная перемена" type="number" size="small" value={autoParams.longBreak}
           onChange={e => setAutoParams(prev => ({ ...prev, longBreak: Number(e.target.value) }))} />
-        <Button variant="outlined" onClick={generatePreviewSlots}>АВТОРАСЧЁТ</Button>
+        <Button
+          variant="outlined"
+          onClick={generatePreviewSlots}
+          sx={{ minWidth: 140, height: '40px', fontWeight: 'bold' }}
+        >
+          АВТОРАСЧЁТ
+        </Button>
       </Stack>
 
       {previewSlots.length > 0 && (

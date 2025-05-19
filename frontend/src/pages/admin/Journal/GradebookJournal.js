@@ -91,29 +91,35 @@ const GradebookJournal = () => {
   };
 
   const fetchReportAndOpen = async () => {
-    try {
-      const res = await axios.get('/api/journal/grades', {
-        params: { classId: selectedClass, subjectId: selectedSubject, term: selectedTerm }
-      });
-      const raw = res.data.grades || res.data.gradebook?.grades || [];
+  try {
+    const res = await axios.get('/api/journal/grades', {
+      params: { classId: selectedClass, subjectId: selectedSubject, term: selectedTerm }
+    });
+    const raw = res.data.grades || res.data.gradebook?.grades || [];
 
-      const data = students.map(st => {
-        const vals = raw.find(r => r.studentId === st._id)?.values || [];
-        const nums = vals.map(v => Number(v.grade)).filter(g => !isNaN(g));
-        const count = nums.length;
-        const avg = count ? (nums.reduce((a,b)=>a+b,0)/count).toFixed(2) : '-';
-        return {
-          name: st.name,
-          rollNum: st.rollNum || '',
-          count, average: avg, grades: nums
-        };
-      });
-      localStorage.setItem('gradebook_report', JSON.stringify(data));
-      navigate('/Admin/report');
-    } catch (e) {
-      console.error(e);
-    }
-  };
+    const data = students.map(st => {
+      const vals = raw.find(r => r.studentId === st._id)?.values || [];
+      const nums = vals.map(v => Number(v.grade)).filter(g => !isNaN(g));
+      const count = nums.length;
+      const avg = count ? (nums.reduce((a,b)=>a+b,0)/count).toFixed(2) : '-';
+      return {
+        name: st.name,
+        rollNum: st.rollNum || '',
+        count, average: avg, grades: nums
+      };
+    });
+
+    // Добавляем сохранение имени предмета:
+    const subjectName = subjects.find(s => s._id === selectedSubject)?.subName || 'Предмет не указан';
+    localStorage.setItem('selected_subject', subjectName);
+
+    localStorage.setItem('gradebook_report', JSON.stringify(data));
+    navigate('/Admin/report');
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 
   const exportReportToExcel = () => {
     const data = JSON.parse(localStorage.getItem('gradebook_report') || '[]');

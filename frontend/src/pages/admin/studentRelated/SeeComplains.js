@@ -1,3 +1,4 @@
+// components/admin/SeeComplains.js
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Paper, Box, Typography, Checkbox, Button, Stack } from '@mui/material';
@@ -6,7 +7,7 @@ import TableTemplate from '../../../components/TableTemplate';
 
 const SeeComplains = () => {
   const dispatch = useDispatch();
-  const { complainsList, loading, error } = useSelector((state) => state.complain);
+  const { complains, status, error } = useSelector((state) => state.complain);
   const { currentUser } = useSelector((state) => state.user);
 
   const [selectedComplains, setSelectedComplains] = useState([]);
@@ -27,7 +28,6 @@ const SeeComplains = () => {
     if (selectedComplains.length > 0) {
       selectedComplains.forEach(id => dispatch(deleteComplain(id, currentUser._id)));
       setSelectedComplains([]);
-      dispatch(getAllComplains(currentUser._id));
     }
   };
 
@@ -37,7 +37,7 @@ const SeeComplains = () => {
     { id: 'date', label: 'Дата', minWidth: 170 },
   ];
 
-  const complainRows = complainsList?.map((complain) => {
+  const complainRows = complains?.map((complain) => {
     const date = new Date(complain.date);
     const dateString = isNaN(date) ? "Неверная дата" : date.toISOString().substring(0, 10);
     return {
@@ -61,9 +61,9 @@ const SeeComplains = () => {
 
   return (
     <Box sx={{ width: '100%', mt: 2 }}>
-      {loading ? (
+      {status === 'loading' ? (
         <Typography align="center">Загрузка...</Typography>
-      ) : complainsList?.length > 0 ? (
+      ) : complainRows.length > 0 ? (
         <>
           <Stack direction="row" spacing={2} sx={{ mb: 2, justifyContent: 'flex-end' }}>
             <Button

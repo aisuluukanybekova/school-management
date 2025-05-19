@@ -10,11 +10,15 @@ import { saveAs } from 'file-saver';
 
 const AttendanceReportPage = () => {
   const location = useLocation();
-  const { classId, subjectId, term } = location.state || {};
 
-  const [report, setReport] = useState([]);
-  const [error, setError] = useState('');
+  // Получаем параметры из состояния маршрута (classId, subjectId, term)
+  //const { classId, subjectId, term } = location.state || {};
+const { classId, subjectId, term, subjectName } = location.state || {};
 
+  const [report, setReport] = useState([]); // Состояние для хранения отчета
+  const [error, setError] = useState('');   // Состояние для ошибок
+
+  // Загружаем данные отчета после монтирования компонента
   useEffect(() => {
     if (!classId || !subjectId || !term) {
       setError('Недостаточно данных для отчёта');
@@ -28,12 +32,12 @@ const AttendanceReportPage = () => {
       .catch(() => setError('Ошибка загрузки отчёта'));
   }, [classId, subjectId, term]);
 
+  // Экспорт отчета в Excel
   const exportToExcel = () => {
     const data = report.map((r, i) => ({
       '№': i + 1,
       'Ученик': r.studentName,
-      'Всего': r.totalLessons,
-      'Присутствовал': r.present,
+      'Всего занятий': r.totalLessons,
       'Отсутствовал': r.absent,
       '%': r.percent
     }));
@@ -47,12 +51,19 @@ const AttendanceReportPage = () => {
 
   return (
     <Box p={4}>
-      <Typography variant="h5" fontWeight="bold" gutterBottom>
-        📄 Отчёт по посещаемости
-      </Typography>
+      {/* Заголовок страницы */}
+     <Typography variant="h5" fontWeight="bold" gutterBottom>
+  📄 Отчёт по посещаемости
+</Typography>
+<Typography variant="subtitle1" color="text.secondary" gutterBottom>
+  Предмет: <strong>{subjectName || 'Неизвестен'}</strong>
+</Typography>
 
+
+      {/* Сообщение об ошибке */}
       {error && <Alert severity="error">{error}</Alert>}
 
+      {/* Основная таблица и кнопка экспорта */}
       {!error && report.length > 0 && (
         <>
           <Box mb={2}>
@@ -67,11 +78,10 @@ const AttendanceReportPage = () => {
                 <TableRow>
                   <TableCell>№</TableCell>
                   <TableCell>Ученик</TableCell>
-                  <TableCell align="center">Всего</TableCell>
-                  <TableCell align="center">Присутствовал</TableCell>
+                  <TableCell align="center">Всего занятий</TableCell>
+                  {/* Удалена колонка "Присутствовал" */}
                   <TableCell align="center">Отсутствовал</TableCell>
-                 <TableCell align="center">%</TableCell>
-
+                  <TableCell align="center">%</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -80,7 +90,6 @@ const AttendanceReportPage = () => {
                     <TableCell>{i + 1}</TableCell>
                     <TableCell>{r.studentName}</TableCell>
                     <TableCell align="center">{r.totalLessons}</TableCell>
-                    <TableCell align="center">{r.present}</TableCell>
                     <TableCell align="center">{r.absent}</TableCell>
                     <TableCell align="center">{r.percent}%</TableCell>
                   </TableRow>
@@ -91,6 +100,7 @@ const AttendanceReportPage = () => {
         </>
       )}
 
+      {/* Инфо сообщение, если отчёт пуст */}
       {!error && report.length === 0 && (
         <Alert severity="info">Данные для отчёта не найдены</Alert>
       )}

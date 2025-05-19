@@ -406,7 +406,7 @@ exports.getLessonDatesInTerm = async (req, res) => {
       return res.status(404).json({ message: 'Четверть не найдена' });
     }
 
-    // 🧠 ВАЖНО: преобразуем в ObjectId
+    // ВАЖНО: преобразуем в ObjectId
     const lessons = await Schedule.find({
       classId: new mongoose.Types.ObjectId(classId),
       subjectId: new mongoose.Types.ObjectId(subjectId),
