@@ -21,7 +21,7 @@ import ClassOutlinedIcon from '@mui/icons-material/ClassOutlined';
 import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
 import ReportIcon from '@mui/icons-material/Report';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import SettingsIcon from '@mui/icons-material/Settings';
+//import SettingsIcon from '@mui/icons-material/Settings';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import DateRangeIcon from '@mui/icons-material/DateRange';
@@ -48,7 +48,7 @@ const SideBar = () => {
 
   const userItems = [
     { text: 'Профиль', icon: <AccountCircleOutlinedIcon />, path: '/Admin/profile' },
-    { text: 'Настройки', icon: <SettingsIcon />, path: '/Admin/settings' },
+   // { text: 'Настройки', icon: <SettingsIcon />, path: '/Admin/settings' },
     { text: 'Выход', icon: <ExitToAppIcon />, path: '/logout' },
   ];
 

@@ -1,5 +1,3 @@
-// ✅ TeacherLessonTopics.jsx с поддержкой индивидуальных тем на каждую дату
-
 import React, { useEffect, useState } from 'react';
 import {
   Box, Typography, FormControl, InputLabel, MenuItem, Select, TextField,
@@ -20,9 +18,12 @@ const TeacherLessonTopics = () => {
   const [classId, setClassId] = useState('');
   const [subjectId, setSubjectId] = useState('');
   const [term, setTerm] = useState('1');
-  const schoolId = teacher?.school?._id || teacher?.schoolId;
+  const [availableDates, setAvailableDates] = useState([]);
+  const [selectedDate, setSelectedDate] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');
+
+  const schoolId = teacher?.school?._id || teacher?.schoolId;
   const selectedTerm = terms.find(t => t.termNumber === Number(term));
 
   useEffect(() => {
@@ -66,7 +67,7 @@ const TeacherLessonTopics = () => {
           if (current.getDay() === dayMap[item.day]) {
             const dateStr = current.toISOString().split('T')[0];
             const match = topics.find(
-              t => t.day === item.day && t.startTime === item.startTime && t.date === dateStr
+              t => t.date === dateStr && t.startTime === item.startTime
             );
             generatedLessons.push({
               date: dateStr,
@@ -79,7 +80,11 @@ const TeacherLessonTopics = () => {
           current.setDate(current.getDate() + 1);
         }
       }
-      setLessons(generatedLessons);
+      const sortedLessons = generatedLessons.sort((a, b) => new Date(a.date) - new Date(b.date));
+      setLessons(sortedLessons);
+      const dates = [...new Set(sortedLessons.map(l => l.date))];
+      setAvailableDates(dates);
+      setSelectedDate(dates[0]);
     };
 
     loadLessons();
@@ -104,6 +109,8 @@ const TeacherLessonTopics = () => {
     setSnackbarText(`Сохранено: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`);
     setOpenSnackbar(true);
   };
+
+  const filteredLessons = lessons.filter(l => l.date === selectedDate);
 
   return (
     <Box p={3}>
@@ -146,13 +153,30 @@ const TeacherLessonTopics = () => {
         </Typography>
       )}
 
-      {lessons.length === 0 ? (
+      {availableDates.length > 0 && (
+        <Box display="flex" gap={1} mb={3} overflow="auto">
+          {availableDates.map(date => {
+            const weekday = new Date(date).toLocaleDateString('ru-RU', { weekday: 'short', day: '2-digit', month: 'short' });
+            return (
+              <Button
+                key={date}
+                variant={date === selectedDate ? 'contained' : 'outlined'}
+                onClick={() => setSelectedDate(date)}
+              >
+                {weekday}
+              </Button>
+            );
+          })}
+        </Box>
+      )}
+
+      {filteredLessons.length === 0 ? (
         <Typography variant="body1" color="textSecondary">
-          Нет уроков в расписании для выбранной четверти.
+          Нет уроков на выбранную дату.
         </Typography>
       ) : (
         <Grid container spacing={2}>
-          {lessons.map((lesson, i) => (
+          {filteredLessons.map((lesson, i) => (
             <Grid item xs={12} key={i}>
               <Paper sx={{ p: 2 }}>
                 <Typography variant="subtitle2">
@@ -162,14 +186,14 @@ const TeacherLessonTopics = () => {
                   label="Тема"
                   fullWidth
                   value={lesson.topic}
-                  onChange={e => handleChange(i, 'topic', e.target.value)}
+                  onChange={e => handleChange(lessons.indexOf(lesson), 'topic', e.target.value)}
                   sx={{ mt: 1 }}
                 />
                 <TextField
                   label="Домашнее задание"
                   fullWidth
                   value={lesson.homework}
-                  onChange={e => handleChange(i, 'homework', e.target.value)}
+                  onChange={e => handleChange(lessons.indexOf(lesson), 'homework', e.target.value)}
                   sx={{ mt: 1 }}
                 />
               </Paper>

@@ -88,7 +88,7 @@ const getGradesByStudent = async (req, res) => {
       const studentEntry = entry.grades.find(g => g.studentId.toString() === studentId);
       if (studentEntry) {
       result.push({
-  subjectId: entry.subjectId?._id?.toString(), // 🧠 это критично!
+  subjectId: entry.subjectId?._id?.toString(), // это критично!
   term: entry.term,
   values: Array.isArray(studentEntry.values) ? studentEntry.values : []
 });

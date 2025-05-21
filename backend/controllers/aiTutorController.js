@@ -15,7 +15,7 @@ exports.askTutor = async (req, res) => {
     const answer = completion.choices[0].message.content;
     res.json({ answer });
   } catch (err) {
-    console.error('🛑 OpenAI ERROR:', err.response?.data || err.message || err);
+    console.error(' OpenAI ERROR:', err.response?.data || err.message || err);
     res.status(500).json({ error: 'Ошибка AI: ' + err.message });
   }
 };

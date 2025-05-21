@@ -54,13 +54,13 @@ const StudentHomePage = () => {
                     </StyledPaper>
                 </Grid>
 
-                <Grid item xs={12} md={3} lg={3}>
+              {/*   <Grid item xs={12} md={3} lg={3}>
                     <StyledPaper>
                         <AssignmentTurnedInIcon fontSize="large" color="secondary" />
                         <Title>Всего заданий</Title>
                         <Data start={0} end={15} duration={4} />
                     </StyledPaper>
-                </Grid>
+                </Grid> */}
                 <Grid item xs={12}>
                     <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                         <SeeNotice />

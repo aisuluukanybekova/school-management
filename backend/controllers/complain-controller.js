@@ -23,17 +23,17 @@ exports.complainList = async (req, res) => {
   try {
     const { schoolId } = req.params;
 
-    console.log("📥 schoolId получен:", schoolId);
+    console.log(" schoolId получен:", schoolId);
 
     if (!mongoose.Types.ObjectId.isValid(schoolId)) {
       return res.status(400).json({ message: 'Некорректный ID школы' });
     }
 
     const data = await Complain.find({ school: schoolId }).populate('user', 'name role');
-    console.log("📤 найдено жалоб:", data.length);
+    console.log(" найдено жалоб:", data.length);
     res.json(data);
   } catch (error) {
-    console.error("❌ Ошибка при получении жалоб:", error.message);
+    console.error("Ошибка при получении жалоб:", error.message);
     res.status(500).json({ message: 'Ошибка получения жалоб' });
   }
 };

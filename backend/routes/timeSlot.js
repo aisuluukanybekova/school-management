@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const TimeSlot = require('../models/timeSlotSchema');
 
-// ✅ Получить все слоты по школе и смене
+//  Получить все слоты по школе и смене
 router.get('/:schoolId', async (req, res) => {
   try {
     const { shift } = req.query;
@@ -17,7 +17,7 @@ router.get('/:schoolId', async (req, res) => {
   }
 });
 
-// ✅ Создать новый слот
+//  Создать новый слот
 router.post('/', async (req, res) => {
   try {
     const slot = await TimeSlot.create(req.body);
@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// ✅ Обновить слот
+//  Обновить слот
 router.put('/:id', async (req, res) => {
   try {
     const updated = await TimeSlot.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -37,7 +37,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// ✅ Удалить один слот
+//  Удалить один слот
 router.delete('/:id', async (req, res) => {
   try {
     await TimeSlot.findByIdAndDelete(req.params.id);
@@ -47,7 +47,7 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// ✅ Удалить все слоты по школе и смене
+//  Удалить все слоты по школе и смене
 router.delete('/all/:schoolId', async (req, res) => {
   try {
     const { shift } = req.query;
@@ -61,7 +61,7 @@ router.delete('/all/:schoolId', async (req, res) => {
   }
 });
 
-// ✅ Массовая вставка (bulk create)
+// Массовая вставка (bulk create)
 router.post('/bulk', async (req, res) => {
   try {
     if (!Array.isArray(req.body) || req.body.length === 0) {

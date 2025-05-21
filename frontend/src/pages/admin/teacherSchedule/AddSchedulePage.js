@@ -7,9 +7,12 @@ import {
 } from '@mui/material';
 import { Schedule, Save, Edit } from '@mui/icons-material';
 import axios from 'axios';
+//import axios from '../../../utils/axios';
+
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import EditTimeSlots from './EditTimeSlots';
+import { generateSchedule as generateUtilsSchedule, getTeachersForSubject } from '../../../utils/scheduleUtils';
 
 axios.defaults.baseURL = 'http://localhost:5001';
 
@@ -109,6 +112,12 @@ const AddSchedulePage = () => {
     const found = assignedSubjects.find(a => a.subjectId === subjectId);
     return found?.teachers || [];
   };
+const result = generateUtilsSchedule(timeSlots, lessonCount);
+
+if (!result) {
+  alert(`Недостаточно уроков в TimeSlots`);
+  return;
+}
 
   const saveSchedule = async () => {
     if (!lessons.every(l => l.subjectId && l.teacherId)) {

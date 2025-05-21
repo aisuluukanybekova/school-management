@@ -163,6 +163,9 @@ const TeacherAttendanceJournal = () => {
     }
   };
 
+  const uniqueClasses = [...new Map(assignments.map(a => [a.sclassId, a])).values()];
+  const uniqueSubjects = [...new Map(assignments.map(a => [a.subjectId, a])).values()];
+
   return (
     <Box p={3}>
       <Typography variant="h5">📋 Журнал посещаемости (Учитель)</Typography>
@@ -171,8 +174,8 @@ const TeacherAttendanceJournal = () => {
         <FormControl fullWidth>
           <InputLabel>Класс</InputLabel>
           <Select value={selectedClass} onChange={e => setSelectedClass(e.target.value)}>
-            {assignments.map((a, i) => (
-              <MenuItem key={i} value={a.sclassId}>{a.sclassName}</MenuItem>
+            {uniqueClasses.map((a) => (
+              <MenuItem key={a.sclassId} value={a.sclassId}>{a.sclassName}</MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -180,8 +183,8 @@ const TeacherAttendanceJournal = () => {
         <FormControl fullWidth>
           <InputLabel>Предмет</InputLabel>
           <Select value={selectedSubject} onChange={e => setSelectedSubject(e.target.value)}>
-            {assignments.map((a, i) => (
-              <MenuItem key={i} value={a.subjectId}>{a.subjectName}</MenuItem>
+            {uniqueSubjects.map((a) => (
+              <MenuItem key={a.subjectId} value={a.subjectId}>{a.subjectName}</MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -201,23 +204,55 @@ const TeacherAttendanceJournal = () => {
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: `50px 200px repeat(${lessonDates.length}, 100px) 100px`,
-            backgroundColor: '#000',
+            gridTemplateColumns: `40px 180px repeat(${lessonDates.length}, 60px) 90px`,
+            backgroundColor: '#333',
             color: '#fff',
-            fontWeight: 'bold',
+            fontWeight: 600,
+            textAlign: 'center',
+            fontSize: '0.875rem',
             position: 'sticky',
             top: 0,
             zIndex: 3
           }}
         >
-          <Box sx={{ border: '1px solid #ccc', p: 1, position: 'sticky', left: 0, zIndex: 4 }}>№</Box>
-          <Box sx={{ border: '1px solid #ccc', p: 1, position: 'sticky', left: 50, zIndex: 4 }}>Ученик</Box>
-          {lessonDates.map(date => (
-            <Box key={date} sx={{ border: '1px solid #ccc', p: 1, fontSize: '0.75rem', textAlign: 'center' }}>
-              {new Date(date).toLocaleDateString('ru-RU')}
-            </Box>
-          ))}
-          <Box sx={{ border: '1px solid #ccc', p: 1 }}>Пропущено</Box>
+          <Box sx={{ border: '1px solid #444', p: 1, position: 'sticky', left: 0, zIndex: 4 }}>№</Box>
+          <Box sx={{ border: '1px solid #444', p: 1, position: 'sticky', left: 40, zIndex: 4 }}>Ученик</Box>
+         {lessonDates.map(date => (
+  <Box
+    key={date}
+    sx={{
+      border: '1px solid #444',
+      p: 1,
+      fontSize: '0.75rem',
+      whiteSpace: 'nowrap',
+      textAlign: 'center',
+      backgroundColor: '#333',
+      color: '#fff',
+      minWidth: '60px',
+      height: '100%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }}
+  >
+    {new Date(date).toLocaleDateString('ru-RU').slice(0, 5)}
+  </Box>
+))}
+          <Box
+            sx={{
+              border: '1px solid #444',
+              p: 1,
+              fontWeight: 600,
+              backgroundColor: '#333',
+              color: '#fff',
+              position: 'sticky',
+              right: 0,
+              zIndex: 3,
+              minWidth: '90px'
+            }}
+          >
+            Пропущено
+          </Box>
         </Box>
 
         {/* Строки */}
@@ -231,26 +266,34 @@ const TeacherAttendanceJournal = () => {
               key={student._id}
               sx={{
                 display: 'grid',
-                gridTemplateColumns: `50px 200px repeat(${lessonDates.length}, 100px) 100px`,
-                backgroundColor: '#fff'
+                gridTemplateColumns: `40px 180px repeat(${lessonDates.length}, 60px) 90px`,
+                backgroundColor: idx % 2 === 0 ? '#fff' : '#f9f9f9',
+                fontSize: '0.875rem'
               }}
             >
               <Box sx={{ border: '1px solid #ccc', p: 1, textAlign: 'center', position: 'sticky', left: 0, zIndex: 2 }}>{idx + 1}</Box>
-              <Box sx={{ border: '1px solid #ccc', p: 1, fontWeight: 500, position: 'sticky', left: 50, zIndex: 2 }}>{student.name}</Box>
+              <Box sx={{ border: '1px solid #ccc', p: 1, fontWeight: 500, position: 'sticky', left: 40, zIndex: 2 }}>{student.name}</Box>
 
               {lessonDates.map(date => {
                 const absent = isAbsent(student._id, date);
                 return (
                   <Box
                     key={date}
+                    title={absent ? 'Отсутствовал' : 'Присутствовал'}
                     onClick={() => toggleAttendance(student._id, date)}
                     sx={{
                       border: '1px solid #ccc',
                       p: 1,
                       textAlign: 'center',
                       cursor: 'pointer',
-                      backgroundColor: absent ? '#f8d7da' : '#f5f5f5',
-                      userSelect: 'none'
+                      backgroundColor: absent ? '#fdd' : '#f1f1f1',
+                      '&:hover': {
+                        backgroundColor: absent ? '#fbb' : '#e0e0e0'
+                      },
+                      transition: 'background-color 0.2s ease',
+                      userSelect: 'none',
+                      fontWeight: absent ? 600 : 400,
+                      color: absent ? '#b00020' : '#333'
                     }}
                   >
                     {absent ? '—' : ''}
@@ -258,7 +301,21 @@ const TeacherAttendanceJournal = () => {
                 );
               })}
 
-              <Box sx={{ border: '1px solid #ccc', p: 1, textAlign: 'center', fontWeight: 600 }}>{count}</Box>
+              <Box
+                sx={{
+                  border: '1px solid #ccc',
+                  p: 1,
+                  textAlign: 'center',
+                  fontWeight: 600,
+                  backgroundColor: idx % 2 === 0 ? '#fff' : '#f9f9f9',
+                  position: 'sticky',
+                  right: 0,
+                  zIndex: 2,
+                  minWidth: '90px'
+                }}
+              >
+                {count}
+              </Box>
             </Box>
           );
         })}

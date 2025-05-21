@@ -88,7 +88,7 @@ const TeacherHomePage = () => {
               }}
             >
               <Typography variant="h6">
-                👨‍🏫 Вы классный руководитель класса:{" "}
+                 Вы классный руководитель класса:{" "}
                 <strong>{homeroomClass.sclassName}</strong>
               </Typography>
             </Paper>
@@ -104,14 +104,14 @@ const TeacherHomePage = () => {
             delay={0.1}
           />
         </Grid>
-        <Grid item xs={12} sm={6} md={4}>
+      {/*   <Grid item xs={12} sm={6} md={4}>
           <StatCard
             title="Всего уроков"
             value={numberOfSessions}
             icon={<MenuBookIcon />}
             delay={0.3}
           />
-        </Grid>
+        </Grid> */}
 
         {/* Объявления */}
         <Grid item xs={12}>

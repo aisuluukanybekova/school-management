@@ -119,7 +119,7 @@ const getAttendanceReport = async (req, res) => {
       Thursday: 4, Friday: 5, Saturday: 6
     };
 
-    // 🗓 Генерация всех дат уроков по расписанию
+    //  Генерация всех дат уроков по расписанию
     const lessonDates = [];
     weekdays.forEach(day => {
       const target = dayMap[day];

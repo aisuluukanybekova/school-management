@@ -6,6 +6,7 @@ const topicSchema = new mongoose.Schema({
   teacherId: { type: mongoose.Schema.Types.ObjectId, ref: 'Teacher', required: true },
   term: { type: Number, required: true },
   day: { type: String, required: true },
+  date: { type: String, required: true }, // <-- новинка!
   startTime: { type: String, required: true },
   topic: { type: String, default: '' },
   homework: { type: String, default: '' }

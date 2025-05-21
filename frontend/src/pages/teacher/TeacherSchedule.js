@@ -1,117 +1,126 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box, Typography, Select, MenuItem, FormControl, InputLabel,
-  Table, TableHead, TableRow, TableCell, TableBody, Paper, TableContainer
+  Box, Typography, Table, TableHead, TableRow, TableCell,
+  TableBody, Paper, TableContainer, Button, TextField, Snackbar, Alert,
+  FormControl, InputLabel, Select, MenuItem
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 
-const daysOfWeek = [
-  'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'
-];
-
-const ruToEnDay = {
-  'Понедельник': 'Monday',
-  'Вторник': 'Tuesday',
-  'Среда': 'Wednesday',
-  'Четверг': 'Thursday',
-  'Пятница': 'Friday',
-  'Суббота': 'Saturday'
-};
-
 const TeacherSchedule = () => {
   const teacher = useSelector((state) => state.user.currentUser);
+  const [assignments, setAssignments] = useState([]);
+  const [selectedClassId, setSelectedClassId] = useState('');
+  const [selectedSubjectId, setSelectedSubjectId] = useState('');
   const [schedule, setSchedule] = useState([]);
   const [topics, setTopics] = useState([]);
-  const [selectedDay, setSelectedDay] = useState(daysOfWeek[0]);
+  const [availableDates, setAvailableDates] = useState([]);
+  const [selectedDate, setSelectedDate] = useState('');
   const [terms, setTerms] = useState([]);
   const [term, setTerm] = useState('1');
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const schoolId = teacher?.school?._id || teacher?.schoolId;
 
   useEffect(() => {
+    const fetchAssignments = async () => {
+      const res = await axios.get(`/api/teacherSubjectClass/by-teacher/${teacher._id}`);
+      setAssignments(res.data);
+    };
+    if (teacher?._id) fetchAssignments();
+  }, [teacher]);
+
+  useEffect(() => {
     const fetchTerms = async () => {
-      try {
-        const res = await axios.get(`/api/terms/${schoolId}`);
-        setTerms(res.data);
-      } catch (err) {
-        console.error('Ошибка загрузки четвертей:', err);
-      }
+      const res = await axios.get(`/api/terms/${schoolId}`);
+      setTerms(res.data);
     };
     if (schoolId) fetchTerms();
   }, [schoolId]);
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const res = await axios.get(`/api/schedule/by-teacher/${teacher._id}`);
-        const schedules = res.data.schedules || [];
-        setSchedule(schedules);
+      if (!selectedClassId || !selectedSubjectId) return;
 
-        const assignments = schedules
-          .filter(s => s.classId && s.subjectId)
-          .map(s => ({
-            classId: s.classId._id,
-            subjectId: s.subjectId._id
-          }));
+      const res = await axios.get(`/api/schedule/by-teacher-class-subject/${teacher._id}/${selectedClassId}/${selectedSubjectId}`);
+      const lessons = res.data.schedules.filter(s => s.type === 'lesson');
+      setSchedule(lessons);
 
-        const uniquePairs = Array.from(
-          new Set(assignments.map(a => `${a.classId}_${a.subjectId}`))
-        ).map(str => {
-          const [classId, subjectId] = str.split('_');
-          return { classId, subjectId };
-        });
-
-        const allTopics = [];
-
-        for (const pair of uniquePairs) {
-          const topicRes = await axios.get(`/api/lesson-topics`, {
-            params: {
-              classId: pair.classId,
-              subjectId: pair.subjectId,
-              term: Number(term)
-            }
-          });
-          allTopics.push(...topicRes.data);
+      const topicRes = await axios.get(`/api/lesson-topics`, {
+        params: {
+          classId: selectedClassId,
+          subjectId: selectedSubjectId,
+          term: Number(term)
         }
+      });
 
-        setTopics(allTopics);
-      } catch (err) {
-        console.error('Ошибка загрузки расписания или тем:', err);
-      }
+      const allTopics = topicRes.data;
+      const topicDates = Array.from(new Set(allTopics.map(t => t.date))).sort();
+      setTopics(allTopics);
+      setAvailableDates(topicDates);
+      setSelectedDate(topicDates[0] || '');
     };
 
     if (teacher?._id && term) fetchData();
-  }, [teacher, term]);
+  }, [teacher, term, selectedClassId, selectedSubjectId]);
 
-  const filtered = schedule.filter(
-    s => s.day === ruToEnDay[selectedDay] && s.type === 'lesson'
-  );
-
-  const getLessonDetails = (lesson) => {
-    const match = topics.find(
-      t =>
-        t.day === lesson.day &&
-        t.startTime === lesson.startTime &&
-        t.classId === lesson.classId?._id &&
-        t.subjectId === lesson.subjectId?._id
-    );
-    return {
-      topic: match?.topic || 'Нет темы',
-      homework: match?.homework || 'Нет'
-    };
+  const handleChange = (index, field, value) => {
+    const updated = [...topics];
+    updated[index][field] = value;
+    setTopics(updated);
   };
+
+  const handleSave = async () => {
+    const filtered = topics.filter(t => t.date === selectedDate);
+    try {
+      await axios.post('/api/lesson-topics/save', {
+        teacherId: teacher._id,
+        term: Number(term),
+        classId: selectedClassId,
+        subjectId: selectedSubjectId,
+        lessons: filtered
+      });
+      setOpenSnackbar(true);
+    } catch (err) {
+      console.error('Ошибка сохранения тем:', err.message);
+    }
+  };
+
+  const filteredLessons = topics
+    .map((t, i) => {
+      if (t.date !== selectedDate) return null;
+      const match = schedule.find(s =>
+        s.day === t.day &&
+        s.startTime === t.startTime
+      );
+      return {
+        index: i,
+        time: `${t.startTime} - ${match?.endTime || ''}`,
+        topic: t.topic,
+        homework: t.homework
+      };
+    })
+    .filter(Boolean);
 
   return (
     <Box p={3}>
-      <Typography variant="h5" gutterBottom>🧑‍🏫 Моё расписание</Typography>
+      <Typography variant="h5" gutterBottom>📚 Моё расписание</Typography>
 
-      <Box display="flex" gap={2} mb={3}>
-        <FormControl sx={{ minWidth: 200 }}>
-          <InputLabel>День недели</InputLabel>
-          <Select value={selectedDay} onChange={e => setSelectedDay(e.target.value)}>
-            {daysOfWeek.map((day) => (
-              <MenuItem key={day} value={day}>{day}</MenuItem>
+      <Box display="flex" gap={2} mb={3} flexWrap="wrap">
+        <FormControl sx={{ minWidth: 250 }}>
+          <InputLabel>Класс и предмет</InputLabel>
+          <Select
+            value={selectedClassId && selectedSubjectId ? `${selectedClassId}_${selectedSubjectId}` : ''}
+            onChange={e => {
+              const [clsId, subId] = e.target.value.split('_');
+              setSelectedClassId(clsId);
+              setSelectedSubjectId(subId);
+            }}
+          >
+            {assignments.map((a, i) => (
+              <MenuItem key={i} value={`${a.sclassId}_${a.subjectId}`}>
+                {a.sclassName} — {a.subjectName}
+              </MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -128,39 +137,91 @@ const TeacherSchedule = () => {
         </FormControl>
       </Box>
 
+      {availableDates.length > 0 && (
+        <Box display="flex" gap={1} mb={3} overflow="auto">
+          {availableDates.map(date => {
+            const label = new Date(date).toLocaleDateString('ru-RU', {
+              weekday: 'short', day: '2-digit', month: 'short'
+            });
+            return (
+              <Button
+                key={date}
+                variant={date === selectedDate ? 'contained' : 'outlined'}
+                onClick={() => setSelectedDate(date)}
+              >
+                {label}
+              </Button>
+            );
+          })}
+        </Box>
+      )}
+
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell><strong>Время</strong></TableCell>
-              <TableCell><strong>Класс</strong></TableCell>
-              <TableCell><strong>Предмет</strong></TableCell>
-              <TableCell><strong>Тема</strong></TableCell>
-              <TableCell><strong>Домашнее задание</strong></TableCell>
+              <TableCell>Время</TableCell>
+              <TableCell>Тема</TableCell>
+              <TableCell>Домашка</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {filtered.length > 0 ? (
-              filtered.map((lesson, index) => {
-                const { topic, homework } = getLessonDetails(lesson);
-                return (
-                  <TableRow key={index}>
-                    <TableCell>{lesson.startTime} - {lesson.endTime}</TableCell>
-                    <TableCell>{lesson.classId?.sclassName || '—'}</TableCell>
-                    <TableCell>{lesson.subjectId?.subName || '—'}</TableCell>
-                    <TableCell>{topic}</TableCell>
-                    <TableCell>{homework}</TableCell>
-                  </TableRow>
-                );
-              })
+            {filteredLessons.length > 0 ? (
+              filteredLessons.map((lesson) => (
+                <TableRow key={lesson.index}>
+                  <TableCell>{lesson.time}</TableCell>
+                  <TableCell>
+                    <TextField
+                      variant="standard"
+                      fullWidth
+                      value={lesson.topic}
+                      onChange={e =>
+                        handleChange(lesson.index, 'topic', e.target.value)
+                      }
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      variant="standard"
+                      fullWidth
+                      value={lesson.homework}
+                      onChange={e =>
+                        handleChange(lesson.index, 'homework', e.target.value)
+                      }
+                    />
+                  </TableCell>
+                </TableRow>
+              ))
             ) : (
               <TableRow>
-                <TableCell colSpan={5} align="center">Нет уроков на этот день</TableCell>
+                <TableCell colSpan={3} align="center">
+                  Нет уроков на выбранную дату
+                </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </TableContainer>
+
+      <Button
+        variant="contained"
+        sx={{ mt: 3 }}
+        onClick={handleSave}
+        disabled={filteredLessons.length === 0}
+      >
+        Сохранить изменения
+      </Button>
+
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={4000}
+        onClose={() => setOpenSnackbar(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={() => setOpenSnackbar(false)} severity="success" sx={{ width: '100%' }}>
+          Темы успешно сохранены
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
