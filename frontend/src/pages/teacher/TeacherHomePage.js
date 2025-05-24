@@ -1,46 +1,58 @@
-import { Container, Grid, Paper, Typography, Avatar, Box } from '@mui/material';
+import {
+  Container, Grid, Paper, Typography, Avatar, Box,
+} from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { getClassStudents, getSubjectDetails } from '../../redux/sclassRelated/sclassHandle';
-import SeeNotice from '../../components/SeeNotice';
 import SchoolIcon from '@mui/icons-material/School';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import axios from 'axios';
 import { motion } from 'framer-motion';
+import PropTypes from 'prop-types';
+import SeeNotice from '../../components/SeeNotice';
+import { getClassStudents, getSubjectDetails } from '../../redux/sclassRelated/sclassHandle';
 
-const StatCard = ({ title, value, icon, delay = 0 }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5, delay }}
-  >
-    <Paper
-      elevation={4}
-      sx={{
-        p: 3,
-        display: 'flex',
-        alignItems: 'center',
-        borderRadius: 3,
-        backgroundColor: '#ffffff',
-        boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.05)',
-      }}
+function StatCard({ title, value, icon, delay = 0 }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay }}
     >
-      <Avatar sx={{ bgcolor: '#1976d2', width: 56, height: 56 }}>
-        {icon}
-      </Avatar>
-      <Box ml={2}>
-        <Typography variant="subtitle2" color="text.secondary">
-          {title}
-        </Typography>
-        <Typography variant="h4" color="green" sx={{ fontWeight: 'bold' }}>
-          {value}
-        </Typography>
-      </Box>
-    </Paper>
-  </motion.div>
-);
+      <Paper
+        elevation={4}
+        sx={{
+          p: 3,
+          display: 'flex',
+          alignItems: 'center',
+          borderRadius: 3,
+          backgroundColor: '#ffffff',
+          boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.05)',
+        }}
+      >
+        <Avatar sx={{ bgcolor: '#1976d2', width: 56, height: 56 }}>
+          {icon}
+        </Avatar>
+        <Box ml={2}>
+          <Typography variant="subtitle2" color="text.secondary">
+            {title}
+          </Typography>
+          <Typography variant="h4" color="green" sx={{ fontWeight: 'bold' }}>
+            {value}
+          </Typography>
+        </Box>
+      </Paper>
+    </motion.div>
+  );
+}
 
-const TeacherHomePage = () => {
+StatCard.propTypes = {
+  title: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  icon: PropTypes.node.isRequired,
+  delay: PropTypes.number,
+};
+
+function TeacherHomePage() {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
   const { subjectDetails, sclassStudents } = useSelector((state) => state.sclass);
@@ -51,7 +63,7 @@ const TeacherHomePage = () => {
 
   useEffect(() => {
     if (classID && subjectID) {
-      dispatch(getSubjectDetails(subjectID, "Subject"));
+      dispatch(getSubjectDetails(subjectID, 'Subject'));
       dispatch(getClassStudents(classID));
     }
   }, [dispatch, subjectID, classID]);
@@ -63,7 +75,7 @@ const TeacherHomePage = () => {
           const res = await axios.get(`/api/classes/${currentUser.homeroomFor._id}`);
           setHomeroomClass(res.data);
         } catch (err) {
-          console.error("Ошибка при получении класса классного руководителя:", err);
+          console.error('Ошибка при получении класса классного руководителя:', err);
         }
       }
     };
@@ -88,8 +100,7 @@ const TeacherHomePage = () => {
               }}
             >
               <Typography variant="h6">
-                 Вы классный руководитель класса:{" "}
-                <strong>{homeroomClass.sclassName}</strong>
+                Вы классный руководитель класса: <strong>{homeroomClass.sclassName}</strong>
               </Typography>
             </Paper>
           </Grid>
@@ -104,14 +115,15 @@ const TeacherHomePage = () => {
             delay={0.1}
           />
         </Grid>
-      {/*   <Grid item xs={12} sm={6} md={4}>
+
+        <Grid item xs={12} sm={6} md={4}>
           <StatCard
             title="Всего уроков"
             value={numberOfSessions}
             icon={<MenuBookIcon />}
             delay={0.3}
           />
-        </Grid> */}
+        </Grid>
 
         {/* Объявления */}
         <Grid item xs={12}>
@@ -135,6 +147,6 @@ const TeacherHomePage = () => {
       </Grid>
     </Container>
   );
-};
+}
 
 export default TeacherHomePage;

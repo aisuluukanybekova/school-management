@@ -2,31 +2,30 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   Box, Typography, Table, TableBody, TableCell, TableHead, TableRow,
-  TextField, Button, Paper, TableContainer
+  TextField, Button, Paper, TableContainer,
 } from '@mui/material';
 import { Save } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
 
 axios.defaults.baseURL = 'http://localhost:5001';
 
-const AdminTermManager = () => {
+function AdminTermManager() {
   const admin = useSelector((state) => state.user.currentUser);
   const schoolId = admin?._id;
-
   const [terms, setTerms] = useState([]);
 
   useEffect(() => {
     if (!schoolId) return;
 
     axios.get(`/api/terms/school/${schoolId}`)
-      .then(res => setTerms(res.data))
-      .catch(err => console.error("Ошибка при загрузке четвертей:", err));
+      .then((res) => setTerms(res.data))
+      .catch((err) => console.error('Ошибка при загрузке четвертей:', err));
   }, [schoolId]);
 
   const handleChange = (termNumber, field, value) => {
-    setTerms(prev => {
+    setTerms((prev) => {
       const updated = [...prev];
-      const index = updated.findIndex(t => t.termNumber === termNumber);
+      const index = updated.findIndex((t) => t.termNumber === termNumber);
       if (index !== -1) {
         updated[index] = { ...updated[index], [field]: value };
       } else {
@@ -34,7 +33,7 @@ const AdminTermManager = () => {
           termNumber,
           startDate: field === 'startDate' ? value : '',
           endDate: field === 'endDate' ? value : '',
-          school: schoolId
+          school: schoolId,
         });
       }
       return updated;
@@ -43,7 +42,7 @@ const AdminTermManager = () => {
 
   const getWeekdaysCount = (start, end) => {
     let count = 0;
-    let current = new Date(start);
+    const current = new Date(start);
     const last = new Date(end);
     while (current <= last) {
       const day = current.getDay();
@@ -54,21 +53,21 @@ const AdminTermManager = () => {
   };
 
   const saveTerm = async (termNumber) => {
-    const term = terms.find(t => t.termNumber === termNumber);
+    const term = terms.find((t) => t.termNumber === termNumber);
     if (!term) return;
 
     if (!schoolId) {
-      alert("Ошибка: schoolId отсутствует");
+      alert('Ошибка: schoolId отсутствует');
       return;
     }
 
     if (!term.startDate || !term.endDate) {
-      alert("Введите обе даты");
+      alert('Введите обе даты');
       return;
     }
 
     if (new Date(term.startDate) > new Date(term.endDate)) {
-      alert("Дата начала должна быть раньше даты окончания");
+      alert('Дата начала должна быть раньше даты окончания');
       return;
     }
 
@@ -78,19 +77,21 @@ const AdminTermManager = () => {
       school: schoolId,
       workingDays,
       startDate: new Date(term.startDate).toISOString(),
-      endDate: new Date(term.endDate).toISOString()
+      endDate: new Date(term.endDate).toISOString(),
     };
 
     try {
-      const response = term._id
-        ? await axios.put(`/api/terms/${term._id}`, payload)
-        : await axios.post(`/api/terms`, payload);
+      if (term._id) {
+        await axios.put(`/api/terms/${term._id}`, payload); //  удалено `const response =`
+      } else {
+        await axios.post('/api/terms', payload); // тоже без `response =`
+      }
 
       alert(`Сохранено! Учебных дней: ${workingDays}`);
       const res = await axios.get(`/api/terms/school/${schoolId}`);
       setTerms(res.data);
     } catch (err) {
-      const errorMessage = err.response?.data?.message || err.message || "Неизвестная ошибка";
+      const errorMessage = err.response?.data?.message || err.message || 'Неизвестная ошибка';
       alert(`Ошибка сохранения: ${errorMessage}`);
     }
   };
@@ -114,7 +115,7 @@ const AdminTermManager = () => {
 
           <TableBody>
             {[1, 2, 3, 4].map((num) => {
-              const term = terms.find(t => t.termNumber === num) || { termNumber: num };
+              const term = terms.find((t) => t.termNumber === num) || { termNumber: num };
               return (
                 <TableRow
                   key={num}
@@ -157,6 +158,6 @@ const AdminTermManager = () => {
       </TableContainer>
     </Box>
   );
-};
+}
 
 export default AdminTermManager;

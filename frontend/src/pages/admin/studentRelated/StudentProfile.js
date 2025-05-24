@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box, Typography, Paper, TextField, MenuItem, Button, Snackbar, Alert
+  Box, Typography, Paper, TextField, MenuItem, Button, Snackbar, Alert,
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
-const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:5001";
+const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:5001';
 
-const StudentProfile = () => {
+function StudentProfile() {
   const { id } = useParams();
   const [student, setStudent] = useState({});
   const [classList, setClassList] = useState([]);
@@ -25,8 +25,8 @@ const StudentProfile = () => {
         const classRes = await axios.get(`${REACT_APP_BASE_URL}/api/sclasses/${schoolId}`);
         setClassList(classRes.data);
       } catch (error) {
-        console.error("Ошибка при загрузке данных:", error);
-        setErrorMessage("Ошибка загрузки данных");
+        console.error('Ошибка при загрузке данных:', error);
+        setErrorMessage('Ошибка загрузки данных');
         setSnackbarOpen(true);
       }
     };
@@ -49,9 +49,21 @@ const StudentProfile = () => {
     <Box sx={{ p: 3 }}>
       <Typography variant="h4" gutterBottom>Профиль ученика</Typography>
       <Paper sx={{ p: 2, mb: 4 }}>
-        <Typography><strong>Имя:</strong> {student.name}</Typography>
-        <Typography><strong>Номер:</strong> {student.rollNum}</Typography>
-        <Typography><strong>Класс:</strong> {student.sclassName?.sclassName}</Typography>
+        <Typography>
+          <strong>Имя:</strong>
+          {' '}
+          {student.name}
+        </Typography>
+        <Typography>
+          <strong>Номер:</strong>
+          {' '}
+          {student.rollNum}
+        </Typography>
+        <Typography>
+          <strong>Класс:</strong>
+          {' '}
+          {student.sclassName?.sclassName}
+        </Typography>
 
         <Box mt={2}>
           <TextField
@@ -61,7 +73,7 @@ const StudentProfile = () => {
             value={newClassId}
             onChange={(e) => setNewClassId(e.target.value)}
           >
-            {classList.map(cls => (
+            {classList.map((cls) => (
               <MenuItem key={cls._id} value={cls._id}>{cls.sclassName}</MenuItem>
             ))}
           </TextField>
@@ -84,7 +96,7 @@ const StudentProfile = () => {
       >
         <Alert
           onClose={() => setSnackbarOpen(false)}
-          severity={errorMessage.includes("успешно") ? "success" : "error"}
+          severity={errorMessage.includes('успешно') ? 'success' : 'error'}
           sx={{ width: '100%' }}
         >
           {errorMessage}
@@ -92,6 +104,6 @@ const StudentProfile = () => {
       </Snackbar>
     </Box>
   );
-};
+}
 
 export default StudentProfile;

@@ -17,31 +17,33 @@ import {
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import bgpic from "../../assets/designlogin.jpg";
+import styled, { keyframes } from 'styled-components';
+import bgpic from '../../assets/designlogin.jpg';
 import { LightPurpleButton } from '../../components/buttonStyles';
 import { registerUser } from '../../redux/userRelated/userHandle';
-import styled, { keyframes } from 'styled-components';
 import Popup from '../../components/Popup';
 
 const defaultTheme = createTheme();
 
-const AdminRegisterPage = () => {
+function AdminRegisterPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { status, currentUser, response, error, currentRole } = useSelector(state => state.user);
+  const {
+    status, currentUser, response, error, currentRole,
+  } = useSelector((state) => state.user);
 
   const [toggle, setToggle] = useState(false);
   const [loader, setLoader] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
 
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [adminNameError, setAdminNameError] = useState(false);
   const [schoolNameError, setSchoolNameError] = useState(false);
 
-  const role = "Admin";
+  const role = 'Admin';
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -59,7 +61,9 @@ const AdminRegisterPage = () => {
       return;
     }
 
-    const fields = { name, email, password, role, schoolName };
+    const fields = {
+      name, email, password, role, schoolName,
+    };
     setLoader(true);
     dispatch(registerUser(fields, role));
   };
@@ -90,12 +94,17 @@ const AdminRegisterPage = () => {
         <CssBaseline />
         <Grid item xs={12} sm={8} md={5} component={StyledPaper} elevation={6} square>
           <StyledFormContainer>
-          <Typography variant="h4" sx={{ mb: 2, color: "#2c2143", fontWeight: 700, textAlign: 'center' }}>
-               Регистрация администратора
-             </Typography>
-             <Typography variant="body2" sx={{ mb: 3, textAlign: "center", color: "#555" }}>
-               Создайте свою школу и начните управлять учениками и преподавателями
-               </Typography>
+            <Typography
+              variant="h4"
+              sx={{
+                mb: 2, color: '#2c2143', fontWeight: 700, textAlign: 'center',
+              }}
+            >
+              Регистрация администратора
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 3, textAlign: 'center', color: '#555' }}>
+              Создайте свою школу и начните управлять учениками и преподавателями
+            </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit}>
               <TextField
                 margin="normal"
@@ -105,7 +114,6 @@ const AdminRegisterPage = () => {
                 label="Ваше имя"
                 name="adminName"
                 autoComplete="name"
-                autoFocus
                 error={adminNameError}
                 helperText={adminNameError && 'Имя обязательно'}
                 onChange={handleInputChange}
@@ -156,7 +164,7 @@ const AdminRegisterPage = () => {
                   ),
                 }}
               />
-              <Grid container sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Grid container sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <FormControlLabel
                   control={<Checkbox value="remember" color="primary" />}
                   label="Запомнить меня"
@@ -168,11 +176,12 @@ const AdminRegisterPage = () => {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                {loader ? <CircularProgress size={24} color="inherit" /> : "Зарегистрироваться"}
+                {loader ? <CircularProgress size={24} color="inherit" /> : 'Зарегистрироваться'}
               </LightPurpleButton>
               <Grid container justifyContent="center">
                 <Typography variant="body2">
-                  Уже есть аккаунт?{' '}
+                  Уже есть аккаунт?
+                  {' '}
                   <StyledLink to="/Adminlogin">Войти</StyledLink>
                 </Typography>
               </Grid>
@@ -187,8 +196,7 @@ const AdminRegisterPage = () => {
           sx={{
             backgroundImage: `url(${bgpic})`,
             backgroundRepeat: 'no-repeat',
-            backgroundColor: (t) =>
-              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+            backgroundColor: (t) => (t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900]),
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
@@ -197,11 +205,9 @@ const AdminRegisterPage = () => {
       <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
     </ThemeProvider>
   );
-};
+}
 
 export default AdminRegisterPage;
-
-// === Styled Components ===
 
 const fadeIn = keyframes`
   from {
@@ -242,4 +248,3 @@ const StyledLink = styled(Link)`
     color: #5a38b2;
   }
 `;
-

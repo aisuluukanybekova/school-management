@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import {
-  Box, TextField, IconButton, Select, MenuItem, Button, Typography
+  Box, TextField, IconButton, Select, MenuItem, Button, Typography,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -11,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import Popup from '../../../components/Popup';
 import TableTemplate from '../../../components/TableTemplate';
 
-const ShowSubjects = () => {
+function ShowSubjects() {
   const [records, setRecords] = useState([]);
   const [editCache, setEditCache] = useState({});
   const [editMode, setEditMode] = useState({});
@@ -32,14 +33,14 @@ const ShowSubjects = () => {
         axios.get('/api/teacherSubjectClass'),
         axios.get('/api/subjects'),
         axios.get('/api/teachers'),
-        axios.get('/api/classes')
+        axios.get('/api/classes'),
       ]);
 
       setSubjects(subRes.data);
       setTeachers(teachRes.data);
       setClasses(classRes.data);
 
-      const mapped = res.data.map(r => ({
+      const mapped = res.data.map((r) => ({
         id: r._id,
         subjectId: r.subject?._id || '',
         subject: r.subject?.subName || '',
@@ -47,7 +48,7 @@ const ShowSubjects = () => {
         teacher: r.teacher?.name || '',
         classId: r.sclassName?._id || '',
         class: r.sclassName?.sclassName || '',
-        sessions: r.sessions || 0
+        sessions: r.sessions || 0,
       }));
 
       setRecords(mapped);
@@ -64,28 +65,26 @@ const ShowSubjects = () => {
 
   const toggleEdit = (id) => {
     if (editMode[id]) {
-      // отмена: сброс редактируемых значений
-      setEditCache(prev => {
+      setEditCache((prev) => {
         const newCache = { ...prev };
         delete newCache[id];
         return newCache;
       });
     } else {
-      // включение редактирования
-      const original = records.find(r => r.id === id);
-      setEditCache(prev => ({
+      const original = records.find((r) => r.id === id);
+      setEditCache((prev) => ({
         ...prev,
-        [id]: { ...original }
+        [id]: { ...original },
       }));
     }
 
-    setEditMode(prev => ({ ...prev, [id]: !prev[id] }));
+    setEditMode((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
   const updateField = (id, field, value) => {
-    setEditCache(prev => ({
+    setEditCache((prev) => ({
       ...prev,
-      [id]: { ...prev[id], [field]: value }
+      [id]: { ...prev[id], [field]: value },
     }));
   };
 
@@ -96,13 +95,13 @@ const ShowSubjects = () => {
         subjectId: row.subjectId,
         teacherId: row.teacherId,
         classId: row.classId,
-        sessions: Number(row.sessions)
+        sessions: Number(row.sessions),
       });
 
       setMessage('Изменения сохранены');
       setShowPopup(true);
-      setEditMode(prev => ({ ...prev, [id]: false }));
-      setEditCache(prev => {
+      setEditMode((prev) => ({ ...prev, [id]: false }));
+      setEditCache((prev) => {
         const newCache = { ...prev };
         delete newCache[id];
         return newCache;
@@ -127,7 +126,7 @@ const ShowSubjects = () => {
     }
   };
 
-  const filtered = records.filter(r =>
+  const filtered = records.filter((r) =>
     r.subject.toLowerCase().includes(searchQuery.toLowerCase()) &&
     r.class.toLowerCase().includes(searchClass.toLowerCase())
   );
@@ -136,26 +135,41 @@ const ShowSubjects = () => {
     { id: 'subjectId', label: 'Предмет' },
     { id: 'classId', label: 'Класс' },
     { id: 'teacherId', label: 'Учитель' },
-    { id: 'sessions', label: 'Занятий' }
+    { id: 'sessions', label: 'Занятий' },
   ];
 
-  const ButtonHaver = ({ row }) => {
+  function ButtonHaver({ row }) {
     const isEditing = editMode[row.id];
     return (
       <Box sx={{ display: 'flex', gap: 1 }}>
         {isEditing ? (
           <>
-            <IconButton onClick={() => saveHandler(row.id)}><SaveIcon color="success" /></IconButton>
-            <IconButton onClick={() => toggleEdit(row.id)}><CloseIcon color="error" /></IconButton>
+            <IconButton onClick={() => saveHandler(row.id)}>
+              <SaveIcon color="success" />
+            </IconButton>
+            <IconButton onClick={() => toggleEdit(row.id)}>
+              <CloseIcon color="error" />
+            </IconButton>
           </>
         ) : (
           <>
-            <IconButton onClick={() => toggleEdit(row.id)}><EditIcon /></IconButton>
-            <IconButton onClick={() => deleteHandler(row.id)}><DeleteIcon color="error" /></IconButton>
+            <IconButton onClick={() => toggleEdit(row.id)}>
+              <EditIcon />
+            </IconButton>
+            <IconButton onClick={() => deleteHandler(row.id)}>
+              <DeleteIcon color="error" />
+            </IconButton>
           </>
         )}
       </Box>
     );
+  }
+
+  //  PropTypes для ButtonHaver
+  ButtonHaver.propTypes = {
+    row: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }).isRequired,
   };
 
   const rows = filtered.map((row) => {
@@ -166,45 +180,40 @@ const ShowSubjects = () => {
       ...row,
       subjectId: isEditing ? (
         <Select
-          fullWidth size="small"
-          value={data.subjectId}
+          fullWidth size="small" value={data.subjectId}
           onChange={(e) => updateField(row.id, 'subjectId', e.target.value)}
         >
-          {subjects.map(s => (
+          {subjects.map((s) => (
             <MenuItem key={s._id} value={s._id}>{s.subName}</MenuItem>
           ))}
         </Select>
       ) : row.subject,
       classId: isEditing ? (
         <Select
-          fullWidth size="small"
-          value={data.classId}
+          fullWidth size="small" value={data.classId}
           onChange={(e) => updateField(row.id, 'classId', e.target.value)}
         >
-          {classes.map(c => (
+          {classes.map((c) => (
             <MenuItem key={c._id} value={c._id}>{c.sclassName}</MenuItem>
           ))}
         </Select>
       ) : row.class,
       teacherId: isEditing ? (
         <Select
-          fullWidth size="small"
-          value={data.teacherId}
+          fullWidth size="small" value={data.teacherId}
           onChange={(e) => updateField(row.id, 'teacherId', e.target.value)}
         >
-          {teachers.map(t => (
+          {teachers.map((t) => (
             <MenuItem key={t._id} value={t._id}>{t.name}</MenuItem>
           ))}
         </Select>
       ) : row.teacher,
       sessions: isEditing ? (
         <TextField
-          type="number"
-          size="small"
-          value={data.sessions}
+          type="number" size="small" value={data.sessions}
           onChange={(e) => updateField(row.id, 'sessions', e.target.value)}
         />
-      ) : row.sessions
+      ) : row.sessions,
     };
   });
 
@@ -214,7 +223,11 @@ const ShowSubjects = () => {
         <Typography>Загрузка...</Typography>
       ) : (
         <Box>
-          <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
+          <Box
+            sx={{
+              display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap',
+            }}
+          >
             <TextField
               label="Поиск по предмету"
               value={searchQuery}
@@ -225,8 +238,16 @@ const ShowSubjects = () => {
               value={searchClass}
               onChange={(e) => setSearchClass(e.target.value)}
             />
-            <Button variant="contained" onClick={() => navigate('/Admin/subjects/assign')}>Назначить предмет</Button>
-            <Button variant="contained" color="secondary" onClick={() => navigate('/Admin/addsubject')}>Добавить предмет</Button>
+            <Button variant="contained" onClick={() => navigate('/Admin/subjects/assign')}>
+              Назначить предмет
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => navigate('/Admin/addsubject')}
+            >
+              Добавить предмет
+            </Button>
           </Box>
 
           <TableTemplate columns={columns} rows={rows} buttonHaver={ButtonHaver} />
@@ -235,6 +256,6 @@ const ShowSubjects = () => {
       <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
     </>
   );
-};
+}
 
 export default ShowSubjects;

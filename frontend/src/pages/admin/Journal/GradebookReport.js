@@ -1,15 +1,15 @@
 import React from 'react';
 import {
   Box, Typography, Table, TableContainer, TableHead, TableBody,
-  TableRow, TableCell, Paper, Button
+  TableRow, TableCell, Paper, Button,
 } from '@mui/material';
 
-const GradebookReport = () => {
+function GradebookReport() {
   // Получаем данные из localStorage
   const raw = JSON.parse(localStorage.getItem('gradebook_report') || '[]');
-  const subject = localStorage.getItem('selected_subject') || 'Предмет не указан'; // 💡 Новый блок
+  const subject = localStorage.getItem('selected_subject') || 'Предмет не указан';
 
-  const report = raw.map((r, i) => {
+  const report = raw.map((r) => {
     const roundedAverage = r.average !== '-' ? Math.round(r.average) : '-';
 
     return {
@@ -17,9 +17,9 @@ const GradebookReport = () => {
       rollNum: r.rollNum || '—',
       min: r.grades?.length ? Math.min(...r.grades) : '—',
       max: r.grades?.length ? Math.max(...r.grades) : '—',
-      weak: r.grades?.filter(g => g < 3).length || 0,
+      weak: r.grades?.filter((g) => g < 3).length || 0,
       final: roundedAverage,
-      status: roundedAverage !== '-' && roundedAverage < 3 ? 'Поддержка' : 'Успевает'
+      status: roundedAverage !== '-' && roundedAverage < 3 ? 'Поддержка' : 'Успевает',
     };
   });
 
@@ -59,9 +59,9 @@ const GradebookReport = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {report.map((r, i) => (
-              <TableRow key={i}>
-                <TableCell>{i + 1}</TableCell>
+            {report.map((r, idx) => (
+            <TableRow key={`${r.name}-${r.rollNum}`}>
+                <TableCell>{idx + 1}</TableCell>
                 <TableCell>{r.name}</TableCell>
                 <TableCell align="center">{r.rollNum}</TableCell>
                 <TableCell align="center">{r.count}</TableCell>
@@ -69,7 +69,7 @@ const GradebookReport = () => {
                   align="center"
                   sx={{
                     color: r.final !== '-' && r.final < 3 ? 'red' : 'inherit',
-                    fontWeight: r.final !== '-' && r.final < 3 ? 'bold' : 'normal'
+                    fontWeight: r.final !== '-' && r.final < 3 ? 'bold' : 'normal',
                   }}
                 >
                   {r.final}
@@ -89,6 +89,6 @@ const GradebookReport = () => {
       </TableContainer>
     </Box>
   );
-};
+}
 
 export default GradebookReport;

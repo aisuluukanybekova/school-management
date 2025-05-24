@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { CssBaseline, Box, List, Divider } from '@mui/material';
+import {
+  CssBaseline, Box, List, Divider,
+} from '@mui/material';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { Drawer } from '../../components/styles';
 import TeacherSideBar from './TeacherSideBar';
-import { useSelector } from 'react-redux';
 
 // Страницы
 import Logout from '../Logout';
@@ -12,14 +14,14 @@ import TeacherComplain from './TeacherComplain';
 import TeacherHomePage from './TeacherHomePage';
 import TeacherProfile from './TeacherProfile';
 import TeacherSettings from './TeacherSettings';
-import TeacherGradebook from './TeacherGradebook'; 
+import TeacherGradebook from './TeacherGradebook';
 import TeacherAttendanceJournal from './TeacherAttendanceJournal';
 import HomeroomDashboard from './HomeroomDashboard';
 import HomeroomDashboardExtended from './HomeroomDashboardExtended';
 import TeacherSchedule from './TeacherSchedule';
 import TeacherLessonTopics from './TeacherLessonTopics';
 
-const TeacherDashboard = () => {
+function TeacherDashboard() {
   const [open, setOpen] = useState(true);
   const teacher = useSelector((state) => state.user.currentUser);
   const isHomeroomTeacher = Boolean(teacher?.homeroomFor);
@@ -65,7 +67,7 @@ const TeacherDashboard = () => {
       </Box>
     </Box>
   );
-};
+}
 
 export default TeacherDashboard;
 
@@ -74,10 +76,9 @@ const styles = {
     flexGrow: 1,
     height: '100vh',
     overflow: 'auto',
-    backgroundColor: (theme) =>
-      theme.palette.mode === 'light'
-        ? theme.palette.grey[100]
-        : theme.palette.grey[900],
+    backgroundColor: (theme) => (theme.palette.mode === 'light'
+      ? theme.palette.grey[100]
+      : theme.palette.grey[900]),
     padding: 3,
   },
 };

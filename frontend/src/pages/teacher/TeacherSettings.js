@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import {
   Paper, Typography, Switch, FormControlLabel,
   MenuItem, Select, InputLabel, FormControl,
-  Box, Button, Divider, TextField, Avatar
+  Box, Button, Divider, TextField, Avatar,
 } from '@mui/material';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 const REACT_APP_BASE_URL = 'http://localhost:5001';
 
-const TeacherSettings = () => {
+function TeacherSettings() {
   const { currentUser } = useSelector((state) => state.user);
   const [darkMode, setDarkMode] = useState(false);
   const [language, setLanguage] = useState('ru');
@@ -17,16 +17,10 @@ const TeacherSettings = () => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [avatar, setAvatar] = useState(null);
 
   useEffect(() => {
     document.body.setAttribute('data-theme', darkMode ? 'dark' : 'light');
   }, [darkMode]);
-
-  const handleAvatarChange = (e) => {
-    const file = e.target.files[0];
-    setAvatar(file);
-  };
 
   const handleSave = async () => {
     try {
@@ -36,8 +30,6 @@ const TeacherSettings = () => {
         });
         alert('Пароль успешно обновлён');
       }
-
-      // Future: загрузка аватара через FormData
 
       console.log({
         darkMode,
@@ -54,7 +46,10 @@ const TeacherSettings = () => {
   };
 
   return (
-    <Paper sx={{ p: 4, maxWidth: 600, margin: 'auto', mt: 4 }}>
+    <Paper sx={{
+      p: 4, maxWidth: 600, margin: 'auto', mt: 4,
+    }}
+    >
       <Typography variant="h5" gutterBottom>
         Настройки преподавателя
       </Typography>
@@ -65,7 +60,7 @@ const TeacherSettings = () => {
         </Avatar>
         <Button variant="outlined" component="label">
           Изменить аватар
-          <input hidden type="file" accept="image/*" onChange={handleAvatarChange} />
+          <input hidden type="file" accept="image/*" />
         </Button>
       </Box>
 
@@ -135,6 +130,6 @@ const TeacherSettings = () => {
       </Box>
     </Paper>
   );
-};
+}
 
 export default TeacherSettings;

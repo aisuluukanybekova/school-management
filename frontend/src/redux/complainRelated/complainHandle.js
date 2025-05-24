@@ -4,16 +4,16 @@ import {
   getRequest,
   getSuccess,
   getFailed,
-  getError
+  getError,
 } from './complainSlice';
 
-const BASE_URL = "http://localhost:5001/api";
+const BASE_URL = 'http://localhost:5001/api';
 
 export const getAllComplains = (schoolId) => async (dispatch) => {
   dispatch(getRequest());
   try {
     const res = await axios.get(`${BASE_URL}/complains/school/${schoolId}`);
-    console.log("🧪 Ответ с сервера:", res.data);
+    console.log('🧪 Ответ с сервера:', res.data);
     if (res.data.message) {
       dispatch(getFailed(res.data.message));
     } else {

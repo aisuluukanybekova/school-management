@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import {
   Box, Typography, Table, TableHead, TableRow, TableCell,
   TableBody, Paper, TableContainer, Button, TextField, Snackbar, Alert,
-  FormControl, InputLabel, Select, MenuItem
+  FormControl, InputLabel, Select, MenuItem,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 
-const TeacherSchedule = () => {
+function TeacherSchedule() {
   const teacher = useSelector((state) => state.user.currentUser);
   const [assignments, setAssignments] = useState([]);
   const [selectedClassId, setSelectedClassId] = useState('');
@@ -42,20 +42,22 @@ const TeacherSchedule = () => {
     const fetchData = async () => {
       if (!selectedClassId || !selectedSubjectId) return;
 
-      const res = await axios.get(`/api/schedule/by-teacher-class-subject/${teacher._id}/${selectedClassId}/${selectedSubjectId}`);
-      const lessons = res.data.schedules.filter(s => s.type === 'lesson');
+      const res = await axios.get(
+        `/api/schedule/by-teacher-class-subject/${teacher._id}/${selectedClassId}/${selectedSubjectId}`
+      );
+      const lessons = res.data.schedules.filter((s) => s.type === 'lesson');
       setSchedule(lessons);
 
-      const topicRes = await axios.get(`/api/lesson-topics`, {
+      const topicRes = await axios.get('/api/lesson-topics', {
         params: {
           classId: selectedClassId,
           subjectId: selectedSubjectId,
-          term: Number(term)
-        }
+          term: Number(term),
+        },
       });
 
       const allTopics = topicRes.data;
-      const topicDates = Array.from(new Set(allTopics.map(t => t.date))).sort();
+      const topicDates = Array.from(new Set(allTopics.map((t) => t.date))).sort();
       setTopics(allTopics);
       setAvailableDates(topicDates);
       setSelectedDate(topicDates[0] || '');
@@ -71,14 +73,14 @@ const TeacherSchedule = () => {
   };
 
   const handleSave = async () => {
-    const filtered = topics.filter(t => t.date === selectedDate);
+    const filtered = topics.filter((t) => t.date === selectedDate);
     try {
       await axios.post('/api/lesson-topics/save', {
         teacherId: teacher._id,
         term: Number(term),
         classId: selectedClassId,
         subjectId: selectedSubjectId,
-        lessons: filtered
+        lessons: filtered,
       });
       setOpenSnackbar(true);
     } catch (err) {
@@ -89,15 +91,12 @@ const TeacherSchedule = () => {
   const filteredLessons = topics
     .map((t, i) => {
       if (t.date !== selectedDate) return null;
-      const match = schedule.find(s =>
-        s.day === t.day &&
-        s.startTime === t.startTime
-      );
+      const match = schedule.find((s) => s.day === t.day && s.startTime === t.startTime);
       return {
         index: i,
         time: `${t.startTime} - ${match?.endTime || ''}`,
         topic: t.topic,
-        homework: t.homework
+        homework: t.homework,
       };
     })
     .filter(Boolean);
@@ -111,15 +110,18 @@ const TeacherSchedule = () => {
           <InputLabel>Класс и предмет</InputLabel>
           <Select
             value={selectedClassId && selectedSubjectId ? `${selectedClassId}_${selectedSubjectId}` : ''}
-            onChange={e => {
+            onChange={(e) => {
               const [clsId, subId] = e.target.value.split('_');
               setSelectedClassId(clsId);
               setSelectedSubjectId(subId);
             }}
           >
-            {assignments.map((a, i) => (
-              <MenuItem key={i} value={`${a.sclassId}_${a.subjectId}`}>
-                {a.sclassName} — {a.subjectName}
+            {assignments.map((a) => (
+              <MenuItem
+                key={`${a.sclassId}_${a.subjectId}`}
+                value={`${a.sclassId}_${a.subjectId}`}
+              >
+                {`${a.sclassName} — ${a.subjectName}`}
               </MenuItem>
             ))}
           </Select>
@@ -127,8 +129,8 @@ const TeacherSchedule = () => {
 
         <FormControl sx={{ minWidth: 200 }}>
           <InputLabel>Четверть</InputLabel>
-          <Select value={term} onChange={e => setTerm(e.target.value)}>
-            {terms.map(t => (
+          <Select value={term} onChange={(e) => setTerm(e.target.value)}>
+            {terms.map((t) => (
               <MenuItem key={t.termNumber} value={String(t.termNumber)}>
                 Четверть {t.termNumber}
               </MenuItem>
@@ -139,9 +141,9 @@ const TeacherSchedule = () => {
 
       {availableDates.length > 0 && (
         <Box display="flex" gap={1} mb={3} overflow="auto">
-          {availableDates.map(date => {
+          {availableDates.map((date) => {
             const label = new Date(date).toLocaleDateString('ru-RU', {
-              weekday: 'short', day: '2-digit', month: 'short'
+              weekday: 'short', day: '2-digit', month: 'short',
             });
             return (
               <Button
@@ -175,9 +177,7 @@ const TeacherSchedule = () => {
                       variant="standard"
                       fullWidth
                       value={lesson.topic}
-                      onChange={e =>
-                        handleChange(lesson.index, 'topic', e.target.value)
-                      }
+                      onChange={(e) => handleChange(lesson.index, 'topic', e.target.value)}
                     />
                   </TableCell>
                   <TableCell>
@@ -185,9 +185,7 @@ const TeacherSchedule = () => {
                       variant="standard"
                       fullWidth
                       value={lesson.homework}
-                      onChange={e =>
-                        handleChange(lesson.index, 'homework', e.target.value)
-                      }
+                      onChange={(e) => handleChange(lesson.index, 'homework', e.target.value)}
                     />
                   </TableCell>
                 </TableRow>
@@ -224,6 +222,6 @@ const TeacherSchedule = () => {
       </Snackbar>
     </Box>
   );
-};
+}
 
 export default TeacherSchedule;

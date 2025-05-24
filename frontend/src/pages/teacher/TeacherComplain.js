@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import {
-  Box, TextField, MenuItem, Typography, CircularProgress, Stack, Alert
+  Box, TextField, MenuItem, Typography, CircularProgress, Stack, Alert,
 } from '@mui/material';
-import { BlueButton } from '../../components/buttonStyles';
 import { useDispatch, useSelector } from 'react-redux';
+import { BlueButton } from '../../components/buttonStyles';
 import { addStuff } from '../../redux/userRelated/userHandle';
 
-const TeacherComplain = () => {
+function TeacherComplain() {
   const dispatch = useDispatch();
-  const { currentUser, status, error } = useSelector(state => state.user);
+  const { currentUser, status, error } = useSelector((state) => state.user);
 
   const [complaintType, setComplaintType] = useState('');
   const [description, setDescription] = useState('');
@@ -23,25 +23,25 @@ const TeacherComplain = () => {
     school: currentUser?.school?._id,
     complaintType,
     description,
-    date
+    date,
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
     if (!complaintType || description.trim().length < 10) {
-      setMessage("Опишите проблему более подробно (минимум 10 символов).");
+      setMessage('Опишите проблему более подробно (минимум 10 символов).');
       setIsError(true);
       setShowPopup(true);
       return;
     }
     setLoader(true);
-    dispatch(addStuff(fields, "teacher-complains"));
+    dispatch(addStuff(fields, 'teacher-complains'));
   };
 
   useEffect(() => {
-    if (status === "added") {
+    if (status === 'added') {
       setLoader(false);
-      setMessage("Жалоба отправлена успешно!");
+      setMessage('Жалоба отправлена успешно!');
       setIsError(false);
       setShowPopup(true);
       setComplaintType('');
@@ -49,7 +49,7 @@ const TeacherComplain = () => {
       setDate(new Date().toISOString().substring(0, 10));
     } else if (error) {
       setLoader(false);
-      setMessage("Ошибка отправки жалобы");
+      setMessage('Ошибка отправки жалобы');
       setIsError(true);
       setShowPopup(true);
     }
@@ -100,8 +100,8 @@ const TeacherComplain = () => {
           error={description && description.length < 10}
           helperText={
             description && description.length < 10
-              ? "Описание должно быть минимум 10 символов"
-              : ""
+              ? 'Описание должно быть минимум 10 символов'
+              : ''
           }
         />
 
@@ -109,17 +109,17 @@ const TeacherComplain = () => {
           onClick={submitHandler}
           disabled={loader || !complaintType || description.trim().length < 10}
         >
-          {loader ? <CircularProgress size={24} /> : "Отправить"}
+          {loader ? <CircularProgress size={24} /> : 'Отправить'}
         </BlueButton>
 
         {showPopup && (
-          <Alert severity={isError ? "error" : "success"}>
+          <Alert severity={isError ? 'error' : 'success'}>
             {message}
           </Alert>
         )}
       </Stack>
     </Box>
   );
-};
+}
 
 export default TeacherComplain;

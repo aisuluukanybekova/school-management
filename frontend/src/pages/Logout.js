@@ -1,12 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { authLogout } from '../redux/userRelated/userSlice';
 import styled from 'styled-components';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { authLogout } from '../redux/userRelated/userSlice';
 
-const Logout = () => {
-  const currentUser = useSelector(state => state.user.currentUser);
+function Logout() {
+  const currentUser = useSelector((state) => state.user.currentUser);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -34,7 +34,7 @@ const Logout = () => {
       </ModalCard>
     </Wrapper>
   );
-};
+}
 
 export default Logout;
 
@@ -70,7 +70,6 @@ const ModalCard = styled.div`
     }
   }
 `;
-
 
 const IconContainer = styled.div`
   background-color: #f8d7da;
@@ -115,7 +114,7 @@ const Button = styled.button`
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  background-color: ${props => props.variant === 'logout' ? '#d32f2f' : '#7e57c2'};
+  background-color: ${(props) => (props.variant === 'logout' ? '#d32f2f' : '#7e57c2')};
   color: white;
 
   &:hover {

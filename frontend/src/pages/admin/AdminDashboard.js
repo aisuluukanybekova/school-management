@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { CssBaseline, Box, List, Divider } from '@mui/material';
+import {
+  CssBaseline, Box, List, Divider,
+} from '@mui/material';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Drawer } from '../../components/styles';
 import SideBar from './SideBar';
-import { useSelector } from 'react-redux';
 
 // Страницы
 import Logout from '../Logout';
@@ -22,7 +23,7 @@ import AddSchedulePage from './teacherSchedule/AddSchedulePage';
 import AddStudent from './studentRelated/AddStudent';
 import ShowStudents from './studentRelated/ShowStudents';
 import SeeComplains from './studentRelated/SeeComplains';
-import StudentProfile from './studentRelated/StudentProfile'; 
+import StudentProfile from './studentRelated/StudentProfile';
 
 // Subjects
 import ShowSubjects from './subjectRelated/ShowSubjects';
@@ -37,6 +38,7 @@ import TeacherDetails from './teacherRelated/TeacherDetails';
 import ChooseClass from './teacherRelated/ChooseClass';
 import ChooseSubject from './teacherRelated/ChooseSubject';
 import EditSchedulePage from './teacherSchedule/EditSchedulePage';
+
 // Classes
 import AddClass from './classRelated/AddClass';
 import ShowClasses from './classRelated/ShowClasses';
@@ -44,10 +46,8 @@ import ClassDetails from './classRelated/ClassDetails';
 import AddNotice from './noticeRelated/AddNotice';
 import ShowNotices from './noticeRelated/ShowNotices';
 
-const AdminDashboard = () => {
-  const [open, setOpen] = useState(true);
-  const toggleDrawer = () => setOpen(!open);
-  const admin = useSelector((state) => state.user.currentUser);
+function AdminDashboard() {
+  const [open] = useState(true);
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -90,31 +90,64 @@ const AdminDashboard = () => {
           <Route path="/Admin/edit-schedule" element={<EditSchedulePage />} />
 
           {/* Ученики */}
-          <Route path="/Admin/addstudents" element={<AddStudent situation="Student" />} />
+          <Route
+            path="/Admin/addstudents"
+            element={<AddStudent situation="Student" />}
+          />
           <Route path="/Admin/students" element={<ShowStudents />} />
           <Route path="/Admin/complains" element={<SeeComplains />} />
-          <Route path="/Admin/students/student/:id" element={<StudentProfile />} /> 
+          <Route
+            path="/Admin/students/student/:id"
+            element={<StudentProfile />}
+          />
 
           {/* Учителя */}
           <Route path="/Admin/teachers" element={<ShowTeachers />} />
-          <Route path="/Admin/teachers/teacher/:id" element={<TeacherDetails />} />
-          <Route path="/Admin/teachers/addteacher" element={<AddTeacher />} />
-          <Route path="/Admin/teachers/chooseclass" element={<ChooseClass situation="Teacher" />} />
-          <Route path="/Admin/teachers/choosesubject/:id" element={<ChooseSubject situation="Norm" />} />
-          <Route path="/Admin/teachers/choosesubject/:classID/:teacherID" element={<ChooseSubject situation="Teacher" />} />
+          <Route
+            path="/Admin/teachers/teacher/:id"
+            element={<TeacherDetails />}
+          />
+          <Route
+            path="/Admin/teachers/addteacher"
+            element={<AddTeacher />}
+          />
+          <Route
+            path="/Admin/teachers/chooseclass"
+            element={<ChooseClass situation="Teacher" />}
+          />
+          <Route
+            path="/Admin/teachers/choosesubject/:id"
+            element={<ChooseSubject situation="Norm" />}
+          />
+          <Route
+            path="/Admin/teachers/choosesubject/:classID/:teacherID"
+            element={<ChooseSubject situation="Teacher" />}
+          />
 
           {/* Предметы */}
           <Route path="/Admin/subjects" element={<ShowSubjects />} />
-          <Route path="/Admin/subjects/chooseclass" element={<ChooseClass situation="Subject" />} />
+          <Route
+            path="/Admin/subjects/chooseclass"
+            element={<ChooseClass situation="Subject" />}
+          />
           <Route path="/Admin/addsubject" element={<AddSubject />} />
-          <Route path="/Admin/subjects/subject/:subjectID" element={<ViewSubject />} />
+          <Route
+            path="/Admin/subjects/subject/:subjectID"
+            element={<ViewSubject />}
+          />
           <Route path="/Admin/subjects/assign" element={<AssignSubject />} />
 
           {/* Классы */}
           <Route path="/Admin/addclass" element={<AddClass />} />
           <Route path="/Admin/classes" element={<ShowClasses />} />
-          <Route path="/Admin/classes/class/:id" element={<ClassDetails />} />
-          <Route path="/Admin/class/addstudents/:id" element={<AddStudent situation="Class" />} />
+          <Route
+            path="/Admin/classes/class/:id"
+            element={<ClassDetails />}
+          />
+          <Route
+            path="/Admin/class/addstudents/:id"
+            element={<AddStudent situation="Class" />}
+          />
 
           {/* Объявления */}
           <Route path="/Admin/addnotice" element={<AddNotice />} />
@@ -126,7 +159,7 @@ const AdminDashboard = () => {
       </Box>
     </Box>
   );
-};
+}
 
 export default AdminDashboard;
 

@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import {
   Box, TextField, Typography, IconButton, Paper,
-  CircularProgress, Fade
+  CircularProgress, Fade,
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 
-const StudentTutorChat = () => {
+function StudentTutorChat() {
   const [question, setQuestion] = useState('');
   const [chatHistory, setChatHistory] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -14,17 +14,29 @@ const StudentTutorChat = () => {
   const handleSend = async () => {
     if (!question.trim()) return;
 
-    const newUserMessage = { role: 'user', content: question };
+    const newUserMessage = {
+      id: `${Date.now()}-${Math.random()}`,
+      role: 'user',
+      content: question,
+    };
     setChatHistory((prev) => [...prev, newUserMessage]);
     setQuestion('');
     setLoading(true);
 
     try {
       const res = await axios.post('/api/tutor/ask', { question });
-      const newBotMessage = { role: 'bot', content: res.data.answer };
+      const newBotMessage = {
+        id: `${Date.now()}-${Math.random()}`,
+        role: 'bot',
+        content: res.data.answer,
+      };
       setChatHistory((prev) => [...prev, newBotMessage]);
     } catch (err) {
-      setChatHistory((prev) => [...prev, { role: 'bot', content: '❌ Ошибка при получении ответа от AI.' }]);
+      setChatHistory((prev) => [...prev, {
+        id: `${Date.now()}-${Math.random()}`,
+        role: 'bot',
+        content: ' Ошибка при получении ответа от AI.',
+      }]);
     } finally {
       setLoading(false);
     }
@@ -43,10 +55,13 @@ const StudentTutorChat = () => {
         🤖 AI Учебный Ассистент
       </Typography>
 
-      <Paper sx={{ p: 2, mb: 2, height: 400, overflowY: 'auto', backgroundColor: '#f9f9f9' }}>
-        {chatHistory.map((msg, index) => (
+      <Paper sx={{
+        p: 2, mb: 2, height: 400, overflowY: 'auto', backgroundColor: '#f9f9f9',
+      }}
+      >
+        {chatHistory.map((msg) => (
           <Box
-            key={index}
+            key={msg.id}
             sx={{
               mb: 1,
               textAlign: msg.role === 'user' ? 'right' : 'left',
@@ -69,7 +84,7 @@ const StudentTutorChat = () => {
           </Box>
         ))}
         {loading && (
-          <Fade in={true}>
+          <Fade in>
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
               <CircularProgress size={24} />
             </Box>
@@ -93,6 +108,6 @@ const StudentTutorChat = () => {
       </Box>
     </Box>
   );
-};
+}
 
 export default StudentTutorChat;

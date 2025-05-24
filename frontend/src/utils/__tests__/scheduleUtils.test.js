@@ -2,10 +2,18 @@ import { generateSchedule, getTeachersForSubject } from '../scheduleUtils';
 
 describe('generateSchedule', () => {
   const timeSlots = [
-    { type: 'lesson', number: 1, startTime: '08:00', endTime: '08:45' },
-    { type: 'lesson', number: 2, startTime: '09:00', endTime: '09:45' },
-    { type: 'break', number: 3, startTime: '09:45', endTime: '10:00' },
-    { type: 'lesson', number: 4, startTime: '10:00', endTime: '10:45' }
+    {
+      type: 'lesson', number: 1, startTime: '08:00', endTime: '08:45',
+    },
+    {
+      type: 'lesson', number: 2, startTime: '09:00', endTime: '09:45',
+    },
+    {
+      type: 'break', number: 3, startTime: '09:45', endTime: '10:00',
+    },
+    {
+      type: 'lesson', number: 4, startTime: '10:00', endTime: '10:45',
+    },
   ];
 
   it('should return a valid schedule array', () => {
@@ -23,7 +31,7 @@ describe('generateSchedule', () => {
 describe('getTeachersForSubject', () => {
   const assignedSubjects = [
     { subjectId: 'sub1', teachers: [{ _id: 't1', name: 'Teacher A' }] },
-    { subjectId: 'sub2', teachers: [{ _id: 't2', name: 'Teacher B' }] }
+    { subjectId: 'sub2', teachers: [{ _id: 't2', name: 'Teacher B' }] },
   ];
 
   it('should return teacher list for subject', () => {

@@ -22,7 +22,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import SubjectIcon from '@mui/icons-material/Subject';
 import { useSelector } from 'react-redux';
 
-const TeacherSideBar = () => {
+function TeacherSideBar() {
   const { currentUser } = useSelector((state) => state.user);
   const sclassName = currentUser.teachSclass;
   const location = useLocation();
@@ -30,48 +30,54 @@ const TeacherSideBar = () => {
   const isActive = (path) => location.pathname.startsWith(path);
 
   const navItems = [
-    { text: 'Главная', full: 'Главная', icon: <HomeIcon />, path: '/' },
+    {
+      text: 'Главная', full: 'Главная', icon: <HomeIcon />, path: '/',
+    },
     {
       text: `Класс ${sclassName?.sclassName || ''}`,
       full: 'Управление классом',
       icon: <ClassOutlinedIcon />,
-      path: '/Teacher/class'
+      path: '/Teacher/class',
     },
     {
       text: 'Журнал оценок',
       full: 'Журнал оценок',
       icon: <GradeIcon />,
-      path: '/Teacher/gradebook'
+      path: '/Teacher/gradebook',
     },
     {
       text: 'Журнал посещаемости',
       full: 'Журнал посещаемости',
       icon: <EventAvailableIcon />,
-      path: '/Teacher/attendance'
+      path: '/Teacher/attendance',
     },
     {
       text: 'Моё расписание',
       full: 'Расписание учителя',
       icon: <CalendarMonthIcon />,
-      path: '/Teacher/schedule'
+      path: '/Teacher/schedule',
     },
     {
       text: 'Жалоба',
       full: 'Жалоба',
       icon: <AnnouncementOutlinedIcon />,
-      path: '/Teacher/complain'
+      path: '/Teacher/complain',
     },
     {
       text: 'Темы уроков',
       full: 'Темы уроков',
-      icon: <SubjectIcon />, 
-      path: '/Teacher/topics'
-    }
+      icon: <SubjectIcon />,
+      path: '/Teacher/topics',
+    },
   ];
 
   const userItems = [
-    { text: 'Профиль', full: 'Профиль', icon: <AccountCircleOutlinedIcon />, path: '/Teacher/profile' },
-    { text: 'Выйти', full: 'Выход', icon: <ExitToAppIcon />, path: '/logout' },
+    {
+      text: 'Профиль', full: 'Профиль', icon: <AccountCircleOutlinedIcon />, path: '/Teacher/profile',
+    },
+    {
+      text: 'Выйти', full: 'Выход', icon: <ExitToAppIcon />, path: '/logout',
+    },
   ];
 
   return (
@@ -84,13 +90,15 @@ const TeacherSideBar = () => {
           py: 2,
           fontWeight: 'bold',
           fontSize: '18px',
-          display: { xs: 'none', sm: 'block' }
+          display: { xs: 'none', sm: 'block' },
         }}
       >
         Панель учителя
       </Typography>
 
-      {navItems.map(({ text, full, icon, path }) => (
+      {navItems.map(({
+        text, full, icon, path,
+      }) => (
         <Tooltip title={full} placement="right" key={text} arrow>
           <ListItemButton
             component={Link}
@@ -110,7 +118,7 @@ const TeacherSideBar = () => {
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   display: { xs: 'none', sm: 'block' },
-                }
+                },
               }}
             />
           </ListItemButton>
@@ -141,7 +149,7 @@ const TeacherSideBar = () => {
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     display: { xs: 'none', sm: 'block' },
-                  }
+                  },
                 }}
               />
             </ListItemButton>
@@ -152,7 +160,9 @@ const TeacherSideBar = () => {
       <Divider sx={{ my: 2 }} />
       <ListSubheader component="div" inset>Пользователь</ListSubheader>
 
-      {userItems.map(({ text, full, icon, path }) => (
+      {userItems.map(({
+        text, full, icon, path,
+      }) => (
         <Tooltip title={full} placement="right" key={text} arrow>
           <ListItemButton
             component={Link}
@@ -172,7 +182,7 @@ const TeacherSideBar = () => {
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   display: { xs: 'none', sm: 'block' },
-                }
+                },
               }}
             />
           </ListItemButton>
@@ -180,6 +190,6 @@ const TeacherSideBar = () => {
       ))}
     </Box>
   );
-};
+}
 
 export default TeacherSideBar;

@@ -1,6 +1,6 @@
 export const generateSchedule = (timeSlots, lessonCount) => {
   const lessonsOnly = timeSlots
-    .filter(slot => slot.type === 'lesson')
+    .filter((slot) => slot.type === 'lesson')
     .sort((a, b) => a.number - b.number)
     .slice(0, lessonCount);
 
@@ -13,11 +13,11 @@ export const generateSchedule = (timeSlots, lessonCount) => {
     subjectId: '',
     teacherId: '',
     startTime: slot.startTime,
-    endTime: slot.endTime
+    endTime: slot.endTime,
   }));
 };
 
 export const getTeachersForSubject = (assignedSubjects, subjectId) => {
-  const found = assignedSubjects.find(a => a.subjectId === subjectId);
+  const found = assignedSubjects.find((a) => a.subjectId === subjectId);
   return found?.teachers || [];
 };

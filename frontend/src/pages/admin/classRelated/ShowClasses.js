@@ -13,35 +13,35 @@ import {
   TextField,
   Button,
   Typography,
-  Paper
+  Paper,
 } from '@mui/material';
-import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import AddCardIcon from '@mui/icons-material/AddCard';
+import styled from 'styled-components';
+import axios from 'axios';
+import PropTypes from 'prop-types';
 import { deleteUser } from '../../../redux/userRelated/userHandle';
 import { getAllSclasses } from '../../../redux/sclassRelated/sclassHandle';
 import { BlueButton, GreenButton } from '../../../components/buttonStyles';
 import TableTemplate from '../../../components/TableTemplate';
-import SpeedDialIcon from '@mui/material/SpeedDialIcon';
-//import PostAddIcon from '@mui/icons-material/PostAdd';
-import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
-import AddCardIcon from '@mui/icons-material/AddCard';
-import styled from 'styled-components';
 import SpeedDialTemplate from '../../../components/SpeedDialTemplate';
 import Popup from '../../../components/Popup';
-import axios from 'axios';
 
-const ShowClasses = () => {
+function ShowClasses() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { sclassesList, loading } = useSelector((state) => state.sclass);
-  const { currentUser } = useSelector(state => state.user);
+  const { sclassesList } = useSelector((state) => state.sclass);
+  const { currentUser } = useSelector((state) => state.user);
   const adminID = currentUser._id;
 
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [showPopup, setShowPopup] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editClass, setEditClass] = useState({});
 
@@ -50,8 +50,9 @@ const ShowClasses = () => {
   }, [adminID, dispatch]);
 
   const deleteHandler = (deleteID) => {
-    dispatch(deleteUser(deleteID, "classes"))
-      .then(() => dispatch(getAllSclasses(adminID)));
+    dispatch(deleteUser(deleteID, 'classes')).then(() =>
+      dispatch(getAllSclasses(adminID))
+    );
   };
 
   const handleEditClick = (row) => {
@@ -61,14 +62,17 @@ const ShowClasses = () => {
 
   const handleEditSave = async () => {
     try {
-      await axios.put(`http://localhost:5001/api/classes/${editClass._id}`, { sclassName: editClass.sclassName });
+      await axios.put(
+        `http://localhost:5001/api/classes/${editClass._id}`,
+        { sclassName: editClass.sclassName }
+      );
       setEditModalOpen(false);
       dispatch(getAllSclasses(adminID));
-      setMessage("Изменения сохранены успешно!");
+      setMessage('Изменения сохранены успешно!');
       setShowPopup(true);
     } catch (err) {
-      console.error("Ошибка при редактировании:", err);
-      setMessage("Ошибка при сохранении изменений.");
+      console.error('Ошибка при редактировании:', err);
+      setMessage('Ошибка при сохранении изменений.');
       setShowPopup(true);
     }
   };
@@ -77,37 +81,37 @@ const ShowClasses = () => {
     { id: 'name', label: 'Название класса', minWidth: 170 },
   ];
 
-  const sclassRows = sclassesList
-  ?.slice() // копируем
-  .sort((a, b) => {
-    // Числовая часть + буквенная
-    const parse = str => {
-      const match = str.match(/^(\d+)?\s*([а-яА-Яa-zA-Z]*)/);
-      const num = parseInt(match?.[1] || 0, 10);
-      const letter = match?.[2] || '';
-      return [num, letter.toLowerCase()];
-    };
-    const [numA, letterA] = parse(a.sclassName);
-    const [numB, letterB] = parse(b.sclassName);
-
-    if (numA !== numB) return numA - numB;
-    return letterA.localeCompare(letterB);
-  })
-  .map(sclass => ({
-    name: sclass.sclassName,
-    id: sclass._id,
-  })) || [];
-
+  const sclassRows =
+    sclassesList?.slice()
+      .sort((a, b) => {
+        const parse = (str) => {
+          const match = str.match(/^(\d+)?\s*([а-яА-Яa-zA-Z]*)/);
+          const num = parseInt(match?.[1] || 0, 10);
+          const letter = match?.[2] || '';
+          return [num, letter.toLowerCase()];
+        };
+        const [numA, letterA] = parse(a.sclassName);
+        const [numB, letterB] = parse(b.sclassName);
+        return numA !== numB ? numA - numB : letterA.localeCompare(letterB);
+      })
+      .map((sclass) => ({
+        name: sclass.sclassName,
+        id: sclass._id,
+      })) || [];
 
   const filteredRows = sclassRows.filter((row) =>
     row.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const SclassButtonHaver = ({ row }) => {
+  function SclassButtonHaver({ row }) {
     const actions = [
-     // { icon: <PostAddIcon />, name: 'Добавить предметы', action: () => navigate("/Admin/addsubject/" + row.id) },
-      { icon: <PersonAddAlt1Icon />, name: 'Добавить ученика', action: () => navigate("/Admin/class/addstudents/" + row.id) },
+      {
+        icon: <PersonAddAlt1Icon />,
+        name: 'Добавить ученика',
+        action: () => navigate(`/Admin/class/addstudents/${row.id}`),
+      },
     ];
+
     return (
       <ButtonContainer>
         <Tooltip title="Удалить класс">
@@ -121,16 +125,26 @@ const ShowClasses = () => {
           </IconButton>
         </Tooltip>
         <Tooltip title="Просмотр класса">
-          <BlueButton variant="contained" onClick={() => navigate("/Admin/classes/class/" + row.id)}>
+          <BlueButton
+            variant="contained"
+            onClick={() => navigate(`/Admin/classes/class/${row.id}`)}
+          >
             Просмотр
           </BlueButton>
         </Tooltip>
         <ActionMenu actions={actions} />
       </ButtonContainer>
     );
+  }
+
+  SclassButtonHaver.propTypes = {
+    row: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    }).isRequired,
   };
 
-  const ActionMenu = ({ actions }) => {
+  function ActionMenu({ actions }) {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
@@ -147,36 +161,51 @@ const ShowClasses = () => {
           onClose={() => setAnchorEl(null)}
           PaperProps={{ elevation: 2, sx: styles.styledPaper }}
         >
-          {actions.map((action, index) => (
-            <MenuItem key={index} onClick={action.action}>
-              <ListItemIcon>{action.icon}</ListItemIcon>
-              {action.name}
-            </MenuItem>
-          ))}
+         {actions.map((action) => (
+  <MenuItem key={action.name} onClick={action.action}>
+    <ListItemIcon>{action.icon}</ListItemIcon>
+    {action.name}
+  </MenuItem>
+))}
         </Menu>
       </>
     );
+  }
+
+  ActionMenu.propTypes = {
+    actions: PropTypes.arrayOf(
+      PropTypes.shape({
+        icon: PropTypes.node.isRequired,
+        name: PropTypes.string.isRequired,
+        action: PropTypes.func.isRequired,
+      })
+    ).isRequired,
   };
 
   const actions = [
     {
-      icon: <AddCardIcon color="primary" />, name: 'Добавить новый класс',
-      action: () => navigate("/Admin/addclass")
+      icon: <AddCardIcon color="primary" />,
+      name: 'Добавить новый класс',
+      action: () => navigate('/Admin/addclass'),
     },
     {
-      icon: <DeleteIcon color="error" />, name: 'Удалить все классы',
+      icon: <DeleteIcon color="error" />,
+      name: 'Удалить все классы',
       action: () => {
-        if (window.confirm("Вы уверены, что хотите удалить все классы?")) {
-          dispatch(deleteUser(adminID, "classes"))
-            .then(() => dispatch(getAllSclasses(adminID)));
+        if (window.confirm('Вы уверены, что хотите удалить все классы?')) {
+          dispatch(deleteUser(adminID, 'classes')).then(() =>
+            dispatch(getAllSclasses(adminID))
+          );
         }
-      }
+      },
     },
   ];
 
   return (
     <>
-      <Typography variant="h4" sx={{ mb: 3 }}>Управление классами</Typography>
+      <Typography variant="h4" sx={{ mb: 3 }}>
+        Управление классами
+      </Typography>
 
       <Paper sx={{ p: 2, mb: 3 }} elevation={2}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -186,14 +215,18 @@ const ShowClasses = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <GreenButton variant="contained" onClick={() => navigate("/Admin/addclass")}>Добавить класс</GreenButton>
+          <GreenButton variant="contained" onClick={() => navigate('/Admin/addclass')}>
+            Добавить класс
+          </GreenButton>
         </Box>
       </Paper>
 
       {Array.isArray(filteredRows) && filteredRows.length > 0 ? (
         <TableTemplate buttonHaver={SclassButtonHaver} columns={sclassColumns} rows={filteredRows} />
       ) : (
-        <Typography variant="body1" sx={{ textAlign: 'center', mt: 4 }}>Нет доступных классов.</Typography>
+        <Typography variant="body1" sx={{ textAlign: 'center', mt: 4 }}>
+          Нет доступных классов.
+        </Typography>
       )}
 
       <SpeedDialTemplate actions={actions} />
@@ -205,20 +238,24 @@ const ShowClasses = () => {
             fullWidth
             label="Название класса"
             value={editClass.sclassName || ''}
-            onChange={(e) => setEditClass({ ...editClass, sclassName: e.target.value })}
+            onChange={(e) =>
+              setEditClass({ ...editClass, sclassName: e.target.value })
+            }
             margin="normal"
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setEditModalOpen(false)}>Отмена</Button>
-          <Button variant="contained" onClick={handleEditSave}>Сохранить</Button>
+          <Button variant="contained" onClick={handleEditSave}>
+            Сохранить
+          </Button>
         </DialogActions>
       </Dialog>
 
       <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
     </>
   );
-};
+}
 
 export default ShowClasses;
 
@@ -239,7 +276,7 @@ const styles = {
       transform: 'translateY(-50%) rotate(45deg)',
       zIndex: 0,
     },
-  }
+  },
 };
 
 const ButtonContainer = styled.div`
@@ -248,4 +285,4 @@ const ButtonContainer = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   gap: 0.75rem;
-`; 
+`;

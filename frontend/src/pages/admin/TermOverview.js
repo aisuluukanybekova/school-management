@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 import {
   Box,
@@ -9,65 +10,56 @@ import {
   TableRow,
   TableCell,
   Paper,
-  TableContainer
+  TableContainer,
 } from '@mui/material';
 import { format, isWeekend, eachDayOfInterval } from 'date-fns';
 import ruLocale from 'date-fns/locale/ru';
 
-// Устанавливаем базовый URL для всех axios-запросов
 axios.defaults.baseURL = 'http://localhost:5001';
 
-// Список праздников в формате 'дд-мм'
 const KYRGYZ_HOLIDAYS = [
   '01-01', '08-03', '21-03',
-  '01-05', '05-05', '09-05', '31-08', '07-11'
+  '01-05', '05-05', '09-05', '31-08', '07-11',
 ];
 
-// Проверка, является ли дата праздником
 const isHolidayInKyrgyzstan = (date) => {
   const dayMonth = format(date, 'dd-MM');
   return KYRGYZ_HOLIDAYS.includes(dayMonth);
 };
 
-// Подсчёт учебных дней (исключая выходные и праздники)
 const countSchoolDays = (startDate, endDate) => {
   const days = eachDayOfInterval({ start: new Date(startDate), end: new Date(endDate) });
-  return days.filter(date => !isWeekend(date) && !isHolidayInKyrgyzstan(date)).length;
+  return days.filter((date) => !isWeekend(date) && !isHolidayInKyrgyzstan(date)).length;
 };
 
-// Подсчёт только праздничных дней в диапазоне
 const countHolidaysInRange = (startDate, endDate) => {
   const days = eachDayOfInterval({ start: new Date(startDate), end: new Date(endDate) });
-  return days.filter(date => isHolidayInKyrgyzstan(date)).length;
+  return days.filter((date) => isHolidayInKyrgyzstan(date)).length;
 };
 
-const TermOverview = ({ schoolId }) => {
-  const [terms, setTerms] = useState([]);     // Список четвертей
-  const [error, setError] = useState('');     // Ошибка загрузки
+function TermOverview({ schoolId }) {
+  const [terms, setTerms] = useState([]);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (!schoolId) return;
 
     axios.get(`/api/terms/school/${schoolId}`)
-      .then(res => setTerms(res.data))
-      .catch(err => {
+      .then((res) => setTerms(res.data))
+      .catch((err) => {
         console.error('Ошибка загрузки четвертей:', err);
         setError('Не удалось загрузить данные о четвертях');
       });
   }, [schoolId]);
 
-  // Форматирование даты на русском языке
-  const formatDate = (dateStr) =>
-    format(new Date(dateStr), 'dd MMMM yyyy', { locale: ruLocale });
+  const formatDate = (dateStr) => format(new Date(dateStr), 'dd MMMM yyyy', { locale: ruLocale });
 
-  // Общий подсчёт всех учебных дней
-  const totalDays = terms.reduce((sum, term) => {
-    return sum + countSchoolDays(term.startDate, term.endDate);
-  }, 0);
+  const totalDays = terms.reduce((sum, term) => (
+    sum + countSchoolDays(term.startDate, term.endDate)
+  ), 0);
 
-  // Находим максимальное количество праздников среди всех четвертей
   const maxHolidays = Math.max(
-    ...terms.map(term => countHolidaysInRange(term.startDate, term.endDate))
+    ...terms.map((term) => countHolidaysInRange(term.startDate, term.endDate)),
   );
 
   return (
@@ -102,7 +94,8 @@ const TermOverview = ({ schoolId }) => {
                     hover
                     sx={{
                       '&:nth-of-type(odd)': { backgroundColor: '#fafafa' },
-                      backgroundColor: holidaysCount === maxHolidays ? '#ffe0e0' : undefined // Подсветка: больше всего праздников
+                      backgroundColor:
+                        holidaysCount === maxHolidays ? '#ffe0e0' : undefined,
                     }}
                   >
                     <TableCell align="center">{term.termNumber || idx + 1}</TableCell>
@@ -114,7 +107,6 @@ const TermOverview = ({ schoolId }) => {
                 );
               })}
 
-              {/* Итоговая строка по всем учебным дням */}
               <TableRow sx={{ backgroundColor: '#e0f7fa' }}>
                 <TableCell align="right" colSpan={3}><b>Итого</b></TableCell>
                 <TableCell align="center"><b>{totalDays}</b></TableCell>
@@ -126,6 +118,11 @@ const TermOverview = ({ schoolId }) => {
       )}
     </Box>
   );
+}
+
+//  PropTypes
+TermOverview.propTypes = {
+  schoolId: PropTypes.string.isRequired,
 };
 
 export default TermOverview;

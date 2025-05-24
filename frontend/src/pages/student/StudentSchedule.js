@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import {
   Box, Typography, Table, TableHead, TableRow, TableCell,
   TableBody, Paper, TableContainer, Alert, Stack, FormControl,
-  InputLabel, Select, MenuItem
+  InputLabel, Select, MenuItem,
 } from '@mui/material';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
@@ -15,10 +16,10 @@ const dayMap = {
   Thursday: 'Четверг',
   Friday: 'Пятница',
   Saturday: 'Суббота',
-  Sunday: 'Воскресенье'
+  Sunday: 'Воскресенье',
 };
 
-const StudentSchedule = () => {
+function StudentSchedule() {
   const student = useSelector((state) => state.user.currentUser);
   const [schedules, setSchedules] = useState([]);
   const [selectedDay, setSelectedDay] = useState('');
@@ -35,10 +36,9 @@ const StudentSchedule = () => {
       const res = await axios.get(`/api/schedule/class/${classId}`);
       const raw = res.data.schedules || [];
 
-      // Преобразуем англ. дни недели в русские для соответствия селектору
-      const normalized = raw.map(s => ({
+      const normalized = raw.map((s) => ({
         ...s,
-        day: dayMap[s.day] || s.day
+        day: dayMap[s.day] || s.day,
       }));
 
       setSchedules(normalized);
@@ -86,33 +86,40 @@ const StudentSchedule = () => {
       )}
     </Box>
   );
-};
+}
 
-const ScheduleTableComponent = ({ data }) => (
-  <TableContainer component={Paper}>
-    <Table>
-      <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
-        <TableRow>
-          <TableCell align="center">Начало</TableCell>
-          <TableCell align="center">Конец</TableCell>
-          <TableCell align="center">Тип</TableCell>
-          <TableCell align="center">Предмет</TableCell>
-          <TableCell align="center">Учитель</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {data.map((entry) => (
-          <TableRow key={entry._id} sx={{ backgroundColor: entry.type === 'break' ? '#e0e0e0' : 'inherit' }}>
-            <TableCell align="center">{entry.startTime}</TableCell>
-            <TableCell align="center">{entry.endTime}</TableCell>
-            <TableCell align="center">{entry.type === 'lesson' ? 'Урок' : 'Перемена'}</TableCell>
-            <TableCell align="center">{entry.subjectId?.subName || '—'}</TableCell>
-            <TableCell align="center">{entry.teacherId?.name || '—'}</TableCell>
+function ScheduleTableComponent({ data }) {
+  return (
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
+          <TableRow>
+            <TableCell align="center">Начало</TableCell>
+            <TableCell align="center">Конец</TableCell>
+            <TableCell align="center">Тип</TableCell>
+            <TableCell align="center">Предмет</TableCell>
+            <TableCell align="center">Учитель</TableCell>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  </TableContainer>
-);
+        </TableHead>
+        <TableBody>
+          {data.map((entry) => (
+            <TableRow key={entry._id} sx={{ backgroundColor: entry.type === 'break' ? '#e0e0e0' : 'inherit' }}>
+              <TableCell align="center">{entry.startTime}</TableCell>
+              <TableCell align="center">{entry.endTime}</TableCell>
+              <TableCell align="center">{entry.type === 'lesson' ? 'Урок' : 'Перемена'}</TableCell>
+              <TableCell align="center">{entry.subjectId?.subName || '—'}</TableCell>
+              <TableCell align="center">{entry.teacherId?.name || '—'}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
+
+//  Валидация пропсов
+ScheduleTableComponent.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
 export default StudentSchedule;

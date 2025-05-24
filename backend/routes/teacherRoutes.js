@@ -11,7 +11,8 @@ const {
   deleteTeacher,
   deleteTeachers,
   deleteTeachersByClass,
-  teacherAttendance
+  teacherAttendance,
+  updateTeacherPassword
 } = require('../controllers/teacher-controller');
 
 // === Роуты для преподавателей ===
@@ -25,6 +26,7 @@ router.delete('/:id', deleteTeacher);
 router.delete('/school/:id', deleteTeachers);
 router.delete('/class/:id', deleteTeachersByClass);
 router.post('/attendance/:id', teacherAttendance);
+router.put('/update-password/:id', updateTeacherPassword);
 
 //  Дополнительный — получить всех преподавателей без фильтра
 router.get('/', async (req, res) => {

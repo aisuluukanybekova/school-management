@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
   Paper, Box, IconButton, Dialog, DialogTitle, DialogContent,
   DialogActions, TextField, Button, Grid, Typography,
-  FormControl, MenuItem
+  FormControl, MenuItem,
 } from '@mui/material';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import EditIcon from '@mui/icons-material/Edit';
 import SchoolIcon from '@mui/icons-material/School';
 
-import { deleteUser } from '../../../redux/userRelated/userHandle';
 import { getAllTeachers } from '../../../redux/teacherRelated/teacherHandle';
 import { BlueButton } from '../../../components/buttonStyles';
 import SpeedDialTemplate from '../../../components/SpeedDialTemplate';
 import TableTemplate from '../../../components/TableTemplate';
 import Popup from '../../../components/Popup';
 
-const BASE_URL = "http://localhost:5001/api/teachers";
+const BASE_URL = 'http://localhost:5001/api/teachers';
 
-const ShowTeachers = () => {
+function ShowTeachers() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { teachersList, loading } = useSelector((state) => state.teacher);
@@ -34,29 +34,29 @@ const ShowTeachers = () => {
   const [classes, setClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState('');
 
-  const [searchName, setSearchName] = useState("");
+  const [searchName, setSearchName] = useState('');
   const [showPopup, setShowPopup] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     if (currentUser?.school?._id) {
       dispatch(getAllTeachers(currentUser.school._id));
-      axios.get(`/api/classes/school/${currentUser.school._id}`).then(res => setClasses(res.data));
+      axios.get(`/api/classes/school/${currentUser.school._id}`).then((res) => setClasses(res.data));
     }
   }, [dispatch, currentUser]);
 
   const deleteHandler = async (id, address) => {
     try {
-      const url = address === "Teachers"
+      const url = address === 'Teachers'
         ? `/api/teachers/school/${id}`
         : `/api/teachers/${id}`;
       await axios.delete(url);
       dispatch(getAllTeachers(currentUser.school._id));
-      setMessage("Преподаватель(и) удалён(ы) успешно.");
+      setMessage('Преподаватель(и) удалён(ы) успешно.');
       setShowPopup(true);
     } catch (err) {
-      console.error("Ошибка при удалении:", err);
-      setMessage("Ошибка при удалении преподавателя.");
+      console.error('Ошибка при удалении:', err);
+      setMessage('Ошибка при удалении преподавателя.');
       setShowPopup(true);
     }
   };
@@ -71,11 +71,11 @@ const ShowTeachers = () => {
       await axios.put(`${BASE_URL}/${editTeacher._id}`, editTeacher);
       setEditModalOpen(false);
       dispatch(getAllTeachers(currentUser.school._id));
-      setMessage("Преподаватель обновлен успешно.");
+      setMessage('Преподаватель обновлен успешно.');
       setShowPopup(true);
     } catch (error) {
-      console.error("Ошибка при обновлении преподавателя:", error);
-      setMessage("Ошибка при обновлении преподавателя");
+      console.error('Ошибка при обновлении преподавателя:', error);
+      setMessage('Ошибка при обновлении преподавателя');
       setShowPopup(true);
     }
   };
@@ -91,11 +91,11 @@ const ShowTeachers = () => {
       await axios.put(`${BASE_URL}/${editTeacher._id}`, { homeroomFor: selectedClass });
       setHomeroomModalOpen(false);
       dispatch(getAllTeachers(currentUser.school._id));
-      setMessage("Классное руководство обновлено.");
+      setMessage('Классное руководство обновлено.');
       setShowPopup(true);
     } catch (error) {
-      console.error("Ошибка при сохранении homeroomFor", error);
-      setMessage("Ошибка при сохранении классного руководства");
+      console.error('Ошибка при сохранении homeroomFor', error);
+      setMessage('Ошибка при сохранении классного руководства');
       setShowPopup(true);
     }
   };
@@ -107,46 +107,54 @@ const ShowTeachers = () => {
 
   const teacherRows = Array.isArray(teachersList)
     ? [...teachersList]
-        .sort((a, b) => a.name.localeCompare(b.name))
-        .map((t) => ({
-          _id: t._id,
-          name: t.name,
-          email: t.email,
-          homeroomFor: t.homeroomFor
-        }))
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map((t) => ({
+        _id: t._id,
+        name: t.name,
+        email: t.email,
+        homeroomFor: t.homeroomFor,
+      }))
     : [];
 
-  const filteredRows = teacherRows.filter(row =>
-    row.name.toLowerCase().includes(searchName.toLowerCase())
-  );
+  const filteredRows = teacherRows.filter((row) => row.name.toLowerCase().includes(searchName.toLowerCase()));
 
-  const TeacherButtonHaver = ({ row }) => (
-    <>
-      <IconButton onClick={() => deleteHandler(row._id, "Teacher")}>
-        <PersonRemoveIcon color="error" />
-      </IconButton>
-      <IconButton onClick={() => handleEditClick(row)}>
-        <EditIcon />
-      </IconButton>
-      <IconButton onClick={() => handleAssignHomeroom(row)}>
-        <SchoolIcon color="primary" />
-      </IconButton>
-      <BlueButton variant="contained" onClick={() => navigate(`/Admin/teachers/teacher/${row._id}`)}>
-        Просмотр
-      </BlueButton>
-    </>
-  );
+  function TeacherButtonHaver({ row }) {
+    return (
+      <>
+        <IconButton onClick={() => deleteHandler(row._id, 'Teacher')}>
+          <PersonRemoveIcon color="error" />
+        </IconButton>
+        <IconButton onClick={() => handleEditClick(row)}>
+          <EditIcon />
+        </IconButton>
+        <IconButton onClick={() => handleAssignHomeroom(row)}>
+          <SchoolIcon color="primary" />
+        </IconButton>
+        <BlueButton variant="contained" onClick={() => navigate(`/Admin/teachers/teacher/${row._id}`)}>
+          Просмотр
+        </BlueButton>
+      </>
+    );
+  }
+
+  TeacherButtonHaver.propTypes = {
+    row: PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      name: PropTypes.string,
+      homeroomFor: PropTypes.any,
+    }).isRequired,
+  };
 
   const actions = [
     {
       icon: <PersonAddAlt1Icon color="primary" />,
       name: 'Добавить преподавателя',
-      action: () => navigate("/Admin/teachers/addteacher")
+      action: () => navigate('/Admin/teachers/addteacher'),
     },
     {
       icon: <PersonRemoveIcon color="error" />,
       name: 'Удалить всех преподавателей',
-      action: () => deleteHandler(currentUser.school._id, "Teachers")
+      action: () => deleteHandler(currentUser.school._id, 'Teachers'),
     },
   ];
 
@@ -175,7 +183,7 @@ const ShowTeachers = () => {
             </Typography>
             <BlueButton
               variant="contained"
-              onClick={() => navigate("/Admin/teachers/addteacher")}
+              onClick={() => navigate('/Admin/teachers/addteacher')}
               sx={{ fontWeight: 'bold', px: 3, py: 1 }}
             >
               Добавить преподавателя
@@ -193,14 +201,13 @@ const ShowTeachers = () => {
         </>
       )}
 
-      {/* Редактирование имени */}
       <Dialog open={editModalOpen} onClose={() => setEditModalOpen(false)}>
         <DialogTitle>Редактировать преподавателя</DialogTitle>
         <DialogContent>
           <TextField
             fullWidth
             label="Имя"
-            value={editTeacher.name || ""}
+            value={editTeacher.name || ''}
             onChange={(e) => setEditTeacher({ ...editTeacher, name: e.target.value })}
             margin="normal"
           />
@@ -211,7 +218,6 @@ const ShowTeachers = () => {
         </DialogActions>
       </Dialog>
 
-      {/* Модалка для homeroom */}
       <Dialog open={homeroomModalOpen} onClose={() => setHomeroomModalOpen(false)}>
         <DialogTitle>Назначить классное руководство</DialogTitle>
         <DialogContent>
@@ -240,6 +246,6 @@ const ShowTeachers = () => {
       <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
     </>
   );
-};
+}
 
 export default ShowTeachers;

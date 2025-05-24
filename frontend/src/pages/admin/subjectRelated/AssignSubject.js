@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import {
-  Box, Grid, TextField, MenuItem, Typography, Button, CircularProgress
-} from "@mui/material";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import Popup from "../../../components/Popup";
+  Box, Grid, TextField, MenuItem, Typography, Button, CircularProgress,
+} from '@mui/material';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import Popup from '../../../components/Popup';
 
-axios.defaults.baseURL = "http://localhost:5001";
+axios.defaults.baseURL = 'http://localhost:5001';
 
-const AssignSubject = () => {
+function AssignSubject() {
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
 
@@ -17,12 +17,12 @@ const AssignSubject = () => {
   const [classes, setClasses] = useState([]);
   const [teachers, setTeachers] = useState([]);
 
-  const [subjectId, setSubjectId] = useState("");
-  const [classId, setClassId] = useState("");
-  const [teacherId, setTeacherId] = useState("");
-  const [sessionsPerWeek, setSessionsPerWeek] = useState("");
+  const [subjectId, setSubjectId] = useState('');
+  const [classId, setClassId] = useState('');
+  const [teacherId, setTeacherId] = useState('');
+  const [sessionsPerWeek, setSessionsPerWeek] = useState('');
   const [loader, setLoader] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const AssignSubject = () => {
         setClasses(classRes.data);
         setTeachers(teacherRes.data);
       } catch (err) {
-        console.error("Ошибка загрузки данных:", err);
+        console.error('Ошибка загрузки данных:', err);
       }
     };
     fetchAll();
@@ -46,25 +46,25 @@ const AssignSubject = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!subjectId || !classId || !teacherId || !sessionsPerWeek) {
-      setMessage("Пожалуйста, заполните все поля");
+      setMessage('Пожалуйста, заполните все поля');
       setShowPopup(true);
       return;
     }
 
     const payload = {
       teacherID: teacherId,
-      subjectId: subjectId,
+      subjectId,
       sclassName: classId,
-      sessions: sessionsPerWeek
+      sessions: sessionsPerWeek,
     };
 
     try {
       setLoader(true);
-      await axios.post("/api/teacherSubjectClass", payload);
-      navigate("/Admin/subjects");
+      await axios.post('/api/teacherSubjectClass', payload);
+      navigate('/Admin/subjects');
     } catch (error) {
-      console.error("Ошибка при сохранении:", error);
-      setMessage("Ошибка при сохранении назначения");
+      console.error('Ошибка при сохранении:', error);
+      setMessage('Ошибка при сохранении назначения');
       setShowPopup(true);
     } finally {
       setLoader(false);
@@ -138,7 +138,7 @@ const AssignSubject = () => {
         <Grid item xs={12}>
           <Box display="flex" justifyContent="flex-end">
             <Button variant="contained" type="submit" disabled={loader}>
-              {loader ? <CircularProgress size={24} /> : "Сохранить"}
+              {loader ? <CircularProgress size={24} /> : 'Сохранить'}
             </Button>
           </Box>
         </Grid>
@@ -146,6 +146,6 @@ const AssignSubject = () => {
       <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
     </form>
   );
-};
+}
 
 export default AssignSubject;

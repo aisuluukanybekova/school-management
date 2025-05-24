@@ -4,7 +4,7 @@ import { Container, Box } from '@mui/material';
 import styled, { keyframes } from 'styled-components';
 import { LightPurpleButton } from '../components/buttonStyles';
 
-const Homepage = () => {
+function Homepage() {
   return (
     <AnimatedBackground>
       <FadeInCardContainer maxWidth="sm">
@@ -12,7 +12,8 @@ const Homepage = () => {
           <MainTitle>Добро пожаловать</MainTitle>
           <SubTitle>Система управления школой</SubTitle>
           <InfoText>
-            Организуйте учебный процесс, управляйте классами, учениками и преподавателями. Вся информация — в одном месте.
+            Организуйте учебный процесс, управляйте классами, учениками и преподавателями.
+            Вся информация — в одном месте.
           </InfoText>
           <StyledBox>
             <StyledLink to="/choose">
@@ -21,7 +22,8 @@ const Homepage = () => {
               </AnimatedButton>
             </StyledLink>
             <MutedText>
-              Нет аккаунта?{' '}
+              Нет аккаунта?
+              {' '}
               <HoverLink to="/Adminregister">Зарегистрироваться</HoverLink>
             </MutedText>
           </StyledBox>
@@ -29,7 +31,7 @@ const Homepage = () => {
       </FadeInCardContainer>
     </AnimatedBackground>
   );
-};
+}
 
 export default Homepage;
 
@@ -136,4 +138,3 @@ const AnimatedButton = styled(LightPurpleButton)`
     transform: scale(1.03);
   }
 `;
-

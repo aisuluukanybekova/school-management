@@ -6,10 +6,10 @@ import {
   getSuccess,
   getFailed,
   getError,
-  stuffDone
+  stuffDone,
 } from './studentSlice';
 
-const BASE_URL = "http://localhost:5001/api/students";
+const BASE_URL = 'http://localhost:5001/api/students';
 
 // === Получить всех студентов по ШКОЛЕ ===
 export const getAllStudents = (schoolId) => async (dispatch) => {
@@ -22,7 +22,7 @@ export const getAllStudents = (schoolId) => async (dispatch) => {
       dispatch(getSuccess(result.data));
     }
   } catch (error) {
-    dispatch(getError(error.message || "Ошибка сети"));
+    dispatch(getError(error.message || 'Ошибка сети'));
   }
 };
 
@@ -37,7 +37,7 @@ export const getStudentsByClass = (classId) => async (dispatch) => {
       dispatch(getSuccess(result.data));
     }
   } catch (error) {
-    dispatch(getError(error.message || "Ошибка сети"));
+    dispatch(getError(error.message || 'Ошибка сети'));
   }
 };
 
@@ -54,7 +54,7 @@ export const updateStudentFields = (studentId, fields) => async (dispatch) => {
       dispatch(stuffDone());
     }
   } catch (error) {
-    dispatch(getError(error.message || "Ошибка сети"));
+    dispatch(getError(error.message || 'Ошибка сети'));
   }
 };
 
@@ -69,6 +69,6 @@ export const removeStuff = (studentId) => async (dispatch) => {
       dispatch(stuffDone());
     }
   } catch (error) {
-    dispatch(getError(error.message || "Ошибка сети"));
+    dispatch(getError(error.message || 'Ошибка сети'));
   }
 };

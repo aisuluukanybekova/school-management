@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
-import { getGroupedTeacherSubjects } from '../../../redux/teacherRelated/teacherHandle';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Box, Typography, Paper, Avatar, CircularProgress, Container
+  Box, Typography, Paper, Avatar, CircularProgress, Container,
 } from '@mui/material';
 import SchoolIcon from '@mui/icons-material/School';
 import ClassIcon from '@mui/icons-material/Class';
 import LaptopMacIcon from '@mui/icons-material/LaptopMac';
 import styled from 'styled-components';
+import { getGroupedTeacherSubjects } from '../../../redux/teacherRelated/teacherHandle';
 
-const TeacherDetails = () => {
+function TeacherDetails() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const { teachersList, loading } = useSelector((state) => state.teacher);
@@ -19,9 +19,8 @@ const TeacherDetails = () => {
     dispatch(getGroupedTeacherSubjects());
   }, [dispatch]);
 
-  const teacher = teachersList.find(t => t._id === id);
+  const teacher = teachersList.find((t) => t._id === id);
 
-  // Группировка по предметам
   const grouped = {};
   teacher?.assignments?.forEach(({ subject, class: cls, sessions }) => {
     if (!grouped[subject]) {
@@ -47,21 +46,23 @@ const TeacherDetails = () => {
                 {teacher.name}
               </Typography>
               <Typography variant="subtitle1">
-                Email: <strong>{teacher.email}</strong>
+                Email:
+                {' '}
+                <strong>{teacher.email}</strong>
               </Typography>
             </Box>
 
             {Object.keys(grouped).length > 0 ? (
-              Object.entries(grouped).map(([subject, entries], idx) => (
-                <Box key={idx} mt={3}>
+              Object.entries(grouped).map(([subject, entries]) => (
+                <Box key={subject} mt={3}>
                   <InfoRow>
                     <LaptopMacIcon color="primary" />
                     <Typography variant="h6" ml={1}>
                       Предмет: <strong>{subject}</strong>
                     </Typography>
                   </InfoRow>
-                  {entries.map((entry, index) => (
-                    <Box key={index} ml={4} mt={1}>
+                  {entries.map((entry) => (
+                    <Box key={`${entry.class}-${entry.sessions}`} ml={4} mt={1}>
                       <InfoRow>
                         <ClassIcon color="primary" />
                         <Typography variant="subtitle1" ml={1}>
@@ -79,14 +80,16 @@ const TeacherDetails = () => {
                 </Box>
               ))
             ) : (
-              <Typography align="center" color="text.secondary">Нет назначенных предметов</Typography>
+              <Typography align="center" color="text.secondary">
+                Нет назначенных предметов
+              </Typography>
             )}
           </Box>
         )}
       </StyledCard>
     </Container>
   );
-};
+}
 
 export default TeacherDetails;
 

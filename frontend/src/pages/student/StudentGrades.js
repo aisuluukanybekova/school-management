@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Box, Typography, Alert, Stack, Table, TableHead,
   TableRow, TableCell, TableBody, Paper, TableContainer,
-  FormControl, InputLabel, Select, MenuItem, Chip
+  FormControl, InputLabel, Select, MenuItem, Chip,
 } from '@mui/material';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,7 +10,7 @@ import { getSubjectsWithTeachers } from '../../redux/sclassRelated/sclassHandle'
 
 axios.defaults.baseURL = 'http://localhost:5001';
 
-const StudentGradesWithSchedule = () => {
+function StudentGradesWithSchedule() {
   const dispatch = useDispatch();
   const student = useSelector((state) => state.user.currentUser);
   const { subjectsList } = useSelector((state) => state.sclass);
@@ -25,8 +25,9 @@ const StudentGradesWithSchedule = () => {
   const termOptions = [1, 2, 3, 4];
 
   useEffect(() => {
-    if (student?.sclassName?._id) {
-      dispatch(getSubjectsWithTeachers(student.sclassName._id));
+    const classId = student?.sclassName?._id;
+    if (classId) {
+      dispatch(getSubjectsWithTeachers(classId));
     }
     if (student?._id) {
       fetchGrades(student._id);
@@ -34,17 +35,18 @@ const StudentGradesWithSchedule = () => {
   }, [dispatch, student]);
 
   useEffect(() => {
-    if (filteredSubject && filteredTerm) {
-      fetchLessonDates(student?.sclassName?._id, filteredSubject, filteredTerm);
+    const classId = student?.sclassName?._id;
+    if (filteredSubject && filteredTerm && classId) {
+      fetchLessonDates(classId, filteredSubject, filteredTerm);
     } else {
       setLessonDates([]);
     }
-  }, [filteredSubject, filteredTerm]);
+  }, [filteredSubject, filteredTerm, student]);
 
   const fetchLessonDates = async (classId, subjectId, term) => {
     try {
-      const res = await axios.get(`/api/schedule/lesson-dates`, {
-        params: { classId, subjectId, term }
+      const res = await axios.get('/api/schedule/lesson-dates', {
+        params: { classId, subjectId, term },
       });
       setLessonDates(res.data || []);
     } catch (err) {
@@ -59,10 +61,10 @@ const StudentGradesWithSchedule = () => {
       const gradeDocs = Array.isArray(res.data?.grades) ? res.data.grades : [];
       const map = {};
 
-      gradeDocs.forEach(entry => {
+      gradeDocs.forEach((entry) => {
         const subjectIdRaw = entry.subjectId || entry.subject;
         const subjectId = typeof subjectIdRaw === 'object' ? subjectIdRaw._id : subjectIdRaw;
-        const term = entry.term;
+        const { term } = entry;
 
         if (!entry.values || !subjectId || !term) return;
 
@@ -95,22 +97,21 @@ const StudentGradesWithSchedule = () => {
     return `${day}.${month}.${year}`;
   };
 
- const calculateAverageGrade = () => {
-  const grades = lessonDates.map((dateIso) => {
-    const d = new Date(dateIso);
-    d.setHours(0, 0, 0, 0);
-    const key = `${filteredSubject}-${filteredTerm}-${d.toISOString().slice(0, 10)}`;
-    return gradesMap[key]?.grade;
-  }).filter(g => typeof g === 'number');
+  const calculateAverageGrade = () => {
+    const grades = lessonDates.map((dateIso) => {
+      const d = new Date(dateIso);
+      d.setHours(0, 0, 0, 0);
+      const key = `${filteredSubject}-${filteredTerm}-${d.toISOString().slice(0, 10)}`;
+      return gradesMap[key]?.grade;
+    }).filter((g) => typeof g === 'number');
 
-  if (!grades.length) return null;
+    if (!grades.length) return null;
 
-  const sum = grades.reduce((a, b) => a + b, 0);
-  const avg = sum / grades.length;
+    const sum = grades.reduce((a, b) => a + b, 0);
+    const avg = sum / grades.length;
 
-  return Math.round(avg); //  округляем до целого
-};
-
+    return Math.round(avg);
+  };
 
   const average = calculateAverageGrade();
 
@@ -148,7 +149,9 @@ const StudentGradesWithSchedule = () => {
           >
             <MenuItem value="">Выберите четверть</MenuItem>
             {termOptions.map((t) => (
-              <MenuItem key={t} value={t}>Четверть {t}</MenuItem>
+              <MenuItem key={`term-${t}`} value={t}>
+                Четверть {t}
+              </MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -165,13 +168,13 @@ const StudentGradesWithSchedule = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {lessonDates.map((dateIso, i) => {
+                {lessonDates.map((dateIso) => {
                   const d = new Date(dateIso);
                   d.setHours(0, 0, 0, 0);
                   const dateKey = `${filteredSubject}-${filteredTerm}-${d.toISOString().slice(0, 10)}`;
                   const gradeEntry = gradesMap[dateKey];
                   return (
-                    <TableRow key={i}>
+                    <TableRow key={dateKey}>
                       <TableCell>{formatDate(d)}</TableCell>
                       <TableCell>
                         {gradeEntry?.grade
@@ -205,6 +208,6 @@ const StudentGradesWithSchedule = () => {
       )}
     </Box>
   );
-};
+}
 
 export default StudentGradesWithSchedule;

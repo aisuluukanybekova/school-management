@@ -3,28 +3,31 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Grid, Box, Typography, Paper, Checkbox, FormControlLabel,
-  TextField, CssBaseline, IconButton, InputAdornment, CircularProgress, Backdrop
+  TextField, CssBaseline, IconButton, InputAdornment, CircularProgress, Backdrop,
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import bgpic from "../assets/designlogin.jpg";
-import { LightPurpleButton } from '../components/buttonStyles';
 import styled, { keyframes } from 'styled-components';
+import PropTypes from 'prop-types';
+import bgpic from '../assets/designlogin.jpg';
+import { LightPurpleButton } from '../components/buttonStyles';
 import { loginUser } from '../redux/userRelated/userHandle';
 import Popup from '../components/Popup';
 
 const defaultTheme = createTheme();
 
-const LoginPage = ({ role }) => {
+function LoginPage({ userRole }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { status, currentUser, response, error, currentRole } = useSelector(state => state.user);
+  const {
+    status, currentUser, response, error, currentRole,
+  } = useSelector((state) => state.user);
 
   const [toggle, setToggle] = useState(false);
   const [loader, setLoader] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
 
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
@@ -34,7 +37,7 @@ const LoginPage = ({ role }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (role === "Student") {
+    if (userRole === 'Student') {
       const rollNum = event.target.rollNumber.value;
       const studentName = event.target.studentName.value;
       const password = event.target.password.value;
@@ -48,7 +51,7 @@ const LoginPage = ({ role }) => {
 
       const fields = { rollNum, studentName, password };
       setLoader(true);
-      dispatch(loginUser(fields, role));
+      dispatch(loginUser(fields, userRole));
     } else {
       const email = event.target.email.value;
       const password = event.target.password.value;
@@ -61,7 +64,7 @@ const LoginPage = ({ role }) => {
 
       const fields = { email, password };
       setLoader(true);
-      dispatch(loginUser(fields, role));
+      dispatch(loginUser(fields, userRole));
     }
   };
 
@@ -83,7 +86,7 @@ const LoginPage = ({ role }) => {
       setShowPopup(true);
       setLoader(false);
     } else if (status === 'error') {
-      setMessage("Ошибка сети");
+      setMessage('Ошибка сети');
       setShowPopup(true);
       setLoader(false);
     }
@@ -95,17 +98,22 @@ const LoginPage = ({ role }) => {
         <CssBaseline />
         <Grid item xs={12} sm={8} md={5} component={StyledPaper} elevation={6} square>
           <StyledFormContainer>
-            <Typography variant="h4" sx={{ mb: 2, color: "#2c2143", fontWeight: 700, textAlign: "center" }}>
-              {role === 'Admin' ? 'Администратор — вход' :
-               role === 'Teacher' ? 'Преподаватель — вход' :
-               role === 'Student' ? 'Ученик — вход' : 'Вход'}
+            <Typography
+              variant="h4"
+              sx={{
+                mb: 2, color: '#2c2143', fontWeight: 700, textAlign: 'center',
+              }}
+            >
+              {userRole === 'Admin' ? 'Администратор — вход'
+                : userRole === 'Teacher' ? 'Преподаватель — вход'
+                  : userRole === 'Student' ? 'Ученик — вход' : 'Вход'}
             </Typography>
-            <Typography variant="body1" sx={{ textAlign: "center", mb: 3, color: "#444" }}>
+            <Typography variant="body1" sx={{ textAlign: 'center', mb: 3, color: '#444' }}>
               Добро пожаловать! Пожалуйста, введите свои данные
             </Typography>
 
             <Box component="form" noValidate onSubmit={handleSubmit}>
-              {role === "Student" ? (
+              {userRole === 'Student' ? (
                 <>
                   <TextField
                     margin="normal"
@@ -116,7 +124,6 @@ const LoginPage = ({ role }) => {
                     name="rollNumber"
                     autoComplete="off"
                     type="number"
-                    autoFocus
                     error={rollNumberError}
                     helperText={rollNumberError && 'Номер обязателен'}
                     onChange={handleInputChange}
@@ -143,7 +150,6 @@ const LoginPage = ({ role }) => {
                   label="Email"
                   name="email"
                   autoComplete="email"
-                  autoFocus
                   error={emailError}
                   helperText={emailError && 'Email обязателен'}
                   onChange={handleInputChange}
@@ -171,7 +177,7 @@ const LoginPage = ({ role }) => {
                   ),
                 }}
               />
-              <Grid container sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Grid container sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <FormControlLabel
                   control={<Checkbox value="remember" color="primary" />}
                   label="Запомнить меня"
@@ -184,12 +190,13 @@ const LoginPage = ({ role }) => {
                 variant="contained"
                 sx={{ mt: 3 }}
               >
-                {loader ? <CircularProgress size={24} color="inherit" /> : "Войти"}
+                {loader ? <CircularProgress size={24} color="inherit" /> : 'Войти'}
               </LightPurpleButton>
-              {role === "Admin" && (
+              {userRole === 'Admin' && (
                 <Grid container justifyContent="center" sx={{ mt: 2 }}>
                   <Typography variant="body2">
-                    Нет аккаунта?{' '}
+                    Нет аккаунта?
+                    {' '}
                     <StyledLink to="/Adminregister">Зарегистрироваться</StyledLink>
                   </Typography>
                 </Grid>
@@ -206,8 +213,7 @@ const LoginPage = ({ role }) => {
           sx={{
             backgroundImage: `url(${bgpic})`,
             backgroundRepeat: 'no-repeat',
-            backgroundColor: (t) =>
-              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+            backgroundColor: (t) => (t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900]),
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
@@ -220,6 +226,10 @@ const LoginPage = ({ role }) => {
       <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
     </ThemeProvider>
   );
+}
+
+LoginPage.propTypes = {
+  userRole: PropTypes.string.isRequired,
 };
 
 export default LoginPage;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   Box, FormControl, InputLabel, Select, MenuItem,
-  Button, Snackbar, Typography
+  Button, Snackbar, Typography,
 } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import { useSelector } from 'react-redux';
@@ -9,7 +9,7 @@ import axios from 'axios';
 
 axios.defaults.baseURL = 'http://localhost:5001';
 
-const TeacherAttendanceJournal = () => {
+function TeacherAttendanceJournal() {
   const teacher = useSelector((state) => state.user.currentUser);
   const schoolId = teacher?.school?._id || teacher?.schoolId;
 
@@ -29,7 +29,7 @@ const TeacherAttendanceJournal = () => {
       try {
         const [assignRes, termRes] = await Promise.all([
           axios.get(`/api/teacherSubjectClass/by-teacher/${teacher._id}`),
-          axios.get(`/api/terms/${schoolId}`)
+          axios.get(`/api/terms/${schoolId}`),
         ]);
         setAssignments(assignRes.data);
         setTerms(termRes.data);
@@ -59,8 +59,8 @@ const TeacherAttendanceJournal = () => {
 
   const fetchAttendance = async () => {
     try {
-      const res = await axios.get(`/api/attendance`, {
-        params: { classId: selectedClass, subjectId: selectedSubject, term: selectedTerm }
+      const res = await axios.get('/api/attendance', {
+        params: { classId: selectedClass, subjectId: selectedSubject, term: selectedTerm },
       });
 
       const grouped = {};
@@ -71,7 +71,7 @@ const TeacherAttendanceJournal = () => {
 
       const formatted = Object.entries(grouped).map(([studentId, values]) => ({
         studentId,
-        values
+        values,
       }));
 
       setAttendance(formatted);
@@ -84,21 +84,21 @@ const TeacherAttendanceJournal = () => {
   const fetchLessonDates = async () => {
     try {
       const { data: scheduleRes } = await axios.get(
-        `/api/schedule/by-teacher-class-subject/${teacher._id}/${selectedClass}/${selectedSubject}`
+        `/api/schedule/by-teacher-class-subject/${teacher._id}/${selectedClass}/${selectedSubject}`,
       );
 
-      const term = terms.find(t => t.termNumber === Number(selectedTerm));
+      const term = terms.find((t) => t.termNumber === Number(selectedTerm));
       if (!term) return;
 
       const start = new Date(term.startDate);
       const end = new Date(term.endDate);
 
       const enDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-      const scheduleDays = [...new Set(scheduleRes.schedules.map(s => s.day))];
+      const scheduleDays = [...new Set(scheduleRes.schedules.map((s) => s.day))];
 
       const dates = [];
 
-      let current = new Date(start);
+      const current = new Date(start);
       while (current <= end) {
         const currentDayName = enDays[current.getDay()];
         if (scheduleDays.includes(currentDayName)) {
@@ -114,16 +114,16 @@ const TeacherAttendanceJournal = () => {
   };
 
   const toggleAttendance = (studentId, date) => {
-    setAttendance(prev => {
+    setAttendance((prev) => {
       const updated = [...prev];
-      let entry = updated.find(a => a.studentId === studentId);
+      let entry = updated.find((a) => a.studentId === studentId);
       if (!entry) {
         entry = { studentId, values: [] };
         updated.push(entry);
       }
 
-      const isAbsent = entry.values.some(v => v.date === date && v.status === 'Отсутствовал');
-      entry.values = entry.values.filter(v => v.date !== date);
+      const isAbsent = entry.values.some((v) => v.date === date && v.status === 'Отсутствовал');
+      entry.values = entry.values.filter((v) => v.date !== date);
 
       if (!isAbsent) {
         entry.values.push({ date, status: 'Отсутствовал' });
@@ -134,46 +134,46 @@ const TeacherAttendanceJournal = () => {
   };
 
   const isAbsent = (studentId, date) => {
-    const student = attendance.find(a => a.studentId === studentId);
-    return student?.values?.some(v => v.date === date && v.status === 'Отсутствовал') || false;
+    const student = attendance.find((a) => a.studentId === studentId);
+    return student?.values?.some((v) => v.date === date && v.status === 'Отсутствовал') || false;
   };
 
   const saveAttendance = async () => {
     try {
-      await axios.post(`/api/attendance`, {
+      await axios.post('/api/attendance', {
         classId: selectedClass,
         subjectId: selectedSubject,
         teacherId: teacher._id,
         term: Number(selectedTerm),
-        records: attendance
+        records: attendance,
       });
 
       setSnackbar({
         open: true,
         message: 'Посещаемость успешно сохранена',
-        severity: 'success'
+        severity: 'success',
       });
     } catch (err) {
       console.error('Ошибка сохранения посещаемости:', err);
       setSnackbar({
         open: true,
         message: 'Ошибка при сохранении. Проверьте соединение и данные.',
-        severity: 'error'
+        severity: 'error',
       });
     }
   };
 
-  const uniqueClasses = [...new Map(assignments.map(a => [a.sclassId, a])).values()];
-  const uniqueSubjects = [...new Map(assignments.map(a => [a.subjectId, a])).values()];
+  const uniqueClasses = [...new Map(assignments.map((a) => [a.sclassId, a])).values()];
+  const uniqueSubjects = [...new Map(assignments.map((a) => [a.subjectId, a])).values()];
 
   return (
     <Box p={3}>
-      <Typography variant="h5">📋 Журнал посещаемости (Учитель)</Typography>
+      <Typography variant="h5"> Журнал посещаемости</Typography>
 
       <Box display="flex" gap={2} mt={2} mb={2}>
         <FormControl fullWidth>
           <InputLabel>Класс</InputLabel>
-          <Select value={selectedClass} onChange={e => setSelectedClass(e.target.value)}>
+          <Select value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)}>
             {uniqueClasses.map((a) => (
               <MenuItem key={a.sclassId} value={a.sclassId}>{a.sclassName}</MenuItem>
             ))}
@@ -182,7 +182,7 @@ const TeacherAttendanceJournal = () => {
 
         <FormControl fullWidth>
           <InputLabel>Предмет</InputLabel>
-          <Select value={selectedSubject} onChange={e => setSelectedSubject(e.target.value)}>
+          <Select value={selectedSubject} onChange={(e) => setSelectedSubject(e.target.value)}>
             {uniqueSubjects.map((a) => (
               <MenuItem key={a.subjectId} value={a.subjectId}>{a.subjectName}</MenuItem>
             ))}
@@ -191,9 +191,12 @@ const TeacherAttendanceJournal = () => {
 
         <FormControl fullWidth>
           <InputLabel>Четверть</InputLabel>
-          <Select value={selectedTerm} onChange={e => setSelectedTerm(e.target.value)}>
-            {[1, 2, 3, 4].map(n => (
-              <MenuItem key={n} value={String(n)}>Четверть {n}</MenuItem>
+          <Select value={selectedTerm} onChange={(e) => setSelectedTerm(e.target.value)}>
+            {[1, 2, 3, 4].map((n) => (
+              <MenuItem key={n} value={String(n)}>
+                Четверть
+                {n}
+              </MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -212,32 +215,42 @@ const TeacherAttendanceJournal = () => {
             fontSize: '0.875rem',
             position: 'sticky',
             top: 0,
-            zIndex: 3
+            zIndex: 3,
           }}
         >
-          <Box sx={{ border: '1px solid #444', p: 1, position: 'sticky', left: 0, zIndex: 4 }}>№</Box>
-          <Box sx={{ border: '1px solid #444', p: 1, position: 'sticky', left: 40, zIndex: 4 }}>Ученик</Box>
-         {lessonDates.map(date => (
-  <Box
-    key={date}
-    sx={{
-      border: '1px solid #444',
-      p: 1,
-      fontSize: '0.75rem',
-      whiteSpace: 'nowrap',
-      textAlign: 'center',
-      backgroundColor: '#333',
-      color: '#fff',
-      minWidth: '60px',
-      height: '100%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }}
-  >
-    {new Date(date).toLocaleDateString('ru-RU').slice(0, 5)}
-  </Box>
-))}
+          <Box sx={{
+            border: '1px solid #444', p: 1, position: 'sticky', left: 0, zIndex: 4,
+          }}
+          >
+            №
+          </Box>
+          <Box sx={{
+            border: '1px solid #444', p: 1, position: 'sticky', left: 40, zIndex: 4,
+          }}
+          >
+            Ученик
+          </Box>
+          {lessonDates.map((date) => (
+            <Box
+              key={date}
+              sx={{
+                border: '1px solid #444',
+                p: 1,
+                fontSize: '0.75rem',
+                whiteSpace: 'nowrap',
+                textAlign: 'center',
+                backgroundColor: '#333',
+                color: '#fff',
+                minWidth: '60px',
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              {new Date(date).toLocaleDateString('ru-RU').slice(0, 5)}
+            </Box>
+          ))}
           <Box
             sx={{
               border: '1px solid #444',
@@ -248,7 +261,7 @@ const TeacherAttendanceJournal = () => {
               position: 'sticky',
               right: 0,
               zIndex: 3,
-              minWidth: '90px'
+              minWidth: '90px',
             }}
           >
             Пропущено
@@ -257,9 +270,7 @@ const TeacherAttendanceJournal = () => {
 
         {/* Строки */}
         {students.map((student, idx) => {
-          const count = lessonDates.reduce(
-            (acc, date) => acc + (isAbsent(student._id, date) ? 1 : 0), 0
-          );
+          const count = lessonDates.reduce((acc, date) => acc + (isAbsent(student._id, date) ? 1 : 0), 0);
 
           return (
             <Box
@@ -268,13 +279,23 @@ const TeacherAttendanceJournal = () => {
                 display: 'grid',
                 gridTemplateColumns: `40px 180px repeat(${lessonDates.length}, 60px) 90px`,
                 backgroundColor: idx % 2 === 0 ? '#fff' : '#f9f9f9',
-                fontSize: '0.875rem'
+                fontSize: '0.875rem',
               }}
             >
-              <Box sx={{ border: '1px solid #ccc', p: 1, textAlign: 'center', position: 'sticky', left: 0, zIndex: 2 }}>{idx + 1}</Box>
-              <Box sx={{ border: '1px solid #ccc', p: 1, fontWeight: 500, position: 'sticky', left: 40, zIndex: 2 }}>{student.name}</Box>
+              <Box sx={{
+                border: '1px solid #ccc', p: 1, textAlign: 'center', position: 'sticky', left: 0, zIndex: 2,
+              }}
+              >
+                {idx + 1}
+              </Box>
+              <Box sx={{
+                border: '1px solid #ccc', p: 1, fontWeight: 500, position: 'sticky', left: 40, zIndex: 2,
+              }}
+              >
+                {student.name}
+              </Box>
 
-              {lessonDates.map(date => {
+              {lessonDates.map((date) => {
                 const absent = isAbsent(student._id, date);
                 return (
                   <Box
@@ -288,12 +309,12 @@ const TeacherAttendanceJournal = () => {
                       cursor: 'pointer',
                       backgroundColor: absent ? '#fdd' : '#f1f1f1',
                       '&:hover': {
-                        backgroundColor: absent ? '#fbb' : '#e0e0e0'
+                        backgroundColor: absent ? '#fbb' : '#e0e0e0',
                       },
                       transition: 'background-color 0.2s ease',
                       userSelect: 'none',
                       fontWeight: absent ? 600 : 400,
-                      color: absent ? '#b00020' : '#333'
+                      color: absent ? '#b00020' : '#333',
                     }}
                   >
                     {absent ? '—' : ''}
@@ -311,7 +332,7 @@ const TeacherAttendanceJournal = () => {
                   position: 'sticky',
                   right: 0,
                   zIndex: 2,
-                  minWidth: '90px'
+                  minWidth: '90px',
                 }}
               >
                 {count}
@@ -335,6 +356,6 @@ const TeacherAttendanceJournal = () => {
       <Button variant="contained" sx={{ mt: 2 }} onClick={saveAttendance}>Сохранить</Button>
     </Box>
   );
-};
+}
 
 export default TeacherAttendanceJournal;

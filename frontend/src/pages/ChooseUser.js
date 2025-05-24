@@ -6,10 +6,11 @@ import {
   CircularProgress,
   Backdrop,
   Typography,
-  Avatar
+  Avatar,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import styled, { keyframes, createGlobalStyle } from 'styled-components';
+import PropTypes from 'prop-types';
 import { loginUser } from '../redux/userRelated/userHandle';
 import Popup from '../components/Popup';
 
@@ -19,26 +20,26 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const ChooseUser = ({ visitor }) => {
+function ChooseUser({ visitor }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const password = "zxc";
+  const password = 'zxc';
 
-  const { status, currentUser, currentRole } = useSelector(state => state.user);
+  const { status, currentUser, currentRole } = useSelector((state) => state.user);
 
   const [loader, setLoader] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
 
   const navigateHandler = (user) => {
-    if (visitor !== "guest") {
+    if (visitor !== 'guest') {
       navigate(`/${user}login`);
       return;
     }
     const credentials = {
-      Admin: { email: "yogendra@12", password },
-      Student: { rollNum: "1", studentName: "Dipesh Awasthi", password },
-      Teacher: { email: "tony@12", password }
+      Admin: { email: 'yogendra@12', password },
+      Student: { rollNum: '1', studentName: 'Dipesh Awasthi', password },
+      Teacher: { email: 'tony@12', password },
     };
 
     setLoader(true);
@@ -50,7 +51,7 @@ const ChooseUser = ({ visitor }) => {
       navigate(`/${currentRole}/dashboard`);
     } else if (status === 'error') {
       setLoader(false);
-      setMessage("Ошибка сети");
+      setMessage('Ошибка сети');
       setShowPopup(true);
     }
   }, [status, currentRole, navigate, currentUser]);
@@ -60,20 +61,20 @@ const ChooseUser = ({ visitor }) => {
       key: 'Admin',
       icon: <Avatar src="/avatars/admin.png" sx={{ width: 36, height: 36 }} />,
       title: 'Администратор',
-      description: 'Управление школой, пользователями и аналитикой.'
+      description: 'Управление школой, пользователями и аналитикой.',
     },
     {
       key: 'Teacher',
       icon: <Avatar src="/avatars/teacher.png" sx={{ width: 36, height: 36 }} />,
       title: 'Учитель',
-      description: 'Ведение журнала, оценок и расписания.'
+      description: 'Ведение журнала, оценок и расписания.',
     },
     {
       key: 'Student',
       icon: <Avatar src="/avatars/student.png" sx={{ width: 36, height: 36 }} />,
       title: 'Ученик',
-      description: 'Просмотр оценок, заданий и расписания.'
-    }
+      description: 'Просмотр оценок, заданий и расписания.',
+    },
   ];
 
   return (
@@ -87,7 +88,9 @@ const ChooseUser = ({ visitor }) => {
             </Typography>
           </HeaderContainer>
           <CardStack>
-            {roles.map(({ key, icon, title, description }) => (
+            {roles.map(({
+              key, icon, title, description,
+            }) => (
               <StyledPaper key={key} elevation={4} onClick={() => navigateHandler(key)}>
                 <Box className="paperContent">
                   {icon}
@@ -106,9 +109,15 @@ const ChooseUser = ({ visitor }) => {
       </Background>
     </>
   );
+}
+
+ChooseUser.propTypes = {
+  visitor: PropTypes.string.isRequired,
 };
 
 export default ChooseUser;
+
+// === Animations & Styles ===
 
 const glow = keyframes`
   0% { background-position: 0% 50%; }
@@ -165,17 +174,17 @@ const StyledPaper = styled(Paper)`
   position: relative;
   overflow: hidden;
 
-&:hover {
-  background-color: #f6f6f6;
-  transform: scale(1.06);
-  box-shadow: 0 0 24px rgba(255, 255, 255, 0.75);
-}
+  &:hover {
+    background-color: #f6f6f6;
+    transform: scale(1.06);
+    box-shadow: 0 0 24px rgba(255, 255, 255, 0.75);
+  }
 
-&:active {
-  background-color: #eaeaea;
-  transform: scale(0.99);
-  box-shadow: 0 0 28px rgba(255, 255, 255, 0.85);
-}
+  &:active {
+    background-color: #eaeaea;
+    transform: scale(0.99);
+    box-shadow: 0 0 28px rgba(255, 255, 255, 0.85);
+  }
 
   .paperContent {
     text-align: center;
@@ -185,6 +194,7 @@ const StyledPaper = styled(Paper)`
     justify-content: center;
   }
 `;
+
 const VerticalContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -192,6 +202,7 @@ const VerticalContainer = styled.div`
   justify-content: flex-start;
   padding-top: 4vh; 
 `;
+
 const HeaderContainer = styled.div`
   text-align: center;
   margin-bottom: 2.5rem;

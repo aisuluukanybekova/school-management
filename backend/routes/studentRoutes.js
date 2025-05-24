@@ -7,7 +7,8 @@ const {
   getStudentDetail,
   deleteStudents,
   deleteStudent,
-  updateStudent
+  updateStudent,
+  updateStudentPassword
 } = require('../controllers/student_controller.js'); 
 
 const router = express.Router();
@@ -28,5 +29,6 @@ router.delete('/:id', deleteStudent);
 // Обновление студента
 router.put('/:id', updateStudent);
 
+router.put('/update-password/:id', updateStudentPassword); 
 
 module.exports = router;

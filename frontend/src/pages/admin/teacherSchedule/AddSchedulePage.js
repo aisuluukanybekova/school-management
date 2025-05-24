@@ -1,24 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Box, Typography, FormControl, InputLabel, Select, MenuItem,
   Button, TextField, Table, TableBody, TableCell, TableHead,
   TableRow, CircularProgress, Paper, TableContainer, Alert, Stack,
-  Dialog, DialogTitle, DialogContent
+  Dialog, DialogTitle, DialogContent,
 } from '@mui/material';
 import { Schedule, Save, Edit } from '@mui/icons-material';
 import axios from 'axios';
-//import axios from '../../../utils/axios';
-
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import EditTimeSlots from './EditTimeSlots';
-import { generateSchedule as generateUtilsSchedule, getTeachersForSubject } from '../../../utils/scheduleUtils';
 
 axios.defaults.baseURL = 'http://localhost:5001';
 
 const daysOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница'];
 
-const AddSchedulePage = () => {
+function AddSchedulePage() {
   const admin = useSelector((state) => state.user.currentUser);
   const navigate = useNavigate();
 
@@ -37,7 +34,7 @@ const AddSchedulePage = () => {
 
   const schoolId = admin.schoolId || admin.school?._id;
 
-  const loadTimeSlots = async () => {
+  const loadTimeSlots = useCallback(async () => {
     if (!schoolId) return;
     try {
       const { data } = await axios.get(`/api/timeslots/${schoolId}?shift=${shift}`);
@@ -45,7 +42,7 @@ const AddSchedulePage = () => {
     } catch {
       setError('Ошибка загрузки временных слотов');
     }
-  };
+  }, [schoolId, shift]);
 
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -60,13 +57,13 @@ const AddSchedulePage = () => {
       }
     };
     fetchInitialData();
-  }, [schoolId, shift]);
+  }, [schoolId, loadTimeSlots]);
 
   useEffect(() => {
     if (!selectedClass) return;
     axios
       .get(`/api/teacherSubjectClass/assigned/${selectedClass}`)
-      .then(res => setAssignedSubjects(res.data))
+      .then((res) => setAssignedSubjects(res.data))
       .catch(() => setError('Ошибка загрузки предметов и учителей'));
   }, [selectedClass]);
 
@@ -77,7 +74,7 @@ const AddSchedulePage = () => {
     }
 
     const lessonsOnly = timeSlots
-      .filter(slot => slot.type === 'lesson')
+      .filter((slot) => slot.type === 'lesson')
       .sort((a, b) => a.number - b.number)
       .slice(0, lessonCount);
 
@@ -91,7 +88,7 @@ const AddSchedulePage = () => {
       subjectId: '',
       teacherId: '',
       startTime: slot.startTime,
-      endTime: slot.endTime
+      endTime: slot.endTime,
     }));
 
     setLessons(result);
@@ -100,27 +97,18 @@ const AddSchedulePage = () => {
   };
 
   const handleLessonChange = (index, field, value) => {
-    setLessons(prev =>
-      prev.map((l, i) => i === index
-        ? { ...l, [field]: value, ...(field === 'subjectId' ? { teacherId: '' } : {}) }
-        : l
-      )
-    );
+    setLessons((prev) => prev.map((l, i) => (i === index
+      ? { ...l, [field]: value, ...(field === 'subjectId' ? { teacherId: '' } : {}) }
+      : l)));
   };
 
   const getTeachersForSubject = (subjectId) => {
-    const found = assignedSubjects.find(a => a.subjectId === subjectId);
+    const found = assignedSubjects.find((a) => a.subjectId === subjectId);
     return found?.teachers || [];
   };
-const result = generateUtilsSchedule(timeSlots, lessonCount);
-
-if (!result) {
-  alert(`Недостаточно уроков в TimeSlots`);
-  return;
-}
 
   const saveSchedule = async () => {
-    if (!lessons.every(l => l.subjectId && l.teacherId)) {
+    if (!lessons.every((l) => l.subjectId && l.teacherId)) {
       alert('Заполните все строки расписания!');
       return;
     }
@@ -130,12 +118,14 @@ if (!result) {
         classId: selectedClass,
         day: selectedDay,
         shift,
-        lessons: lessons.map(({ subjectId, teacherId, startTime, endTime }) => ({
+        lessons: lessons.map(({
+          subjectId, teacherId, startTime, endTime,
+        }) => ({
           subjectId,
           teacherId,
           startTime,
-          endTime
-        }))
+          endTime,
+        })),
       };
 
       const { data } = await axios.post('/api/schedule/full-day', payload);
@@ -190,27 +180,27 @@ if (!result) {
           value: selectedClass,
           options: classes,
           onChange: setSelectedClass,
-          getLabel: c => c.sclassName,
-          getValue: c => c._id
+          getLabel: (c) => c.sclassName,
+          getValue: (c) => c._id,
         }, {
           label: 'День недели',
           value: selectedDay,
           options: daysOfWeek,
           onChange: setSelectedDay,
-          getLabel: d => d,
-          getValue: d => d
+          getLabel: (d) => d,
+          getValue: (d) => d,
         }, {
           label: 'Смена',
           value: shift,
           options: [{ label: 'Первая смена', value: 'first' }, { label: 'Вторая смена', value: 'second' }],
           onChange: setShift,
-          getLabel: o => o.label,
-          getValue: o => o.value
-        }].map((f, idx) => (
-          <FormControl key={idx} sx={{ minWidth: 180 }} size="small">
+          getLabel: (o) => o.label,
+          getValue: (o) => o.value,
+        }].map((f) => (
+          <FormControl key={f.label} sx={{ minWidth: 180 }} size="small">
             <InputLabel>{f.label}</InputLabel>
-            <Select value={f.value} onChange={e => f.onChange(e.target.value)} label={f.label}>
-              {f.options?.map(opt => (
+            <Select value={f.value} onChange={(e) => f.onChange(e.target.value)} label={f.label}>
+              {f.options?.map((opt) => (
                 <MenuItem key={f.getValue(opt)} value={f.getValue(opt)}>
                   {f.getLabel(opt)}
                 </MenuItem>
@@ -224,7 +214,7 @@ if (!result) {
           type="number"
           size="small"
           value={lessonCount}
-          onChange={e => setLessonCount(Number(e.target.value))}
+          onChange={(e) => setLessonCount(Number(e.target.value))}
           inputProps={{ min: 1, max: 10 }}
         />
 
@@ -247,8 +237,8 @@ if (!result) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {lessons.map((l, index) => (
-                  <TableRow key={index} hover sx={{ '&:nth-of-type(odd)': { backgroundColor: '#fafafa' } }}>
+                {lessons.map((l) => (
+                  <TableRow key={`${l.startTime}-${l.endTime}`} hover sx={{ '&:nth-of-type(odd)': { backgroundColor: '#fafafa' } }}>
                     <TableCell align="center">{l.number}</TableCell>
                     <TableCell align="center">{l.startTime}</TableCell>
                     <TableCell align="center">{l.endTime}</TableCell>
@@ -257,9 +247,9 @@ if (!result) {
                         fullWidth
                         size="small"
                         value={l.subjectId}
-                        onChange={(e) => handleLessonChange(index, 'subjectId', e.target.value)}
+                        onChange={(e) => handleLessonChange(l.number - 1, 'subjectId', e.target.value)}
                       >
-                        {assignedSubjects.map(s => (
+                        {assignedSubjects.map((s) => (
                           <MenuItem key={s.subjectId} value={s.subjectId}>
                             {s.subjectName}
                           </MenuItem>
@@ -271,9 +261,9 @@ if (!result) {
                         fullWidth
                         size="small"
                         value={l.teacherId}
-                        onChange={(e) => handleLessonChange(index, 'teacherId', e.target.value)}
+                        onChange={(e) => handleLessonChange(l.number - 1, 'teacherId', e.target.value)}
                       >
-                        {getTeachersForSubject(l.subjectId).map(t => (
+                        {getTeachersForSubject(l.subjectId).map((t) => (
                           <MenuItem key={t._id} value={t._id}>
                             {t.name}
                           </MenuItem>
@@ -314,6 +304,6 @@ if (!result) {
       </Dialog>
     </Box>
   );
-};
+}
 
 export default AddSchedulePage;

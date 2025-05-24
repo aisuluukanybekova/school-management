@@ -196,6 +196,25 @@ const teacherAttendance = async (req, res) => {
     res.status(500).json({ message: "Ошибка сервера" });
   }
 };
+const updateTeacherPassword = async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+
+  try {
+    const teacher = await Teacher.findById(req.params.id);
+    if (!teacher) return res.status(404).json({ message: 'Преподаватель не найден' });
+
+    const isMatch = await bcrypt.compare(oldPassword, teacher.password);
+    if (!isMatch) return res.status(400).json({ message: 'Старый пароль неверный' });
+
+    const salt = await bcrypt.genSalt(10);
+    teacher.password = await bcrypt.hash(newPassword, salt);
+    await teacher.save();
+
+    res.json({ message: 'Пароль успешно обновлён' });
+  } catch (err) {
+    res.status(500).json({ message: 'Ошибка сервера', error: err.message });
+  }
+};
 
 module.exports = {
   teacherRegister,
@@ -207,5 +226,6 @@ module.exports = {
   deleteTeacher,
   deleteTeachers,
   deleteTeachersByClass,
+  updateTeacherPassword,
   teacherAttendance
 };

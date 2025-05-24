@@ -1,24 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box, Typography, Paper, Table, TableBody, TableCell,
-  TableContainer, TableHead, TableRow, Alert, Button
+  TableContainer, TableHead, TableRow, Alert, Button,
 } from '@mui/material';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 
-const AttendanceReportPage = () => {
+// CSS стили для печати
+const printStyle = `
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print-area, .print-area * {
+    visibility: visible;
+  }
+  .print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 20px;
+  }
+}
+`;
+
+function AttendanceReportPage() {
   const location = useLocation();
+  const {
+    classId, subjectId, term, subjectName,
+  } = location.state || {};
+  const [report, setReport] = useState([]);
+  const [error, setError] = useState('');
 
-  // Получаем параметры из состояния маршрута (classId, subjectId, term)
-  //const { classId, subjectId, term } = location.state || {};
-const { classId, subjectId, term, subjectName } = location.state || {};
-
-  const [report, setReport] = useState([]); // Состояние для хранения отчета
-  const [error, setError] = useState('');   // Состояние для ошибок
-
-  // Загружаем данные отчета после монтирования компонента
   useEffect(() => {
     if (!classId || !subjectId || !term) {
       setError('Недостаточно данных для отчёта');
@@ -26,20 +42,19 @@ const { classId, subjectId, term, subjectName } = location.state || {};
     }
 
     axios.get('/api/attendance/report', {
-      params: { classId, subjectId, term }
+      params: { classId, subjectId, term },
     })
-      .then(res => setReport(res.data || []))
+      .then((res) => setReport(res.data || []))
       .catch(() => setError('Ошибка загрузки отчёта'));
   }, [classId, subjectId, term]);
 
-  // Экспорт отчета в Excel
   const exportToExcel = () => {
     const data = report.map((r, i) => ({
       '№': i + 1,
-      'Ученик': r.studentName,
+      Ученик: r.studentName,
       'Всего занятий': r.totalLessons,
-      'Отсутствовал': r.absent,
-      '%': r.percent
+      Отсутствовал: r.absent,
+      '%': r.percent,
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(data);
@@ -50,62 +65,68 @@ const { classId, subjectId, term, subjectName } = location.state || {};
   };
 
   return (
-    <Box p={4}>
-      {/* Заголовок страницы */}
-     <Typography variant="h5" fontWeight="bold" gutterBottom>
-  📄 Отчёт по посещаемости
-</Typography>
-<Typography variant="subtitle1" color="text.secondary" gutterBottom>
-  Предмет: <strong>{subjectName || 'Неизвестен'}</strong>
-</Typography>
+    <>
+      {/* Вставка стилей для печати */}
+      <style>{printStyle}</style>
 
+      <Box p={4}>
+        {/* Обернули печатную часть */}
+        <div className="print-area">
+          <Typography variant="h5" fontWeight="bold" gutterBottom>
+            📄 Отчёт по посещаемости
+          </Typography>
+          <Typography variant="subtitle1" color="text.secondary" gutterBottom>
+            Предмет: <strong>{subjectName || 'Неизвестен'}</strong>
+          </Typography>
 
-      {/* Сообщение об ошибке */}
-      {error && <Alert severity="error">{error}</Alert>}
+          {!error && report.length > 0 && (
+            <TableContainer component={Paper}>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>№</TableCell>
+                    <TableCell>Ученик</TableCell>
+                    <TableCell align="center">Всего занятий</TableCell>
+                    <TableCell align="center">Отсутствовал</TableCell>
+                    <TableCell align="center">%</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {report.map((r, i) => (
+                    <TableRow key={r.studentId || `${r.studentName}-${r.totalLessons}-${i}`}>
+                      <TableCell>{i + 1}</TableCell>
+                      <TableCell>{r.studentName}</TableCell>
+                      <TableCell align="center">{r.totalLessons}</TableCell>
+                      <TableCell align="center">{r.absent}</TableCell>
+                      <TableCell align="center">{r.percent}%</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
 
-      {/* Основная таблица и кнопка экспорта */}
-      {!error && report.length > 0 && (
-        <>
-          <Box mb={2}>
+          {!error && report.length === 0 && (
+            <Alert severity="info">Данные для отчёта не найдены</Alert>
+          )}
+        </div>
+
+        {/* Кнопки только для экрана */}
+        {!error && report.length > 0 && (
+          <Box mt={2} sx={{ display: 'flex', gap: 2 }} className="no-print">
             <Button variant="contained" color="success" onClick={exportToExcel}>
               ⬇️ Excel
             </Button>
+            <Button variant="contained" color="primary" onClick={() => window.print()}>
+              🖨️ Печать
+            </Button>
           </Box>
+        )}
 
-          <TableContainer component={Paper}>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell>№</TableCell>
-                  <TableCell>Ученик</TableCell>
-                  <TableCell align="center">Всего занятий</TableCell>
-                  {/* Удалена колонка "Присутствовал" */}
-                  <TableCell align="center">Отсутствовал</TableCell>
-                  <TableCell align="center">%</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {report.map((r, i) => (
-                  <TableRow key={i}>
-                    <TableCell>{i + 1}</TableCell>
-                    <TableCell>{r.studentName}</TableCell>
-                    <TableCell align="center">{r.totalLessons}</TableCell>
-                    <TableCell align="center">{r.absent}</TableCell>
-                    <TableCell align="center">{r.percent}%</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </>
-      )}
-
-      {/* Инфо сообщение, если отчёт пуст */}
-      {!error && report.length === 0 && (
-        <Alert severity="info">Данные для отчёта не найдены</Alert>
-      )}
-    </Box>
+        {error && <Alert severity="error">{error}</Alert>}
+      </Box>
+    </>
   );
-};
+}
 
 export default AttendanceReportPage;

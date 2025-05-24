@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   subjectsList: [],
@@ -47,7 +47,7 @@ const subjectSlice = createSlice({
       state.subjectDetails = {};
       state.response = null;
       state.error = null;
-    }
+    },
   },
 });
 
@@ -58,7 +58,7 @@ export const {
   getError,
   postDone,
   doneSuccess,
-  clearSubjectState
+  clearSubjectState,
 } = subjectSlice.actions;
 
 export const subjectReducer = subjectSlice.reducer;

@@ -2,16 +2,15 @@
 import React, { useState } from 'react';
 import {
   Box,
-  Typography,
   Tabs,
   Tab,
-  Paper
+  Paper,
 } from '@mui/material';
+import { useSelector } from 'react-redux';
 import AdminTermManager from './AdminTermManager';
 import TermOverview from './TermOverview';
-import { useSelector } from 'react-redux';
 
-const TermTabs = () => {
+function TermTabs() {
   const [tabIndex, setTabIndex] = useState(0);
   const admin = useSelector((state) => state.user.currentUser);
   const schoolId = admin?.schoolId || admin?.school?._id;
@@ -41,6 +40,6 @@ const TermTabs = () => {
       </Box>
     </Box>
   );
-};
+}
 
 export default TermTabs;

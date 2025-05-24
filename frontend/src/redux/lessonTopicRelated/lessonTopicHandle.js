@@ -3,7 +3,7 @@ import {
   topicRequest,
   topicSuccess,
   topicSaveSuccess,
-  topicError
+  topicError,
 } from './lessonTopicSlice';
 
 export const fetchLessonTopics = (params) => async (dispatch) => {

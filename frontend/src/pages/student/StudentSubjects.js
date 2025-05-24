@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  getSubjectsWithTeachers,
-  getClassDetails
-} from '../../redux/sclassRelated/sclassHandle';
-import { getUserDetails } from '../../redux/userRelated/userHandle';
-
-import {
   Container,
   Typography,
   Table,
@@ -19,10 +13,15 @@ import {
   Box,
   Divider,
   Stack,
-  CircularProgress
+  CircularProgress,
 } from '@mui/material';
+import {
+  getSubjectsWithTeachers,
+  getClassDetails,
+} from '../../redux/sclassRelated/sclassHandle';
+import { getUserDetails } from '../../redux/userRelated/userHandle';
 
-const StudentSubjects = () => {
+function StudentSubjects() {
   const dispatch = useDispatch();
   const { subjectsList, sclassDetails } = useSelector((state) => state.sclass);
   const { userDetails, currentUser, loading } = useSelector((state) => state.user);
@@ -88,12 +87,12 @@ const StudentSubjects = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {subjectsList.map((item, index) => (
-                    <TableRow key={index}>
+                  {subjectsList.map((item) => (
+                    <TableRow key={item._id || item.subjectId}>
                       <TableCell>{item.subjectName}</TableCell>
                       <TableCell>
                         {item.teachers?.length
-                          ? item.teachers.map(t => t.name).join(', ')
+                          ? item.teachers.map((t) => t.name).join(', ')
                           : 'не назначен'}
                       </TableCell>
                     </TableRow>
@@ -109,7 +108,7 @@ const StudentSubjects = () => {
         {Array.isArray(subjectMarks) && subjectMarks.length > 0 && (
           <Paper elevation={3} sx={{ p: 3 }}>
             <Typography variant="h6" gutterBottom>
-              🧮 Итоговые оценки
+               Итоговые оценки
             </Typography>
             <TableContainer component={Paper} variant="outlined">
               <Table size="small">
@@ -120,9 +119,9 @@ const StudentSubjects = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {subjectMarks.map((result, index) => (
+                  {subjectMarks.map((result) => (
                     result.subName && result.marksObtained != null && (
-                      <TableRow key={index}>
+                      <TableRow key={result._id || result.subName._id}>
                         <TableCell>{result.subName.subName}</TableCell>
                         <TableCell>{result.marksObtained}</TableCell>
                       </TableRow>
@@ -136,6 +135,6 @@ const StudentSubjects = () => {
       </Stack>
     </Container>
   );
-};
+}
 
 export default StudentSubjects;

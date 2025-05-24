@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import {
   Paper, Typography, Switch, FormControlLabel,
   MenuItem, Select, InputLabel, FormControl,
-  Box, Button, Divider, TextField, Avatar
+  Box, Button, Divider, TextField, Avatar,
 } from '@mui/material';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 const REACT_APP_BASE_URL = 'http://localhost:5001';
 
-const AdminSettings = () => {
+function AdminSettings() {
   const { currentUser } = useSelector((state) => state.user);
   const [darkMode, setDarkMode] = useState(false);
   const [language, setLanguage] = useState('ru');
@@ -17,7 +17,7 @@ const AdminSettings = () => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [avatar, setAvatar] = useState(null);
+  const [avatar, setAvatar] = useState(null); //  используется в handleSave
 
   useEffect(() => {
     document.body.setAttribute('data-theme', darkMode ? 'dark' : 'light');
@@ -37,7 +37,16 @@ const AdminSettings = () => {
         alert('Пароль успешно обновлён');
       }
 
-      // Future: You can upload avatar here using FormData
+      if (avatar) {
+        const formData = new FormData();
+        formData.append('avatar', avatar);
+        await axios.post(`${REACT_APP_BASE_URL}/Admin/upload-avatar/${currentUser._id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        alert('Аватар успешно обновлён');
+      }
 
       console.log({
         darkMode,
@@ -72,12 +81,12 @@ const AdminSettings = () => {
       <Divider sx={{ my: 3 }} />
 
       <FormControlLabel
-        control={
+        control={(
           <Switch
             checked={darkMode}
             onChange={(e) => setDarkMode(e.target.checked)}
           />
-        }
+        )}
         label="Темная тема"
       />
 
@@ -109,12 +118,12 @@ const AdminSettings = () => {
       </FormControl>
 
       <FormControlLabel
-        control={
+        control={(
           <Switch
             checked={notificationsEnabled}
             onChange={(e) => setNotificationsEnabled(e.target.checked)}
           />
-        }
+        )}
         label="Уведомления"
       />
 
@@ -145,6 +154,6 @@ const AdminSettings = () => {
       </Box>
     </Paper>
   );
-};
+}
 
 export default AdminSettings;

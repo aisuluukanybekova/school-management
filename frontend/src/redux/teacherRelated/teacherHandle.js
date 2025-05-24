@@ -5,7 +5,7 @@ import {
   getFailed,
   getError,
   postDone,
-  doneSuccess
+  doneSuccess,
 } from './teacherSlice';
 
 const BASE_URL = 'http://localhost:5001/api/teachers';
@@ -48,7 +48,7 @@ export const getTeacherDetails = (teacherId) => async (dispatch) => {
     if (result.data && !result.data.message) {
       dispatch(doneSuccess(result.data));
     } else {
-      dispatch(getFailed(result.data.message || "Ошибка получения преподавателя"));
+      dispatch(getFailed(result.data.message || 'Ошибка получения преподавателя'));
     }
   } catch (error) {
     dispatch(getError(error?.response?.data?.message || error.message));

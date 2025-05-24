@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState, useCallback } from 'react'; // useCallback добавлен
+import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { CircularProgress } from '@mui/material';
 import { registerUser } from '../../../redux/userRelated/userHandle';
 import Popup from '../../../components/Popup';
 import { underControl } from '../../../redux/userRelated/userSlice';
 import { getAllSclasses } from '../../../redux/sclassRelated/sclassHandle';
-import { CircularProgress } from '@mui/material';
 
-const AddStudent = ({ situation }) => {
+function AddStudent({ situation }) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const params = useParams();
 
-  const { status, currentUser, response, error } = useSelector(state => state.user);
+  const {
+    status, currentUser, response,
+  } = useSelector((state) => state.user);
   const { sclassesList } = useSelector((state) => state.sclass);
 
   const [name, setName] = useState('');
@@ -25,11 +27,11 @@ const AddStudent = ({ situation }) => {
   const [loader, setLoader] = useState(false);
 
   const adminID = currentUser._id;
-  const role = "Student";
+  const role = 'Student';
   const attendance = [];
 
   useEffect(() => {
-    if (situation === "Class") {
+    if (situation === 'Class') {
       setSclassName(params.id);
     }
   }, [params.id, situation]);
@@ -40,7 +42,7 @@ const AddStudent = ({ situation }) => {
 
   const changeHandler = (e) => {
     const selected = e.target.value;
-    const foundClass = sclassesList.find(c => c.sclassName === selected);
+    const foundClass = sclassesList.find((c) => c.sclassName === selected);
     if (foundClass) {
       setClassName(foundClass.sclassName);
       setSclassName(foundClass._id);
@@ -50,20 +52,23 @@ const AddStudent = ({ situation }) => {
     }
   };
 
-  const resetForm = () => {
+  // ✅ useCallback для стабилизации ссылки на функцию
+  const resetForm = useCallback(() => {
     setName('');
     setRollNum('');
     setPassword('');
     setClassName('');
-    if (situation === "Student") setSclassName('');
-  };
+    if (situation === 'Student') setSclassName('');
+  }, [situation]);
 
-  const fields = { name, rollNum, password, sclassName, adminID, role, attendance };
+  const fields = {
+    name, rollNum, password, sclassName, adminID, role, attendance,
+  };
 
   const submitHandler = (e) => {
     e.preventDefault();
     if (!sclassName) {
-      setMessage("Пожалуйста, выберите класс");
+      setMessage('Пожалуйста, выберите класс');
       setShowPopup(true);
       return;
     }
@@ -74,20 +79,20 @@ const AddStudent = ({ situation }) => {
   useEffect(() => {
     if (status === 'added') {
       resetForm();
-      setMessage("Ученик успешно добавлен!");
+      setMessage('Ученик успешно добавлен!');
       setShowPopup(true);
       setLoader(false);
       dispatch(underControl());
     } else if (status === 'failed') {
-      setMessage(response || "Ошибка при добавлении ученика");
+      setMessage(response || 'Ошибка при добавлении ученика');
       setShowPopup(true);
       setLoader(false);
     } else if (status === 'error') {
-      setMessage("Ошибка сети");
+      setMessage('Ошибка сети');
       setShowPopup(true);
       setLoader(false);
     }
-  }, [status]);
+  }, [status, dispatch, resetForm, response]); // ✅ resetForm безопасно включён
 
   return (
     <>
@@ -95,8 +100,9 @@ const AddStudent = ({ situation }) => {
         <form className="registerForm" onSubmit={submitHandler}>
           <span className="registerTitle">Добавить ученика</span>
 
-          <label>Имя</label>
+          <label htmlFor="studentName">Имя</label>
           <input
+            id="studentName"
             className="registerInput"
             type="text"
             placeholder="Введите имя ученика..."
@@ -106,10 +112,11 @@ const AddStudent = ({ situation }) => {
             required
           />
 
-          {situation === "Student" && (
+          {situation === 'Student' && (
             <>
-              <label>Класс</label>
+              <label htmlFor="studentClass">Класс</label>
               <select
+                id="studentClass"
                 className="registerInput"
                 value={className}
                 onChange={changeHandler}
@@ -123,8 +130,9 @@ const AddStudent = ({ situation }) => {
             </>
           )}
 
-          <label>Номер ученика</label>
+          <label htmlFor="rollNum">Номер ученика</label>
           <input
+            id="rollNum"
             className="registerInput"
             type="number"
             placeholder="Введите номер ученика..."
@@ -133,8 +141,9 @@ const AddStudent = ({ situation }) => {
             required
           />
 
-          <label>Пароль</label>
+          <label htmlFor="studentPassword">Пароль</label>
           <input
+            id="studentPassword"
             className="registerInput"
             type="password"
             placeholder="Введите пароль ученика..."
@@ -152,6 +161,10 @@ const AddStudent = ({ situation }) => {
       <Popup message={message} showPopup={showPopup} setShowPopup={setShowPopup} />
     </>
   );
+}
+
+AddStudent.propTypes = {
+  situation: PropTypes.string.isRequired,
 };
 
 export default AddStudent;

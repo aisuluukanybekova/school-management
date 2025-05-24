@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { updateUser, getUserDetails } from '../../../redux/userRelated/userHandle';
-import { getRequest, underControl } from '../../../redux/userRelated/userSlice';
-import Popup from '../../../components/Popup';
-import { CircularProgress, MenuItem, FormControl, InputLabel, Select } from '@mui/material';
+import {
+  CircularProgress, MenuItem, FormControl, InputLabel, Select,
+} from '@mui/material';
 import axios from 'axios';
+import { updateUser, getUserDetails } from '../../../redux/userRelated/userHandle';
+import { underControl } from '../../../redux/userRelated/userSlice';
+import Popup from '../../../components/Popup';
 
-const EditTeacher = () => {
+function EditTeacher() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
-  const { userDetails, status, error, response, currentUser } = useSelector((state) => state.user);
+  const {
+    userDetails, status, error, response, currentUser,
+  } = useSelector((state) => state.user);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -23,10 +27,9 @@ const EditTeacher = () => {
   const [message, setMessage] = useState('');
   const [loader, setLoader] = useState(false);
 
-  const school =
-    typeof currentUser?.school === 'object'
-      ? currentUser.school._id
-      : currentUser?.schoolId || currentUser?.school || "";
+  const school = typeof currentUser?.school === 'object'
+    ? currentUser.school._id
+    : currentUser?.schoolId || currentUser?.school || '';
 
   useEffect(() => {
     dispatch(getUserDetails(id, 'teachers'));
@@ -36,7 +39,7 @@ const EditTeacher = () => {
         const res = await axios.get(`/api/classes/school/${school}`);
         setClasses(res.data);
       } catch (err) {
-        console.error("Ошибка загрузки классов", err);
+        console.error('Ошибка загрузки классов', err);
       }
     };
 
@@ -59,7 +62,7 @@ const EditTeacher = () => {
       name,
       email,
       ...(password && { password }),
-      ...(homeroomFor && { homeroomFor })
+      ...(homeroomFor && { homeroomFor }),
     };
 
     dispatch(updateUser(updatedData, id, 'teachers'));
@@ -70,7 +73,7 @@ const EditTeacher = () => {
       dispatch(underControl());
       navigate('/Admin/teachers');
     } else if (status === 'failed' || status === 'error') {
-      setMessage(response || error || "Ошибка");
+      setMessage(response || error || 'Ошибка');
       setShowPopup(true);
       setLoader(false);
     }
@@ -81,8 +84,9 @@ const EditTeacher = () => {
       <form className="registerForm" onSubmit={handleSubmit}>
         <span className="registerTitle">Редактировать преподавателя</span>
 
-        <label>Имя</label>
+        <label htmlFor="teacherName">Имя</label>
         <input
+          id="teacherName"
           className="registerInput"
           type="text"
           value={name}
@@ -90,8 +94,9 @@ const EditTeacher = () => {
           required
         />
 
-        <label>Почта</label>
+        <label htmlFor="teacherEmail">Почта</label>
         <input
+          id="teacherEmail"
           className="registerInput"
           type="email"
           value={email}
@@ -99,8 +104,9 @@ const EditTeacher = () => {
           required
         />
 
-        <label>Новый пароль</label>
+        <label htmlFor="teacherPassword">Новый пароль</label>
         <input
+          id="teacherPassword"
           className="registerInput"
           type="password"
           placeholder="Если хотите обновить"
@@ -112,6 +118,7 @@ const EditTeacher = () => {
           <InputLabel id="homeroom-label">Классный руководитель для</InputLabel>
           <Select
             labelId="homeroom-label"
+            id="homeroom-select"
             value={homeroomFor}
             onChange={(e) => setHomeroomFor(e.target.value)}
             label="Классный руководитель для"
@@ -133,6 +140,6 @@ const EditTeacher = () => {
       <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
     </div>
   );
-};
+}
 
 export default EditTeacher;

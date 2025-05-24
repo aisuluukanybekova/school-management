@@ -1,27 +1,31 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ErrorPage = () => {
-    return (
-        <Container>
-            <Content>
-                <Heading>Упс, что-то пошло не так</Heading>
-                <Text>
-                    Приносим извинения за неудобства. Наш сайт в данный момент испытывает технические трудности. Пожалуйста, попробуйте позже.
-                </Text>
-            </Content>
-        </Container>
-    );
-};
+function ErrorPage() {
+  return (
+    <Container>
+      <Content>
+        <Heading>Упс, что-то пошло не так</Heading>
+        <Text>
+          Приносим извинения за неудобства. Наш сайт в данный момент испытывает
+          технические трудности. Пожалуйста, попробуйте позже.
+        </Text>
+      </Content>
+    </Container>
+  );
+}
+
+const bgImageUrl =
+  'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  font-family: "Josefin Sans", sans-serif;
+  font-family: 'Josefin Sans', sans-serif;
   color: white;
-  background-image: url('https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')
+  background-image: url('${bgImageUrl}');
 `;
 
 const Content = styled.div`

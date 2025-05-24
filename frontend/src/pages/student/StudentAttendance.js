@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   Box, Typography, Table, TableHead, TableRow, TableCell,
   TableBody, Paper, TableContainer, FormControl, InputLabel,
   Select, MenuItem, Stack, Dialog, DialogTitle, DialogContent,
-  Tabs, Tab
+  Tabs, Tab,
 } from '@mui/material';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
-import { getSubjectsWithTeachers } from '../../redux/sclassRelated/sclassHandle';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
-  CartesianGrid, LineChart, Line, PieChart, Pie, Cell, Legend
+  CartesianGrid, LineChart, Line, PieChart, Pie, Cell, Legend,
 } from 'recharts';
+import { getSubjectsWithTeachers } from '../../redux/sclassRelated/sclassHandle';
 
 axios.defaults.baseURL = 'http://localhost:5001';
 
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#8dd1e1'];
 
-const StudentAttendance = () => {
+function StudentAttendance() {
   const dispatch = useDispatch();
   const student = useSelector((state) => state.user.currentUser);
   const subjectsList = useSelector((state) => state.sclass.subjectsList);
@@ -26,28 +26,24 @@ const StudentAttendance = () => {
   const [selectedTerm, setSelectedTerm] = useState('');
   const [filteredRecords, setFilteredRecords] = useState([]);
   const [modalSubject, setModalSubject] = useState(null);
-  const [error, setError] = useState('');
   const [tabIndex, setTabIndex] = useState(0);
 
-  useEffect(() => {
-    if (student?._id) fetchAttendance();
-    if (student?.sclassName?._id) dispatch(getSubjectsWithTeachers(student.sclassName._id));
-  }, [dispatch, student]);
-
-  const fetchAttendance = async () => {
+  const fetchAttendance = useCallback(async () => {
     try {
       const res = await axios.get(`/api/attendance/student/${student._id}`);
       setRecords(res.data.records || []);
     } catch (err) {
       console.error('Ошибка загрузки посещаемости:', err);
-      setError('Не удалось загрузить посещаемость');
     }
-  };
+  }, [student._id]);
 
   useEffect(() => {
-    const filtered = records.filter((rec) =>
-      selectedTerm ? String(rec.term) === String(selectedTerm) : true
-    );
+    if (student?._id) fetchAttendance();
+    if (student?.sclassName?._id) dispatch(getSubjectsWithTeachers(student.sclassName._id));
+  }, [dispatch, student, fetchAttendance]);
+
+  useEffect(() => {
+    const filtered = records.filter((rec) => (selectedTerm ? String(rec.term) === String(selectedTerm) : true));
     setFilteredRecords(filtered);
   }, [selectedTerm, records]);
 
@@ -55,18 +51,18 @@ const StudentAttendance = () => {
   const subjectNames = subjectsList.map((s) => s.subjectName);
 
   const grouped = {};
-  subjectNames.forEach(subject => {
-    grouped[subject] = filteredRecords.filter(r => r.subjectName === subject && r.status === 'Отсутствовал');
+  subjectNames.forEach((subject) => {
+    grouped[subject] = filteredRecords.filter((r) => r.subjectName === subject && r.status === 'Отсутствовал');
   });
 
-  const chartData = subjectNames.map(subject => ({
+  const chartData = subjectNames.map((subject) => ({
     name: subject,
     absences: grouped[subject]?.length || 0,
   }));
 
-  const termData = termOptions.map(term => ({
+  const termData = termOptions.map((term) => ({
     term: `Четверть ${term}`,
-    absences: filteredRecords.filter(r => r.term === term && r.status === 'Отсутствовал').length,
+    absences: filteredRecords.filter((r) => r.term === term && r.status === 'Отсутствовал').length,
   }));
 
   return (
@@ -84,8 +80,10 @@ const StudentAttendance = () => {
             onChange={(e) => setSelectedTerm(e.target.value)}
           >
             <MenuItem value="">Все четверти</MenuItem>
-            {termOptions.map(term => (
-              <MenuItem key={term} value={term}>Четверть {term}</MenuItem>
+            {termOptions.map((term) => (
+              <MenuItem key={`term-${term}`} value={term}>
+                Четверть {term}
+              </MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -108,13 +106,13 @@ const StudentAttendance = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {subjectNames.map((subject, i) => {
+              {subjectNames.map((subject) => {
                 const absences = grouped[subject] || [];
                 const lastAbsence = absences.length
                   ? new Date(absences[absences.length - 1].date).toLocaleDateString()
                   : '—';
                 return (
-                  <TableRow key={i}>
+                  <TableRow key={`subject-${subject}`}>
                     <TableCell>{subject}</TableCell>
                     <TableCell>{absences.length}</TableCell>
                     <TableCell>{lastAbsence}</TableCell>
@@ -165,7 +163,7 @@ const StudentAttendance = () => {
             <PieChart>
               <Pie data={chartData} dataKey="absences" nameKey="name" cx="50%" cy="50%" outerRadius={100}>
                 {chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
               <Tooltip />
@@ -185,8 +183,8 @@ const StudentAttendance = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {(grouped[modalSubject] || []).map((rec, i) => (
-                <TableRow key={i}>
+              {(grouped[modalSubject] || []).map((rec) => (
+                <TableRow key={`${rec.subjectName}-${rec.date}`}>
                   <TableCell>{new Date(rec.date).toLocaleDateString()}</TableCell>
                   <TableCell>{rec.term}</TableCell>
                 </TableRow>
@@ -197,6 +195,6 @@ const StudentAttendance = () => {
       </Dialog>
     </Box>
   );
-};
+}
 
 export default StudentAttendance;

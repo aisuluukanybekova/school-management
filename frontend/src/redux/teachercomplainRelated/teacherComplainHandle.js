@@ -2,7 +2,7 @@ import axios from 'axios';
 import {
   getRequest,
   getSuccess,
-  getError
+  getError,
 } from './teacherComplainSlice';
 
 const BASE_URL = 'http://localhost:5001/api';

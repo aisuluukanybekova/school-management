@@ -1,25 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box, Typography, Table, TableHead, TableBody, TableRow, TableCell,
-  Button, TextField, Select, MenuItem, IconButton, Paper, Stack, TableContainer
+  Button, TextField, Select, MenuItem, IconButton, Paper, Stack, TableContainer,
 } from '@mui/material';
 import { Delete, Save } from '@mui/icons-material';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
-const EditTimeSlots = () => {
+function EditTimeSlots() {
   const { currentUser } = useSelector((state) => state.user);
   const [slots, setSlots] = useState([]);
-  const [newSlot, setNewSlot] = useState({ number: '', startTime: '', endTime: '', type: 'lesson' });
+  const [newSlot, setNewSlot] = useState({
+    number: '', startTime: '', endTime: '', type: 'lesson',
+  });
   const [shift, setShift] = useState('first');
   const [previewSlots, setPreviewSlots] = useState([]);
-
   const [autoParams, setAutoParams] = useState({
-    start: '08:00',
-    lessons: 5,
-    lessonDuration: 45,
-    shortBreak: 5,
-    longBreak: 10
+    start: '08:00', lessons: 5, lessonDuration: 45, shortBreak: 5, longBreak: 10,
   });
 
   const schoolId = currentUser?.schoolId || currentUser?.school?._id;
@@ -31,7 +28,7 @@ const EditTimeSlots = () => {
 
   useEffect(() => {
     if (schoolId) fetchSlots();
-  }, [schoolId, shift]);
+  }, [schoolId, shift, fetchSlots]); // Added fetchSlots for exhaustive-deps
 
   const handleChange = (index, field, value) => {
     const updated = [...slots];
@@ -42,7 +39,7 @@ const EditTimeSlots = () => {
   const addSlot = async () => {
     const payload = { ...newSlot, schoolId, shift };
     const { data } = await axios.post('/api/timeslots', payload);
-    setSlots(prev => [...prev, data]);
+    setSlots((prev) => [...prev, data]);
     setNewSlot({ number: '', startTime: '', endTime: '', type: 'lesson' });
   };
 
@@ -52,7 +49,7 @@ const EditTimeSlots = () => {
 
   const deleteSlot = async (id) => {
     await axios.delete(`/api/timeslots/${id}`);
-    setSlots(slots.filter(s => s._id !== id));
+    setSlots(slots.filter((s) => s._id !== id));
   };
 
   const addMinutes = (time, mins) => {
@@ -73,7 +70,7 @@ const EditTimeSlots = () => {
         number: generated.length + 1,
         startTime: startLesson,
         endTime: endLesson,
-        type: 'lesson'
+        type: 'lesson',
       });
       currentTime = endLesson;
 
@@ -84,7 +81,7 @@ const EditTimeSlots = () => {
           number: generated.length + 1,
           startTime: currentTime,
           endTime: endBreak,
-          type: 'break'
+          type: 'break',
         });
         currentTime = endBreak;
       }
@@ -94,20 +91,20 @@ const EditTimeSlots = () => {
   };
 
   const confirmAndSavePreview = async () => {
-    const toSave = previewSlots.map(slot => ({
-      ...slot,
-      schoolId,
-      shift
+    const toSave = previewSlots.map((slot) => ({
+      ...slot, schoolId, shift,
     }));
     await axios.delete(`/api/timeslots/all/${schoolId}?shift=${shift}`);
-    await axios.post(`/api/timeslots/bulk`, toSave);
+    await axios.post('/api/timeslots/bulk', toSave);
     setPreviewSlots([]);
     fetchSlots();
   };
 
   return (
     <Box p={4}>
-      <Typography variant="h6" mb={2}>Редактирование времени уроков и перемен</Typography>
+      <Typography variant="h6" mb={2}>
+        Редактирование времени уроков и перемен
+      </Typography>
 
       <Stack
         direction="row"
@@ -116,21 +113,69 @@ const EditTimeSlots = () => {
         mb={3}
         sx={{ flexWrap: 'wrap', gap: 2 }}
       >
-        <Select value={shift} onChange={(e) => setShift(e.target.value)} size="small">
+        <Select
+          value={shift}
+          onChange={(e) => setShift(e.target.value)}
+          size="small"
+        >
           <MenuItem value="first">Первая смена</MenuItem>
           <MenuItem value="second">Вторая смена</MenuItem>
         </Select>
 
-        <TextField label="Начало" type="time" size="small" value={autoParams.start}
-          onChange={e => setAutoParams(prev => ({ ...prev, start: e.target.value }))} />
-        <TextField label="Кол-во уроков" type="number" size="small" value={autoParams.lessons}
-          onChange={e => setAutoParams(prev => ({ ...prev, lessons: Number(e.target.value) }))} />
-        <TextField label="Урок (мин)" type="number" size="small" value={autoParams.lessonDuration}
-          onChange={e => setAutoParams(prev => ({ ...prev, lessonDuration: Number(e.target.value) }))} />
-        <TextField label="Перемена" type="number" size="small" value={autoParams.shortBreak}
-          onChange={e => setAutoParams(prev => ({ ...prev, shortBreak: Number(e.target.value) }))} />
-        <TextField label="Длинная перемена" type="number" size="small" value={autoParams.longBreak}
-          onChange={e => setAutoParams(prev => ({ ...prev, longBreak: Number(e.target.value) }))} />
+        <TextField
+          label="Начало"
+          type="time"
+          size="small"
+          value={autoParams.start}
+          onChange={(e) =>
+            setAutoParams((prev) => ({ ...prev, start: e.target.value }))
+          }
+        />
+        <TextField
+          label="Кол-во уроков"
+          type="number"
+          size="small"
+          value={autoParams.lessons}
+          onChange={(e) =>
+            setAutoParams((prev) => ({ ...prev, lessons: Number(e.target.value) }))
+          }
+        />
+        <TextField
+          label="Урок (мин)"
+          type="number"
+          size="small"
+          value={autoParams.lessonDuration}
+          onChange={(e) =>
+            setAutoParams((prev) => ({
+              ...prev,
+              lessonDuration: Number(e.target.value),
+            }))
+          }
+        />
+        <TextField
+          label="Перемена"
+          type="number"
+          size="small"
+          value={autoParams.shortBreak}
+          onChange={(e) =>
+            setAutoParams((prev) => ({
+              ...prev,
+              shortBreak: Number(e.target.value),
+            }))
+          }
+        />
+        <TextField
+          label="Длинная перемена"
+          type="number"
+          size="small"
+          value={autoParams.longBreak}
+          onChange={(e) =>
+            setAutoParams((prev) => ({
+              ...prev,
+              longBreak: Number(e.target.value),
+            }))
+          }
+        />
         <Button
           variant="outlined"
           onClick={generatePreviewSlots}
@@ -154,8 +199,8 @@ const EditTimeSlots = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {previewSlots.map((slot, index) => (
-                  <TableRow key={index}>
+                {previewSlots.map((slot) => (
+                  <TableRow key={`${slot.number}-${slot.startTime}`}>
                     <TableCell>{slot.number}</TableCell>
                     <TableCell>{slot.startTime}</TableCell>
                     <TableCell>{slot.endTime}</TableCell>
@@ -185,48 +230,98 @@ const EditTimeSlots = () => {
           </TableHead>
           <TableBody>
             {slots.map((slot, index) => (
-              <TableRow key={slot._id}>
+              <TableRow key={slot._id || `${index}-${slot.startTime}`}>
                 <TableCell>
-                  <TextField value={slot.number} onChange={e => handleChange(index, 'number', e.target.value)} size="small" />
+                  <TextField
+                    value={slot.number}
+                    onChange={(e) => handleChange(index, 'number', e.target.value)}
+                    size="small"
+                  />
                 </TableCell>
                 <TableCell>
-                  <TextField type="time" value={slot.startTime} onChange={e => handleChange(index, 'startTime', e.target.value)} size="small" />
+                  <TextField
+                    type="time"
+                    value={slot.startTime}
+                    onChange={(e) => handleChange(index, 'startTime', e.target.value)}
+                    size="small"
+                  />
                 </TableCell>
                 <TableCell>
-                  <TextField type="time" value={slot.endTime} onChange={e => handleChange(index, 'endTime', e.target.value)} size="small" />
+                  <TextField
+                    type="time"
+                    value={slot.endTime}
+                    onChange={(e) => handleChange(index, 'endTime', e.target.value)}
+                    size="small"
+                  />
                 </TableCell>
                 <TableCell>
-                  <Select value={slot.type} onChange={e => handleChange(index, 'type', e.target.value)} size="small">
+                  <Select
+                    value={slot.type}
+                    onChange={(e) => handleChange(index, 'type', e.target.value)}
+                    size="small"
+                  >
                     <MenuItem value="lesson">Урок</MenuItem>
                     <MenuItem value="break">Перемена</MenuItem>
                   </Select>
                 </TableCell>
                 <TableCell>
-                  <IconButton onClick={() => updateSlot(slot)} color="primary"><Save /></IconButton>
+                  <IconButton onClick={() => updateSlot(slot)} color="primary">
+                    <Save />
+                  </IconButton>
                 </TableCell>
                 <TableCell>
-                  <IconButton onClick={() => deleteSlot(slot._id)} color="error"><Delete /></IconButton>
+                  <IconButton onClick={() => deleteSlot(slot._id)} color="error">
+                    <Delete />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}
             <TableRow>
               <TableCell>
-                <TextField value={newSlot.number} onChange={e => setNewSlot({ ...newSlot, number: e.target.value })} size="small" />
+                <TextField
+                  value={newSlot.number}
+                  onChange={(e) =>
+                    setNewSlot({ ...newSlot, number: e.target.value })
+                  }
+                  size="small"
+                />
               </TableCell>
               <TableCell>
-                <TextField type="time" value={newSlot.startTime} onChange={e => setNewSlot({ ...newSlot, startTime: e.target.value })} size="small" />
+                <TextField
+                  type="time"
+                  value={newSlot.startTime}
+                  onChange={(e) =>
+                    setNewSlot({ ...newSlot, startTime: e.target.value })
+                  }
+                  size="small"
+                />
               </TableCell>
               <TableCell>
-                <TextField type="time" value={newSlot.endTime} onChange={e => setNewSlot({ ...newSlot, endTime: e.target.value })} size="small" />
+                <TextField
+                  type="time"
+                  value={newSlot.endTime}
+                  onChange={(e) =>
+                    setNewSlot({ ...newSlot, endTime: e.target.value })
+                  }
+                  size="small"
+                />
               </TableCell>
               <TableCell>
-                <Select value={newSlot.type} onChange={e => setNewSlot({ ...newSlot, type: e.target.value })} size="small">
+                <Select
+                  value={newSlot.type}
+                  onChange={(e) =>
+                    setNewSlot({ ...newSlot, type: e.target.value })
+                  }
+                  size="small"
+                >
                   <MenuItem value="lesson">Урок</MenuItem>
                   <MenuItem value="break">Перемена</MenuItem>
                 </Select>
               </TableCell>
               <TableCell colSpan={2}>
-                <Button onClick={addSlot} variant="contained">Добавить</Button>
+                <Button onClick={addSlot} variant="contained">
+                  Добавить
+                </Button>
               </TableCell>
             </TableRow>
           </TableBody>
@@ -234,6 +329,6 @@ const EditTimeSlots = () => {
       </TableContainer>
     </Box>
   );
-};
+}
 
 export default EditTimeSlots;

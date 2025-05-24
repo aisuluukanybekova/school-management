@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Table,
   TableBody,
@@ -7,19 +8,22 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Box
+  Box,
 } from '@mui/material';
 
-const TableTemplate = ({ columns, rows, buttonHaver: ButtonHaver }) => {
+function TableTemplate({ columns, rows, buttonHaver: ButtonHaver }) {
   const hasActions = typeof ButtonHaver === 'function';
 
   return (
     <Box sx={{ width: '100%', overflowX: 'auto' }}>
-      <TableContainer component={Paper} sx={{
-        borderRadius: 2,
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-        overflow: 'hidden'
-      }}>
+      <TableContainer
+        component={Paper}
+        sx={{
+          borderRadius: 2,
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          overflow: 'hidden',
+        }}
+      >
         <Table stickyHeader>
           <TableHead>
             <TableRow>
@@ -30,7 +34,7 @@ const TableTemplate = ({ columns, rows, buttonHaver: ButtonHaver }) => {
                   color: 'white',
                   fontWeight: 'bold',
                   fontSize: { xs: '12px', md: '14px' },
-                  border: '1px solid #ccc'
+                  border: '1px solid #ccc',
                 }}
               >
                 №
@@ -47,7 +51,7 @@ const TableTemplate = ({ columns, rows, buttonHaver: ButtonHaver }) => {
                     minWidth: column.minWidth,
                     maxWidth: column.maxWidth,
                     whiteSpace: column.noWrap ? 'nowrap' : 'normal',
-                    border: '1px solid #ccc'
+                    border: '1px solid #ccc',
                   }}
                 >
                   {column.label}
@@ -61,7 +65,7 @@ const TableTemplate = ({ columns, rows, buttonHaver: ButtonHaver }) => {
                     color: 'white',
                     fontWeight: 'bold',
                     fontSize: { xs: '12px', md: '14px' },
-                    border: '1px solid #ccc'
+                    border: '1px solid #ccc',
                   }}
                 >
                   Действия
@@ -76,14 +80,14 @@ const TableTemplate = ({ columns, rows, buttonHaver: ButtonHaver }) => {
                 key={row.id || index}
                 sx={{
                   transition: 'background-color 0.3s',
-                  '&:hover': { backgroundColor: '#f9f9f9' }
+                  '&:hover': { backgroundColor: '#f9f9f9' },
                 }}
               >
                 <TableCell
                   align="center"
                   sx={{
                     fontSize: { xs: '12px', md: '14px' },
-                    border: '1px solid #ccc'
+                    border: '1px solid #ccc',
                   }}
                 >
                   {index + 1}
@@ -97,7 +101,7 @@ const TableTemplate = ({ columns, rows, buttonHaver: ButtonHaver }) => {
                       minWidth: column.minWidth,
                       maxWidth: column.maxWidth,
                       whiteSpace: column.noWrap ? 'nowrap' : 'normal',
-                      border: '1px solid #ccc'
+                      border: '1px solid #ccc',
                     }}
                   >
                     {row[column.id]}
@@ -125,6 +129,21 @@ const TableTemplate = ({ columns, rows, buttonHaver: ButtonHaver }) => {
       </TableContainer>
     </Box>
   );
+}
+
+TableTemplate.propTypes = {
+  columns: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+      align: PropTypes.string,
+      minWidth: PropTypes.number,
+      maxWidth: PropTypes.number,
+      noWrap: PropTypes.bool,
+    })
+  ).isRequired,
+  rows: PropTypes.arrayOf(PropTypes.object).isRequired,
+  buttonHaver: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
 };
 
 export default TableTemplate;

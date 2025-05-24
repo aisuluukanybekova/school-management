@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box, Typography, FormControl, InputLabel, Select, MenuItem, Button,
-  Table, TableBody, TableCell, TableHead, TableRow, Paper, TableContainer, Alert
+  Table, TableBody, TableCell, TableHead, TableRow, Paper, TableContainer, Alert,
 } from '@mui/material';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
@@ -9,16 +9,16 @@ import { useSelector } from 'react-redux';
 const daysOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница'];
 
 const ruToEnDay = {
-  'Понедельник': 'Monday',
-  'Вторник': 'Tuesday',
-  'Среда': 'Wednesday',
-  'Четверг': 'Thursday',
-  'Пятница': 'Friday'
+  Понедельник: 'Monday',
+  Вторник: 'Tuesday',
+  Среда: 'Wednesday',
+  Четверг: 'Thursday',
+  Пятница: 'Friday',
 };
 
 const deepClone = (arr) => JSON.parse(JSON.stringify(arr));
 
-const EditSchedulePage = () => {
+function EditSchedulePage() {
   const admin = useSelector((state) => state.user.currentUser);
   const schoolId = admin.schoolId || admin.school?._id;
 
@@ -41,27 +41,25 @@ const EditSchedulePage = () => {
   useEffect(() => {
     if (!selectedClass) return;
     axios.get(`/api/teacherSubjectClass/assigned/${selectedClass}`)
-      .then(res => setAssignedSubjects(res.data))
+      .then((res) => setAssignedSubjects(res.data))
       .catch(() => setMessage({ type: 'error', text: 'Ошибка загрузки предметов/учителей' }));
   }, [selectedClass]);
 
-  const sanitizeSchedule = (rawLessons) => {
-    return rawLessons.map(l => ({
-      _id: l._id,
-      subjectId: typeof l.subjectId === 'object' ? l.subjectId._id : String(l.subjectId),
-      teacherId: typeof l.teacherId === 'object' ? l.teacherId._id : String(l.teacherId),
-      classId: l.classId?._id || l.classId,
-      startTime: l.startTime,
-      endTime: l.endTime,
-      day: l.day
-    }));
-  };
+  const sanitizeSchedule = (rawLessons) => rawLessons.map((l) => ({
+    _id: l._id,
+    subjectId: typeof l.subjectId === 'object' ? l.subjectId._id : String(l.subjectId),
+    teacherId: typeof l.teacherId === 'object' ? l.teacherId._id : String(l.teacherId),
+    classId: l.classId?._id || l.classId,
+    startTime: l.startTime,
+    endTime: l.endTime,
+    day: l.day,
+  }));
 
   const loadSchedule = async () => {
     try {
       const { data } = await axios.get(`/api/schedule/class/${selectedClass}`);
       const filtered = data.schedules.filter(
-        s => s.day.trim() === ruToEnDay[selectedDay] && s.type === 'lesson'
+        (s) => s.day.trim() === ruToEnDay[selectedDay] && s.type === 'lesson',
       );
       const cleaned = sanitizeSchedule(filtered);
       setSchedule(cleaned);
@@ -80,21 +78,20 @@ const EditSchedulePage = () => {
   };
 
   const getTeachersForSubject = (subjectId) => {
-    const assigned = assignedSubjects.find(a => a.subjectId === subjectId);
+    const assigned = assignedSubjects.find((a) => a.subjectId === subjectId);
     return assigned?.teachers || [];
   };
 
   const isLessonChanged = (lesson, index) => {
-    const originalIndex = originalSchedule.findIndex(l => l._id === lesson._id);
+    const originalIndex = originalSchedule.findIndex((l) => l._id === lesson._id);
     const original = originalSchedule[originalIndex];
     if (!original) return true;
 
-    const isContentChanged =
-      original.subjectId !== lesson.subjectId ||
-      original.teacherId !== lesson.teacherId ||
-      original.startTime !== lesson.startTime ||
-      original.endTime !== lesson.endTime ||
-      original.day !== lesson.day;
+    const isContentChanged = original.subjectId !== lesson.subjectId
+      || original.teacherId !== lesson.teacherId
+      || original.startTime !== lesson.startTime
+      || original.endTime !== lesson.endTime
+      || original.day !== lesson.day;
 
     const isPositionChanged = originalIndex !== index;
 
@@ -102,9 +99,7 @@ const EditSchedulePage = () => {
   };
 
   const saveChanges = async () => {
-    const invalid = schedule.find(s =>
-      !s.subjectId || !s.teacherId || !s.classId || !s.startTime || !s.endTime || !s.day
-    );
+    const invalid = schedule.find((s) => !s.subjectId || !s.teacherId || !s.classId || !s.startTime || !s.endTime || !s.day);
 
     if (invalid) {
       setMessage({ type: 'error', text: '⚠️ Убедитесь, что все строки заполнены полностью.' });
@@ -114,7 +109,7 @@ const EditSchedulePage = () => {
     try {
       const updates = schedule
         .filter((s, i) => isLessonChanged(s, i))
-        .map(s => {
+        .map((s) => {
           console.log('Обновление:', s);
           return axios.put(`/api/schedule/${s._id}`, {
             subjectId: s.subjectId,
@@ -122,7 +117,7 @@ const EditSchedulePage = () => {
             startTime: s.startTime,
             endTime: s.endTime,
             day: s.day,
-            classId: s.classId
+            classId: s.classId,
           });
         });
 
@@ -135,7 +130,7 @@ const EditSchedulePage = () => {
       setMessage({ type: 'success', text: 'Расписание успешно обновлено ✅' });
       await loadSchedule();
     } catch (err) {
-      console.error("❌ Ошибка при сохранении:", err?.response?.data);
+      console.error('❌ Ошибка при сохранении:', err?.response?.data);
       setMessage({ type: 'error', text: err?.response?.data?.message || 'Ошибка при сохранении' });
     }
   };
@@ -153,8 +148,8 @@ const EditSchedulePage = () => {
       <Box display="flex" gap={2} mb={3}>
         <FormControl sx={{ minWidth: 180 }} size="small">
           <InputLabel>Класс</InputLabel>
-          <Select value={selectedClass} onChange={e => setSelectedClass(e.target.value)} label="Класс">
-            {classes.map(cls => (
+          <Select value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)} label="Класс">
+            {classes.map((cls) => (
               <MenuItem key={cls._id} value={cls._id}>{cls.sclassName}</MenuItem>
             ))}
           </Select>
@@ -162,8 +157,8 @@ const EditSchedulePage = () => {
 
         <FormControl sx={{ minWidth: 180 }} size="small">
           <InputLabel>День недели</InputLabel>
-          <Select value={selectedDay} onChange={e => setSelectedDay(e.target.value)} label="День недели">
-            {daysOfWeek.map(day => (
+          <Select value={selectedDay} onChange={(e) => setSelectedDay(e.target.value)} label="День недели">
+            {daysOfWeek.map((day) => (
               <MenuItem key={day} value={day}>{day}</MenuItem>
             ))}
           </Select>
@@ -189,15 +184,21 @@ const EditSchedulePage = () => {
                     key={lesson._id}
                     sx={{ backgroundColor: isLessonChanged(lesson, index) ? '#fff9c4' : 'inherit' }}
                   >
-                    <TableCell>{lesson.startTime} - {lesson.endTime}</TableCell>
+                    <TableCell>
+                      {lesson.startTime}
+                      {' '}
+                      -
+                      {' '}
+                      {lesson.endTime}
+                    </TableCell>
                     <TableCell>
                       <Select
                         value={lesson.subjectId || ''}
-                        onChange={e => handleChange(index, 'subjectId', e.target.value)}
+                        onChange={(e) => handleChange(index, 'subjectId', e.target.value)}
                         size="small"
                         fullWidth
                       >
-                        {assignedSubjects.map(subj => (
+                        {assignedSubjects.map((subj) => (
                           <MenuItem key={subj.subjectId} value={subj.subjectId}>{subj.subjectName}</MenuItem>
                         ))}
                       </Select>
@@ -205,11 +206,11 @@ const EditSchedulePage = () => {
                     <TableCell>
                       <Select
                         value={lesson.teacherId || ''}
-                        onChange={e => handleChange(index, 'teacherId', e.target.value)}
+                        onChange={(e) => handleChange(index, 'teacherId', e.target.value)}
                         size="small"
                         fullWidth
                       >
-                        {getTeachersForSubject(lesson.subjectId).map(t => (
+                        {getTeachersForSubject(lesson.subjectId).map((t) => (
                           <MenuItem key={t._id} value={t._id}>{t.name}</MenuItem>
                         ))}
                       </Select>
@@ -227,6 +228,6 @@ const EditSchedulePage = () => {
       )}
     </Box>
   );
-};
+}
 
 export default EditSchedulePage;

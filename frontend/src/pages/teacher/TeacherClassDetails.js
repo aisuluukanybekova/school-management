@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { getClassStudents } from '../../redux/sclassRelated/sclassHandle';
 import {
   Box,
   FormControl,
@@ -9,16 +8,17 @@ import {
   Select,
   MenuItem,
   Typography,
-  Paper
+  Paper,
 } from '@mui/material';
+import { getClassStudents } from '../../redux/sclassRelated/sclassHandle';
 import TableTemplate from '../../components/TableTemplate';
 
 const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:5001';
 
-const TeacherClassForm = () => {
+function TeacherClassForm() {
   const dispatch = useDispatch();
-  const { currentUser } = useSelector(state => state.user);
-  const { sclassStudents, loading } = useSelector(state => state.sclass);
+  const { currentUser } = useSelector((state) => state.user);
+  const { sclassStudents, loading } = useSelector((state) => state.sclass);
 
   const [teacherClasses, setTeacherClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState('');
@@ -46,7 +46,7 @@ const TeacherClassForm = () => {
     }
   }, [selectedClass, dispatch]);
 
-  const uniqueClasses = [...new Map(teacherClasses.map(item => [item.sclassId, { id: item.sclassId, name: item.sclassName }])).values()];
+  const uniqueClasses = [...new Map(teacherClasses.map((item) => [item.sclassId, { id: item.sclassId, name: item.sclassName }])).values()];
 
   const studentColumns = [
     { id: 'name', label: 'Имя', minWidth: 170 },
@@ -70,7 +70,7 @@ const TeacherClassForm = () => {
           label="Класс"
           onChange={(e) => setSelectedClass(e.target.value)}
         >
-          {uniqueClasses.map(cls => (
+          {uniqueClasses.map((cls) => (
             <MenuItem key={cls.id} value={cls.id}>{cls.name}</MenuItem>
           ))}
         </Select>
@@ -93,6 +93,6 @@ const TeacherClassForm = () => {
       )}
     </Box>
   );
-};
+}
 
 export default TeacherClassForm;

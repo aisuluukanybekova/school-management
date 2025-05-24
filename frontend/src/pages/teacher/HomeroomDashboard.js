@@ -3,12 +3,12 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import {
   Box, Typography, Table, TableBody, TableCell,
-  TableContainer, TableHead, TableRow, Paper, CircularProgress, Button
+  TableContainer, TableHead, TableRow, Paper, CircularProgress, Button,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-const HomeroomDashboard = () => {
-  const teacher = useSelector(state => state.user.currentUser);
+function HomeroomDashboard() {
+  const teacher = useSelector((state) => state.user.currentUser);
   const [students, setStudents] = useState([]);
   const [klass, setKlass] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -64,11 +64,15 @@ const HomeroomDashboard = () => {
   return (
     <Box p={4}>
       <Typography variant="h4" fontWeight={600} gutterBottom>
-        Класс: {klass.sclassName}
+        Класс:
+        {' '}
+        {klass.sclassName}
       </Typography>
 
       <Typography variant="body1" color="text.secondary" gutterBottom>
-        Всего учеников: <strong>{students.length}</strong>
+        Всего учеников:
+        {' '}
+        <strong>{students.length}</strong>
       </Typography>
 
       <Box display="flex" justifyContent="flex-end" my={2}>
@@ -81,37 +85,49 @@ const HomeroomDashboard = () => {
         </Button>
       </Box>
 
-      <TableContainer component={Paper} sx={{
-        borderRadius: 3,
-        boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-        overflow: 'hidden',
-        mt: 1
-      }}>
+      <TableContainer
+        component={Paper}
+        sx={{
+          borderRadius: 3,
+          boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+          overflow: 'hidden',
+          mt: 1,
+        }}
+      >
         <Table stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell align="center" sx={{
-                backgroundColor: 'black',
-                color: 'white',
-                fontWeight: 'bold',
-                fontSize: { xs: '12px', md: '16px' },
-              }}>
+              <TableCell
+                align="center"
+                sx={{
+                  backgroundColor: 'black',
+                  color: 'white',
+                  fontWeight: 'bold',
+                  fontSize: { xs: '12px', md: '16px' },
+                }}
+              >
                 №
               </TableCell>
-              <TableCell align="center" sx={{
-                backgroundColor: 'black',
-                color: 'white',
-                fontWeight: 'bold',
-                fontSize: { xs: '12px', md: '16px' },
-              }}>
+              <TableCell
+                align="center"
+                sx={{
+                  backgroundColor: 'black',
+                  color: 'white',
+                  fontWeight: 'bold',
+                  fontSize: { xs: '12px', md: '16px' },
+                }}
+              >
                 Имя ученика
               </TableCell>
-              <TableCell align="center" sx={{
-                backgroundColor: 'black',
-                color: 'white',
-                fontWeight: 'bold',
-                fontSize: { xs: '12px', md: '16px' },
-              }}>
+              <TableCell
+                align="center"
+                sx={{
+                  backgroundColor: 'black',
+                  color: 'white',
+                  fontWeight: 'bold',
+                  fontSize: { xs: '12px', md: '16px' },
+                }}
+              >
                 Номер
               </TableCell>
             </TableRow>
@@ -123,7 +139,7 @@ const HomeroomDashboard = () => {
                 key={student._id}
                 sx={{
                   transition: 'background-color 0.3s',
-                  '&:hover': { backgroundColor: '#f5f5f5' }
+                  '&:hover': { backgroundColor: '#f5f5f5' },
                 }}
               >
                 <TableCell align="center" sx={{ fontSize: { xs: '12px', md: '14px' } }}>
@@ -148,6 +164,6 @@ const HomeroomDashboard = () => {
       </TableContainer>
     </Box>
   );
-};
+}
 
 export default HomeroomDashboard;

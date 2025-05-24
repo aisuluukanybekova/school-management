@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import {
   Box, FormControl, InputLabel, Select, MenuItem,
-  Button, TextField
+  Button, TextField,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 
 axios.defaults.baseURL = 'http://localhost:5001';
 
-const TeacherGradebookJournal = () => {
+function TeacherGradebookJournal() {
   const teacher = useSelector((state) => state.user.currentUser);
   const schoolId = teacher?.school?._id || teacher?.schoolId || teacher?.school_id;
 
@@ -34,7 +34,7 @@ const TeacherGradebookJournal = () => {
       try {
         const [assignRes, termRes] = await Promise.all([
           axios.get(`/api/teacherSubjectClass/by-teacher/${teacher._id}`),
-          axios.get(`/api/terms/${schoolId}`)
+          axios.get(`/api/terms/${schoolId}`),
         ]);
         setAssignments(assignRes.data);
         setTerms(termRes.data);
@@ -65,11 +65,11 @@ const TeacherGradebookJournal = () => {
 
   const fetchLessonDates = async () => {
     try {
-      const term = terms.find(t => t.termNumber === Number(selectedTerm));
+      const term = terms.find((t) => t.termNumber === Number(selectedTerm));
       if (!term) return setLessonDates([]);
 
       const res = await axios.get(
-        `/api/schedule/by-teacher-class-subject/${teacher._id}/${selectedClass}/${selectedSubject}`
+        `/api/schedule/by-teacher-class-subject/${teacher._id}/${selectedClass}/${selectedSubject}`,
       );
       const schedule = res.data.schedules || [];
 
@@ -79,7 +79,7 @@ const TeacherGradebookJournal = () => {
 
       const allDates = [];
 
-      schedule.forEach(s => {
+      schedule.forEach((s) => {
         const d = new Date(termStart);
         while (d <= termEnd) {
           const current = new Date(d);
@@ -114,8 +114,8 @@ const TeacherGradebookJournal = () => {
         params: {
           classId: selectedClass,
           subjectId: selectedSubject,
-          term: Number(selectedTerm)
-        }
+          term: Number(selectedTerm),
+        },
       });
       const gradebook = res.data;
       setGrades(Array.isArray(gradebook?.grades) ? gradebook.grades : []);
@@ -131,14 +131,14 @@ const TeacherGradebookJournal = () => {
       return;
     }
 
-    setGrades(prev => {
+    setGrades((prev) => {
       const updated = [...prev];
-      let entry = updated.find(e => e.studentId === studentId);
+      let entry = updated.find((e) => e.studentId === studentId);
       if (!entry) {
         entry = { studentId, values: [] };
         updated.push(entry);
       }
-      const existing = entry.values.find(v => v.date === date);
+      const existing = entry.values.find((v) => v.date === date);
       if (existing) {
         existing.grade = grade;
       } else {
@@ -155,7 +155,7 @@ const TeacherGradebookJournal = () => {
         subjectId: selectedSubject,
         teacherId: teacher._id,
         term: Number(selectedTerm),
-        grades
+        grades,
       });
       alert('Оценки сохранены');
     } catch (err) {
@@ -164,7 +164,7 @@ const TeacherGradebookJournal = () => {
     }
   };
 
-  const currentTerm = terms.find(t => t.termNumber === Number(selectedTerm));
+  const currentTerm = terms.find((t) => t.termNumber === Number(selectedTerm));
 
   return (
     <Box p={3}>
@@ -172,7 +172,7 @@ const TeacherGradebookJournal = () => {
       <Box display="flex" gap={2} mt={2} mb={2}>
         <FormControl fullWidth>
           <InputLabel>Класс</InputLabel>
-          <Select value={selectedClass} onChange={e => setSelectedClass(e.target.value)}>
+          <Select value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)}>
             {assignments.map((a, i) => (
               <MenuItem key={i} value={a.sclassId}>{a.sclassName}</MenuItem>
             ))}
@@ -181,7 +181,7 @@ const TeacherGradebookJournal = () => {
 
         <FormControl fullWidth>
           <InputLabel>Предмет</InputLabel>
-          <Select value={selectedSubject} onChange={e => setSelectedSubject(e.target.value)}>
+          <Select value={selectedSubject} onChange={(e) => setSelectedSubject(e.target.value)}>
             {assignments.map((a, i) => (
               <MenuItem key={i} value={a.subjectId}>{a.subjectName}</MenuItem>
             ))}
@@ -190,9 +190,12 @@ const TeacherGradebookJournal = () => {
 
         <FormControl fullWidth>
           <InputLabel>Четверть</InputLabel>
-          <Select value={selectedTerm} onChange={e => setSelectedTerm(String(e.target.value))}>
-            {[1, 2, 3, 4].map(term => (
-              <MenuItem key={term} value={String(term)}>Четверть {term}</MenuItem>
+          <Select value={selectedTerm} onChange={(e) => setSelectedTerm(String(e.target.value))}>
+            {[1, 2, 3, 4].map((term) => (
+              <MenuItem key={term} value={String(term)}>
+                Четверть
+                {term}
+              </MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -200,7 +203,13 @@ const TeacherGradebookJournal = () => {
 
       {currentTerm && (
         <Box mb={2}>
-          Период: {new Date(currentTerm.startDate).toLocaleDateString('ru-RU')} — {new Date(currentTerm.endDate).toLocaleDateString('ru-RU')}
+          Период:
+          {' '}
+          {new Date(currentTerm.startDate).toLocaleDateString('ru-RU')}
+          {' '}
+          —
+          {' '}
+          {new Date(currentTerm.endDate).toLocaleDateString('ru-RU')}
         </Box>
       )}
 
@@ -216,12 +225,22 @@ const TeacherGradebookJournal = () => {
             textAlign: 'center',
             position: 'sticky',
             top: 0,
-            zIndex: 3
+            zIndex: 3,
           }}
         >
-          <Box sx={{ border: '1px solid #ccc', p: 1, position: 'sticky', left: 0, zIndex: 4 }}>№</Box>
-          <Box sx={{ border: '1px solid #ccc', p: 1, position: 'sticky', left: 50, zIndex: 4 }}>Ученик</Box>
-          {lessonDates.map(date => (
+          <Box sx={{
+            border: '1px solid #ccc', p: 1, position: 'sticky', left: 0, zIndex: 4,
+          }}
+          >
+            №
+          </Box>
+          <Box sx={{
+            border: '1px solid #ccc', p: 1, position: 'sticky', left: 50, zIndex: 4,
+          }}
+          >
+            Ученик
+          </Box>
+          {lessonDates.map((date) => (
             <Box
               key={date}
               sx={{
@@ -234,18 +253,23 @@ const TeacherGradebookJournal = () => {
                 minWidth: '80px',
                 textAlign: 'center',
                 backgroundColor: '#000',
-                color: '#fff'
+                color: '#fff',
               }}
             >
               {new Date(date).toLocaleDateString('ru-RU')}
             </Box>
           ))}
-          <Box sx={{ border: '1px solid #ccc', p: 1, position: 'sticky', right: 0, zIndex: 4 }}>Итог</Box>
+          <Box sx={{
+            border: '1px solid #ccc', p: 1, position: 'sticky', right: 0, zIndex: 4,
+          }}
+          >
+            Итог
+          </Box>
         </Box>
 
         {students.sort((a, b) => a.name.localeCompare(b.name, 'ru')).map((student, index) => {
-          const gradeEntry = grades.find(g => g.studentId === student._id) || { values: [] };
-          const valuesOnly = gradeEntry.values.filter(v => v.grade);
+          const gradeEntry = grades.find((g) => g.studentId === student._id) || { values: [] };
+          const valuesOnly = gradeEntry.values.filter((v) => v.grade);
           const average = valuesOnly.length > 0
             ? Math.round(valuesOnly.reduce((sum, v) => sum + v.grade, 0) / valuesOnly.length)
             : null;
@@ -256,14 +280,24 @@ const TeacherGradebookJournal = () => {
               sx={{
                 display: 'grid',
                 gridTemplateColumns: `50px 200px repeat(${lessonDates.length}, 100px) 100px`,
-                backgroundColor: '#fff'
+                backgroundColor: '#fff',
               }}
             >
-              <Box sx={{ border: '1px solid #ccc', p: 1, textAlign: 'center', position: 'sticky', left: 0, zIndex: 2 }}>{index + 1}</Box>
-              <Box sx={{ border: '1px solid #ccc', p: 1, fontWeight: 500, position: 'sticky', left: 50, zIndex: 2 }}>{student.name}</Box>
+              <Box sx={{
+                border: '1px solid #ccc', p: 1, textAlign: 'center', position: 'sticky', left: 0, zIndex: 2,
+              }}
+              >
+                {index + 1}
+              </Box>
+              <Box sx={{
+                border: '1px solid #ccc', p: 1, fontWeight: 500, position: 'sticky', left: 50, zIndex: 2,
+              }}
+              >
+                {student.name}
+              </Box>
 
-              {lessonDates.map(date => {
-                const g = gradeEntry.values.find(v => v.date === date);
+              {lessonDates.map((date) => {
+                const g = gradeEntry.values.find((v) => v.date === date);
                 return (
                   <Box
                     key={date}
@@ -274,11 +308,11 @@ const TeacherGradebookJournal = () => {
                       alignItems: 'center',
                       p: 1,
                       backgroundColor:
-                        g?.grade === 5 ? '#d4edda' :
-                        g?.grade === 4 ? '#dbeeff' :
-                        g?.grade === 3 ? '#fff3cd' :
-                        g?.grade === 2 ? '#f8d7da' :
-                        '#f5f5f5'
+                        g?.grade === 5 ? '#d4edda'
+                          : g?.grade === 4 ? '#dbeeff'
+                            : g?.grade === 3 ? '#fff3cd'
+                              : g?.grade === 2 ? '#f8d7da'
+                                : '#f5f5f5',
                     }}
                   >
                     <TextField
@@ -291,12 +325,10 @@ const TeacherGradebookJournal = () => {
                         disableUnderline: true,
                         sx: {
                           width: '2.5rem',
-                          input: { textAlign: 'center' }
-                        }
+                          input: { textAlign: 'center' },
+                        },
                       }}
-                      onChange={e =>
-                        handleGradeChange(student._id, date, parseInt(e.target.value))
-                      }
+                      onChange={(e) => handleGradeChange(student._id, date, parseInt(e.target.value))}
                     />
                   </Box>
                 );
@@ -311,7 +343,7 @@ const TeacherGradebookJournal = () => {
                   right: 0,
                   backgroundColor: average ? getAverageColor(average) : '#fff',
                   border: '1px solid #ccc',
-                  zIndex: 3
+                  zIndex: 3,
                 }}
               >
                 {average || '-'}
@@ -326,10 +358,12 @@ const TeacherGradebookJournal = () => {
         <Box mt={4} p={2} sx={{ border: '1px dashed #999', borderRadius: 2, backgroundColor: '#f9f9f9' }}>
           <Box fontWeight="bold" mb={1}>📊 Статистика по итоговым оценкам:</Box>
           {(() => {
-            const counters = { 5: 0, 4: 0, 3: 0, 2: 0, none: 0 };
-            students.forEach(student => {
-              const entry = grades.find(g => g.studentId === student._id);
-              const values = entry?.values?.filter(v => v.grade) || [];
+            const counters = {
+              5: 0, 4: 0, 3: 0, 2: 0, none: 0,
+            };
+            students.forEach((student) => {
+              const entry = grades.find((g) => g.studentId === student._id);
+              const values = entry?.values?.filter((v) => v.grade) || [];
               if (!values.length) {
                 counters.none += 1;
               } else {
@@ -340,11 +374,26 @@ const TeacherGradebookJournal = () => {
 
             return (
               <Box display="flex" gap={3} flexWrap="wrap">
-                <Box>Отличников (5): <strong>{counters[5]}</strong></Box>
-                <Box>Хорошистов (4): <strong>{counters[4]}</strong></Box>
-                <Box>Троечников (3): <strong>{counters[3]}</strong></Box>
-                <Box>Двоечников (2): <strong>{counters[2]}</strong></Box>
-                <Box>Без оценок: <strong>{counters.none}</strong></Box>
+                <Box>
+                  Отличников (5):
+                  <strong>{counters[5]}</strong>
+                </Box>
+                <Box>
+                  Хорошистов (4):
+                  <strong>{counters[4]}</strong>
+                </Box>
+                <Box>
+                  Троечников (3):
+                  <strong>{counters[3]}</strong>
+                </Box>
+                <Box>
+                  Двоечников (2):
+                  <strong>{counters[2]}</strong>
+                </Box>
+                <Box>
+                  Без оценок:
+                  <strong>{counters.none}</strong>
+                </Box>
               </Box>
             );
           })()}
@@ -356,6 +405,6 @@ const TeacherGradebookJournal = () => {
       </Button>
     </Box>
   );
-};
+}
 
 export default TeacherGradebookJournal;

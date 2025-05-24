@@ -16,9 +16,12 @@ import {
 const BASE_URL = 'http://localhost:5001/api';
 
 // === Универсальный запрос ===
-const request = async (method, url, data = {}, headers = {}) => {
-  return axios({ method, url, data, headers: { 'Content-Type': 'application/json', ...headers } });
-};
+const request = async (method, url, data = {}, headers = {}) => axios({
+  method,
+  url,
+  data,
+  headers: { 'Content-Type': 'application/json', ...headers },
+});
 
 // === LOGIN ===
 export const loginUser = (fields, role) => async (dispatch) => {
@@ -41,23 +44,20 @@ export const loginUser = (fields, role) => async (dispatch) => {
       _id: data._id,
       name: data.name,
       email: data.email,
-      role: role,
+      role,
       schoolId: data.schoolId || (data.school ? data.school._id : null),
       school: data.school || null,
-      sclassName: data.sclassName || null, //  важное добавление
+      sclassName: data.sclassName || null,
       teachSclass: data.teachSclass || null,
       teachSubject: data.teachSubject || null,
-      homeroomFor: data.homeroomFor || null
+      homeroomFor: data.homeroomFor || null,
     };
-
-    console.log(' Student login:', userPayload); // можно убрать позже
 
     dispatch(authSuccess(userPayload));
   } catch (error) {
     dispatch(authError(error?.response?.data?.message || error.message));
   }
 };
-
 
 // === REGISTER ===
 export const registerUser = (fields, role) => async (dispatch) => {
@@ -98,7 +98,6 @@ export const logoutUser = () => (dispatch) => {
 export const getUserDetails = (id, address) => async (dispatch) => {
   dispatch(getRequest());
   try {
-    // 🔧 Автоматически делаем address во множественном числе, если это роль
     const endpoint = address.toLowerCase().endsWith('s') ? address : `${address.toLowerCase()}s`;
     const { data } = await request('get', `${BASE_URL}/${endpoint}/${id}`);
     dispatch(doneSuccess(data));
@@ -112,7 +111,11 @@ export const deleteUser = (id, address) => async (dispatch) => {
   dispatch(getRequest());
   try {
     const { data } = await request('delete', `${BASE_URL}/${address}/${id}`);
-    data.message ? dispatch(getFailed(data.message)) : dispatch(getDeleteSuccess());
+    if (data.message) {
+      dispatch(getFailed(data.message));
+    } else {
+      dispatch(getDeleteSuccess());
+    }
   } catch (error) {
     dispatch(getError(error?.response?.data?.message || error.message));
   }
@@ -159,7 +162,11 @@ export const addStuff = (fields, address) => async (dispatch) => {
 
     const { data } = await request('post', url, fields);
 
-    data.message ? dispatch(authFailed(data.message)) : dispatch(stuffAdded(data));
+    if (data.message) {
+      dispatch(authFailed(data.message));
+    } else {
+      dispatch(stuffAdded(data));
+    }
   } catch (error) {
     dispatch(authError(error?.response?.data?.message || error.message));
   }

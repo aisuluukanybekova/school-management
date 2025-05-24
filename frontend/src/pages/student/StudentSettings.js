@@ -2,21 +2,20 @@ import React, { useEffect, useState } from 'react';
 import {
   Paper, Typography, Switch, FormControlLabel,
   MenuItem, Select, InputLabel, FormControl,
-  Box, Button, Divider, TextField, Avatar
+  Box, Button, Divider, TextField, Avatar,
 } from '@mui/material';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 const REACT_APP_BASE_URL = 'http://localhost:5001';
 
-const StudentSettings = () => {
+function StudentSettings() {
   const { currentUser } = useSelector((state) => state.user);
   const [darkMode, setDarkMode] = useState(false);
   const [language, setLanguage] = useState('ru');
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [newPassword, setNewPassword] = useState('');
-  const [avatar, setAvatar] = useState(null);
 
   useEffect(() => {
     document.body.setAttribute('data-theme', darkMode ? 'dark' : 'light');
@@ -24,7 +23,8 @@ const StudentSettings = () => {
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
-    setAvatar(file);
+    // Будущая реализация загрузки аватара
+    console.log('Выбран файл:', file);
   };
 
   const handleSave = async () => {
@@ -35,8 +35,6 @@ const StudentSettings = () => {
         });
         alert('Пароль успешно обновлён');
       }
-
-      // Future: загрузка аватара через FormData
 
       console.log({
         darkMode,
@@ -53,7 +51,10 @@ const StudentSettings = () => {
   };
 
   return (
-    <Paper sx={{ p: 4, maxWidth: 600, margin: 'auto', mt: 4 }}>
+    <Paper sx={{
+      p: 4, maxWidth: 600, margin: 'auto', mt: 4,
+    }}
+    >
       <Typography variant="h5" gutterBottom>
         Настройки ученика
       </Typography>
@@ -126,6 +127,6 @@ const StudentSettings = () => {
       </Box>
     </Paper>
   );
-};
+}
 
 export default StudentSettings;

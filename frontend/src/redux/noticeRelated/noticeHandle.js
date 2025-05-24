@@ -1,7 +1,9 @@
 import axios from 'axios';
-import { getRequest, getSuccess, getFailed, getError } from './noticeSlice';
+import {
+  getRequest, getSuccess, getFailed, getError,
+} from './noticeSlice';
 
-const BASE_URL = "http://localhost:5001/api";
+const BASE_URL = 'http://localhost:5001/api';
 
 export const getAllNotices = (schoolId) => async (dispatch) => {
   dispatch(getRequest());

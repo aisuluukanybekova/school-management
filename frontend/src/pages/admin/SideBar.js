@@ -7,27 +7,27 @@ import {
   ListSubheader,
   Tooltip,
   Box,
-  Typography
+  Typography,
 } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
-import HomeIcon from "@mui/icons-material/Home";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import HomeIcon from '@mui/icons-material/Home';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import AnnouncementOutlinedIcon from '@mui/icons-material/AnnouncementOutlined';
 import ClassOutlinedIcon from '@mui/icons-material/ClassOutlined';
 import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
 import ReportIcon from '@mui/icons-material/Report';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-//import SettingsIcon from '@mui/icons-material/Settings';
+// import SettingsIcon from '@mui/icons-material/Settings';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
-const SideBar = () => {
+function SideBar() {
   const location = useLocation();
   const isActive = (path) => location.pathname.startsWith(path);
 
@@ -48,7 +48,7 @@ const SideBar = () => {
 
   const userItems = [
     { text: 'Профиль', icon: <AccountCircleOutlinedIcon />, path: '/Admin/profile' },
-   // { text: 'Настройки', icon: <SettingsIcon />, path: '/Admin/settings' },
+    // { text: 'Настройки', icon: <SettingsIcon />, path: '/Admin/settings' },
     { text: 'Выход', icon: <ExitToAppIcon />, path: '/logout' },
   ];
 
@@ -88,7 +88,7 @@ const SideBar = () => {
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
-                  }
+                  },
                 }}
               />
             </ListItemButton>
@@ -129,7 +129,7 @@ const SideBar = () => {
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
-                  }
+                  },
                 }}
               />
             </ListItemButton>
@@ -138,6 +138,6 @@ const SideBar = () => {
       ))}
     </Box>
   );
-};
+}
 
 export default SideBar;

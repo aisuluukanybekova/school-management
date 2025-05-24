@@ -170,6 +170,26 @@ const updateStudent = async (req, res) => {
     res.status(500).json({ message: 'Ошибка обновления ученика' });
   }
 };
+const updateStudentPassword = async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+
+  try {
+    const student = await Student.findById(req.params.id);
+    if (!student) return res.status(404).json({ message: 'Ученик не найден' });
+
+    const isMatch = await bcrypt.compare(oldPassword, student.password);
+    if (!isMatch) return res.status(400).json({ message: 'Старый пароль неверный' });
+
+    const salt = await bcrypt.genSalt(10);
+    student.password = await bcrypt.hash(newPassword, salt);
+    await student.save();
+
+    res.json({ message: 'Пароль успешно обновлён' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Ошибка при смене пароля', error: err.message });
+  }
+};
 
 module.exports = {
   studentRegister,
@@ -180,5 +200,6 @@ module.exports = {
   deleteStudents,
   deleteStudent,
   updateStudent,
-  deleteStudentsByClass
+  deleteStudentsByClass,
+  updateStudentPassword
 };

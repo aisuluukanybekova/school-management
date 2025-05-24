@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types'; // ✅ Добавлено
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import {
   Paper, Box, IconButton, Dialog, DialogTitle, DialogContent, DialogActions,
-  TextField, Button
+  TextField, Button,
 } from '@mui/material';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
-import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import axios from 'axios';
 import { getAllNotices } from '../../../redux/noticeRelated/noticeHandle';
 import TableTemplate from '../../../components/TableTemplate';
 import { GreenButton } from '../../../components/buttonStyles';
 import SpeedDialTemplate from '../../../components/SpeedDialTemplate';
-import axios from 'axios';
 
-const ShowNotices = () => {
+function ShowNotices() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { noticesList, loading } = useSelector((state) => state.notice);
-  const { currentUser } = useSelector(state => state.user);
+  const { currentUser } = useSelector((state) => state.user);
 
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editNotice, setEditNotice] = useState({});
@@ -35,7 +36,7 @@ const ShowNotices = () => {
         await axios.delete(`http://localhost:5001/api/notices/${id}`);
         dispatch(getAllNotices(currentUser._id));
       } catch (err) {
-        console.error("Ошибка при удалении объявления:", err);
+        console.error('Ошибка при удалении объявления:', err);
       }
     }
   };
@@ -46,7 +47,7 @@ const ShowNotices = () => {
         await axios.delete(`http://localhost:5001/api/notices/school/${currentUser._id}`);
         dispatch(getAllNotices(currentUser._id));
       } catch (err) {
-        console.error("Ошибка при удалении всех объявлений:", err);
+        console.error('Ошибка при удалении всех объявлений:', err);
       }
     }
   };
@@ -66,7 +67,7 @@ const ShowNotices = () => {
       setEditModalOpen(false);
       dispatch(getAllNotices(currentUser._id));
     } catch (err) {
-      console.error("Ошибка при обновлении:", err);
+      console.error('Ошибка при обновлении:', err);
     }
   };
 
@@ -77,36 +78,50 @@ const ShowNotices = () => {
   ];
 
   const noticeRows = Array.isArray(noticesList)
-  ? [...noticesList]
-      .sort((a, b) => new Date(b.date) - new Date(a.date)) // Сортировка по дате
+    ? [...noticesList]
+      .sort((a, b) => new Date(b.date) - new Date(a.date))
       .map((notice) => ({
         title: notice.title,
         details: notice.details,
-        date: notice.date ? new Date(notice.date).toISOString().substring(0, 10) : "Неверная дата",
+        date: notice.date ? new Date(notice.date).toISOString().substring(0, 10) : 'Неверная дата',
         id: notice._id,
       }))
-  : [];
+    : [];
 
-  const NoticeButtonHaver = ({ row }) => (
-    <>
-      <IconButton onClick={() => handleEditClick(row)}>
-        <EditIcon color="primary" />
-      </IconButton>
-      <IconButton onClick={() => deleteHandler(row.id)}>
-        <DeleteIcon color="error" />
-      </IconButton>
-    </>
-  );
+  function NoticeButtonHaver({ row }) {
+    return (
+      <>
+        <IconButton onClick={() => handleEditClick(row)}>
+          <EditIcon color="primary" />
+        </IconButton>
+        <IconButton onClick={() => deleteHandler(row.id)}>
+          <DeleteIcon color="error" />
+        </IconButton>
+      </>
+    );
+  }
+
+  // Добавлена валидация PropTypes
+  NoticeButtonHaver.propTypes = {
+    row: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      title: PropTypes.string,
+      details: PropTypes.string,
+      date: PropTypes.string,
+    }).isRequired,
+  };
 
   const actions = [
     {
-      icon: <NoteAddIcon color="primary" />, name: 'Добавить объявление',
-      action: () => navigate("/Admin/addnotice")
+      icon: <NoteAddIcon color="primary" />,
+      name: 'Добавить объявление',
+      action: () => navigate('/Admin/addnotice'),
     },
     {
-      icon: <DeleteIcon color="error" />, name: 'Удалить все объявления',
-      action: deleteAllNoticesHandler
-    }
+      icon: <DeleteIcon color="error" />,
+      name: 'Удалить все объявления',
+      action: deleteAllNoticesHandler,
+    },
   ];
 
   return (
@@ -118,7 +133,7 @@ const ShowNotices = () => {
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
             <GreenButton
               variant="contained"
-              onClick={() => navigate("/Admin/addnotice")}
+              onClick={() => navigate('/Admin/addnotice')}
               startIcon={<NoteAddIcon />}
               sx={{ mt: 2, mb: 1 }}
             >
@@ -133,7 +148,7 @@ const ShowNotices = () => {
               borderRadius: 3,
               boxShadow: 3,
               backgroundColor: '#fff',
-              animation: 'fadeIn 0.4s ease'
+              animation: 'fadeIn 0.4s ease',
             }}
           >
             {noticeRows.length > 0 ? (
@@ -147,7 +162,7 @@ const ShowNotices = () => {
       )}
 
       <Dialog open={editModalOpen} onClose={() => setEditModalOpen(false)} fullWidth maxWidth="sm">
-        <DialogTitle sx={{ fontWeight: 'bold' }}>✏️ Редактировать объявление</DialogTitle>
+        <DialogTitle sx={{ fontWeight: 'bold' }}>Редактировать объявление</DialogTitle>
         <DialogContent dividers>
           <TextField
             fullWidth
@@ -180,6 +195,6 @@ const ShowNotices = () => {
       </Dialog>
     </>
   );
-};
+}
 
 export default ShowNotices;

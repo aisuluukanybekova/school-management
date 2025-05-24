@@ -1,37 +1,37 @@
 // redux/complainRelated/complainSlice.js
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   complains: [],
   status: null,
-  error: null
+  error: null,
 };
 
 const complainSlice = createSlice({
-  name: "complain",
+  name: 'complain',
   initialState,
   reducers: {
     getRequest: (state) => {
-      state.status = "loading";
+      state.status = 'loading';
     },
     getSuccess: (state, action) => {
-      state.status = "success";
+      state.status = 'success';
       state.complains = action.payload;
     },
     getFailed: (state, action) => {
-      state.status = "failed";
+      state.status = 'failed';
       state.error = action.payload;
     },
     getError: (state, action) => {
-      state.status = "error";
+      state.status = 'error';
       state.error = action.payload;
     },
     clearComplainState: (state) => {
       state.complains = [];
       state.status = null;
       state.error = null;
-    }
-  }
+    },
+  },
 });
 
 export const {
@@ -39,7 +39,7 @@ export const {
   getSuccess,
   getFailed,
   getError,
-  clearComplainState
+  clearComplainState,
 } = complainSlice.actions;
 
 export default complainSlice.reducer;

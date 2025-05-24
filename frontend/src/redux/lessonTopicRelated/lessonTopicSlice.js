@@ -4,7 +4,7 @@ const initialState = {
   loading: false,
   error: null,
   topics: [],
-  success: false
+  success: false,
 };
 
 const lessonTopicSlice = createSlice({
@@ -30,7 +30,7 @@ const lessonTopicSlice = createSlice({
       state.error = action.payload;
     },
     resetTopicState: () => initialState,
-  }
+  },
 });
 
 export const {
@@ -38,7 +38,7 @@ export const {
   topicSuccess,
   topicSaveSuccess,
   topicError,
-  resetTopicState
+  resetTopicState,
 } = lessonTopicSlice.actions;
 
 export default lessonTopicSlice.reducer;

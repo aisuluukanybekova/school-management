@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { CircularProgress } from '@mui/material';
 import { addStuff } from '../../../redux/userRelated/userHandle';
 import { underControl } from '../../../redux/userRelated/userSlice';
-import { CircularProgress } from '@mui/material';
 import Popup from '../../../components/Popup';
 
-const AddNotice = () => {
+function AddNotice() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { status, response, error } = useSelector(state => state.user);
-  const { currentUser } = useSelector(state => state.user);
+  const { status, response, error } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
 
   const [title, setTitle] = useState('');
   const [details, setDetails] = useState('');
@@ -19,17 +19,15 @@ const AddNotice = () => {
 
   const [loader, setLoader] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
 
-  // ✅ Адрес endpoint-а
-  const address = "notice";
+  const address = 'notice';
 
-  // ✅ Правильные поля
   const fields = {
     title,
-    details,     // ← исправлено здесь
+    details,
     date,
-    schoolId
+    schoolId,
   };
 
   const resetForm = () => {
@@ -46,18 +44,18 @@ const AddNotice = () => {
 
   useEffect(() => {
     if (status === 'added') {
-      setMessage("Объявление успешно добавлено!");
+      setMessage('Объявление успешно добавлено!');
       setShowPopup(true);
       resetForm();
       setLoader(false);
       dispatch(underControl());
-      navigate("/Admin/notices");
+      navigate('/Admin/notices');
     } else if (status === 'failed') {
-      setMessage(response || "Ошибка при добавлении объявления");
+      setMessage(response || 'Ошибка при добавлении объявления');
       setShowPopup(true);
       setLoader(false);
     } else if (status === 'error') {
-      setMessage("Ошибка сети");
+      setMessage('Ошибка сети');
       setShowPopup(true);
       setLoader(false);
     }
@@ -69,8 +67,9 @@ const AddNotice = () => {
         <form className="registerForm" onSubmit={submitHandler}>
           <span className="registerTitle">Добавить объявление</span>
 
-          <label>Заголовок</label>
+          <label htmlFor="noticeTitle">Заголовок</label>
           <input
+            id="noticeTitle"
             className="registerInput"
             type="text"
             placeholder="Введите заголовок объявления..."
@@ -79,8 +78,9 @@ const AddNotice = () => {
             required
           />
 
-          <label>Описание</label>
+          <label htmlFor="noticeDetails">Описание</label>
           <input
+            id="noticeDetails"
             className="registerInput"
             type="text"
             placeholder="Введите описание объявления..."
@@ -89,8 +89,9 @@ const AddNotice = () => {
             required
           />
 
-          <label>Дата</label>
+          <label htmlFor="noticeDate">Дата</label>
           <input
+            id="noticeDate"
             className="registerInput"
             type="date"
             value={date}
@@ -110,6 +111,6 @@ const AddNotice = () => {
       <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
     </>
   );
-};
+}
 
 export default AddNotice;
