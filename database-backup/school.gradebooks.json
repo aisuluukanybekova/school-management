@@ -1,0 +1,408 @@
+[{
+  "_id": {
+    "$oid": "681db5d2abdc5738b368fdaf"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "6819ff0768665936a222543f"
+  },
+  "teacherId": {
+    "$oid": "6810de5c90ed61772cb63409"
+  },
+  "term": 1,
+  "grades": [
+    {
+      "studentId": {
+        "$oid": "680df45bc1ed80b5865764d6"
+      },
+      "values": [
+        {
+          "date": "2024-09-02",
+          "grade": 5,
+          "_id": {
+            "$oid": "681db5d2abdc5738b368fdb1"
+          }
+        },
+        {
+          "date": "2024-09-09",
+          "grade": 4,
+          "_id": {
+            "$oid": "6820537b75fbe6d2952cf891"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "681db5d2abdc5738b368fdb0"
+      }
+    },
+    {
+      "studentId": {
+        "$oid": "68107fc9a28a2c7590bf2117"
+      },
+      "values": [
+        {
+          "date": "2024-09-02",
+          "grade": 4,
+          "_id": {
+            "$oid": "681db5d2abdc5738b368fdb3"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "681db5d2abdc5738b368fdb2"
+      }
+    },
+    {
+      "studentId": {
+        "$oid": "6810a171301e9ce0c0f31a6e"
+      },
+      "values": [
+        {
+          "date": "2024-09-02",
+          "grade": 3,
+          "_id": {
+            "$oid": "681db5d2abdc5738b368fdb5"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "681db5d2abdc5738b368fdb4"
+      }
+    },
+    {
+      "studentId": {
+        "$oid": "68175d95e474945085a57c06"
+      },
+      "values": [
+        {
+          "date": "2024-09-02",
+          "grade": 4,
+          "_id": {
+            "$oid": "681db5d2abdc5738b368fdb7"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "681db5d2abdc5738b368fdb6"
+      }
+    },
+    {
+      "studentId": {
+        "$oid": "681779a3dde1f9a61ea7abb9"
+      },
+      "values": [
+        {
+          "date": "2024-09-02",
+          "grade": 3,
+          "_id": {
+            "$oid": "681db5d2abdc5738b368fdb9"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "681db5d2abdc5738b368fdb8"
+      }
+    },
+    {
+      "studentId": {
+        "$oid": "68108218a28a2c7590bf2142"
+      },
+      "values": [
+        {
+          "date": "2024-09-03",
+          "grade": 4,
+          "_id": {
+            "$oid": "681dc5b7b2783afeae424453"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "681dc5b7b2783afeae424452"
+      }
+    },
+    {
+      "studentId": {
+        "$oid": "68175cece474945085a57c03"
+      },
+      "values": [
+        {
+          "date": "2024-09-03",
+          "grade": 5,
+          "_id": {
+            "$oid": "681dc5b7b2783afeae424455"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "681dc5b7b2783afeae424454"
+      }
+    },
+    {
+      "studentId": {
+        "$oid": "68175e4ee474945085a57c32"
+      },
+      "values": [
+        {
+          "date": "2024-09-03",
+          "grade": 4,
+          "_id": {
+            "$oid": "681dc5b7b2783afeae424457"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "681dc5b7b2783afeae424456"
+      }
+    },
+    {
+      "studentId": {
+        "$oid": "681a05087610f91ee2df8b98"
+      },
+      "values": [
+        {
+          "date": "2024-09-03",
+          "grade": 4,
+          "_id": {
+            "$oid": "681dc5b7b2783afeae424459"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "681dc5b7b2783afeae424458"
+      }
+    },
+    {
+      "studentId": {
+        "$oid": "68107d14e92c2380f001efc9"
+      },
+      "values": [
+        {
+          "date": "2024-09-03",
+          "grade": 5,
+          "_id": {
+            "$oid": "682057ed75fbe6d2952cfaa5"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "682057ed75fbe6d2952cfaa4"
+      }
+    },
+    {
+      "studentId": {
+        "$oid": "68175e7ee474945085a57c35"
+      },
+      "values": [
+        {
+          "date": "2024-09-09",
+          "grade": 5,
+          "_id": {
+            "$oid": "682060ac75fbe6d2952cff2d"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "682060ac75fbe6d2952cff2c"
+      }
+    },
+    {
+      "studentId": {
+        "$oid": "6810819ea28a2c7590bf212d"
+      },
+      "values": [
+        {
+          "date": "2024-09-09",
+          "grade": 5,
+          "_id": {
+            "$oid": "682446b2fdb37e47a2ad9bec"
+          }
+        },
+        {
+          "date": "2024-09-02",
+          "grade": 5,
+          "_id": {
+            "$oid": "682446b2fdb37e47a2ad9bed"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "682446b2fdb37e47a2ad9beb"
+      }
+    }
+  ],
+  "__v": 6
+},
+{
+  "_id": {
+    "$oid": "681f29a5ba1c39bd87dcd2e0"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "681b3159b230fb2b342390bc"
+  },
+  "teacherId": {
+    "$oid": "680df381c1ed80b58657649a"
+  },
+  "term": 1,
+  "grades": [
+    {
+      "studentId": {
+        "$oid": "680df45bc1ed80b5865764d6"
+      },
+      "values": [
+        {
+          "date": "2024-09-02",
+          "grade": 5,
+          "_id": {
+            "$oid": "681f29a5ba1c39bd87dcd2e2"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "681f29a5ba1c39bd87dcd2e1"
+      }
+    },
+    {
+      "studentId": {
+        "$oid": "68175e4ee474945085a57c32"
+      },
+      "values": [
+        {
+          "date": "2024-09-02",
+          "grade": 3,
+          "_id": {
+            "$oid": "681f29a5ba1c39bd87dcd2e4"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "681f29a5ba1c39bd87dcd2e3"
+      }
+    },
+    {
+      "studentId": {
+        "$oid": "68107fc9a28a2c7590bf2117"
+      },
+      "values": [
+        {
+          "date": "2024-09-03",
+          "grade": 5,
+          "_id": {
+            "$oid": "6820825f1ee55aa4d8229a11"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "6820825f1ee55aa4d8229a10"
+      }
+    },
+    {
+      "studentId": {
+        "$oid": "681779a3dde1f9a61ea7abb9"
+      },
+      "values": [
+        {
+          "date": "2024-09-03",
+          "grade": 3,
+          "_id": {
+            "$oid": "6820825f1ee55aa4d8229a13"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "6820825f1ee55aa4d8229a12"
+      }
+    },
+    {
+      "studentId": {
+        "$oid": "6810a171301e9ce0c0f31a6e"
+      },
+      "values": [
+        {
+          "date": "2024-09-02",
+          "grade": 4,
+          "_id": {
+            "$oid": "6820825f1ee55aa4d8229a15"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "6820825f1ee55aa4d8229a14"
+      }
+    },
+    {
+      "studentId": {
+        "$oid": "68107d14e92c2380f001efc9"
+      },
+      "values": [
+        {
+          "date": "2024-09-02",
+          "grade": 5,
+          "_id": {
+            "$oid": "6820825f1ee55aa4d8229a17"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "6820825f1ee55aa4d8229a16"
+      }
+    },
+    {
+      "studentId": {
+        "$oid": "68175e06e474945085a57c0f"
+      },
+      "values": [
+        {
+          "date": "2024-09-02",
+          "grade": 2,
+          "_id": {
+            "$oid": "6820825f1ee55aa4d8229a19"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "6820825f1ee55aa4d8229a18"
+      }
+    }
+  ],
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "6820859f1ee55aa4d8229bf4"
+  },
+  "classId": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "subjectId": {
+    "$oid": "6819ff0768665936a222543f"
+  },
+  "teacherId": {
+    "$oid": "6810de5c90ed61772cb63409"
+  },
+  "term": 1,
+  "grades": [
+    {
+      "studentId": {
+        "$oid": "681b22d3a1ad854f5aa4386b"
+      },
+      "values": [
+        {
+          "date": "2024-09-02",
+          "grade": 5,
+          "_id": {
+            "$oid": "6820859f1ee55aa4d8229bf6"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "6820859f1ee55aa4d8229bf5"
+      }
+    }
+  ],
+  "__v": 0
+}]

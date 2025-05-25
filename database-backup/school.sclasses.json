@@ -1,0 +1,362 @@
+[{
+  "_id": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "sclassName": "8A",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-25T12:30:15.985Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-02T08:55:25.712Z"
+  },
+  "__v": 0,
+  "homeroomTeacherId": {
+    "$oid": "6814887d09aae4d46aa5c0fb"
+  }
+},
+{
+  "_id": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "sclassName": "8B",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-25T12:32:26.109Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-25T12:32:26.109Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "680ce4649e1989ddcc93b154"
+  },
+  "sclassName": "10A",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-26T13:49:24.383Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-26T13:49:24.383Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "680ce8359e1989ddcc93b16a"
+  },
+  "sclassName": "10В",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-26T14:05:41.863Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-24T13:38:13.920Z"
+  },
+  "__v": 0,
+  "homeroomTeacherId": {
+    "$oid": "6831cbc5d2d8d61cbd34fd78"
+  }
+},
+{
+  "_id": {
+    "$oid": "680cead79e1989ddcc93b17a"
+  },
+  "sclassName": "11A",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-26T14:16:55.709Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-26T14:16:55.709Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810a09b301e9ce0c0f319f4"
+  },
+  "sclassName": "6А",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-29T09:49:15.315Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-29T09:49:15.315Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810a0a1301e9ce0c0f319ff"
+  },
+  "sclassName": "6В",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-29T09:49:21.453Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-29T09:49:21.453Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810a0a9301e9ce0c0f31a0a"
+  },
+  "sclassName": "5А",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-29T09:49:29.145Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-24T13:35:16.226Z"
+  },
+  "__v": 0,
+  "homeroomTeacherId": {
+    "$oid": "6831cb14d2d8d61cbd34fd5c"
+  }
+},
+{
+  "_id": {
+    "$oid": "6810fe9129bc169db34d9ccd"
+  },
+  "sclassName": "1А",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-29T16:30:09.163Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-29T16:30:09.163Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810fea029bc169db34d9cda"
+  },
+  "sclassName": "1В",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-29T16:30:24.089Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-29T16:30:24.089Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810febd29bc169db34d9cf6"
+  },
+  "sclassName": "2А",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-29T16:30:53.248Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-29T16:30:53.248Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810fec329bc169db34d9d01"
+  },
+  "sclassName": "2В",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-29T16:30:59.843Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-29T16:30:59.843Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810fecb29bc169db34d9d0c"
+  },
+  "sclassName": "3А",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-29T16:31:07.646Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-29T16:31:07.646Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810fed329bc169db34d9d17"
+  },
+  "sclassName": "3В",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-29T16:31:15.955Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-29T16:31:15.955Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810ff2729bc169db34d9d34"
+  },
+  "sclassName": "5В",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-29T16:32:39.179Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-29T16:32:39.179Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810ff3329bc169db34d9d3f"
+  },
+  "sclassName": "4А",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-29T16:32:51.222Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-29T16:32:51.222Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810ff3b29bc169db34d9d4a"
+  },
+  "sclassName": "4В",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-29T16:32:59.927Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-29T16:32:59.927Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810ff5529bc169db34d9d57"
+  },
+  "sclassName": "7А",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-29T16:33:25.262Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-29T16:33:25.262Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810ff5e29bc169db34d9d62"
+  },
+  "sclassName": "7В",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-29T16:33:34.841Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-29T16:33:34.841Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681234f676020384052f7b39"
+  },
+  "sclassName": "9A",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-30T14:34:30.637Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T14:34:30.637Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681234ff76020384052f7b44"
+  },
+  "sclassName": "9B",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-30T14:34:39.078Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T14:34:39.078Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6817926328fe4cf747fb5e26"
+  },
+  "sclassName": "11B",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "homeroomTeacherId": null,
+  "createdAt": {
+    "$date": "2025-05-04T16:14:27.969Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-04T16:14:27.969Z"
+  },
+  "__v": 0
+}]

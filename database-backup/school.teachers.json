@@ -1,0 +1,296 @@
+[{
+  "_id": {
+    "$oid": "680df381c1ed80b58657649a"
+  },
+  "name": "Супатаева Чолпон ",
+  "email": "cholpon@gmail.com",
+  "password": "$2b$10$7NWy/aiObaCGBriBWJXu8e39goudlrvDbBxjAZBv5kbBwF4NtZtuO",
+  "role": "Teacher",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "teachSubject": {
+    "$oid": "680cfba82c9a25337c7944fa"
+  },
+  "teachSclass": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "attendance": [],
+  "createdAt": {
+    "$date": "2025-04-27T09:06:09.615Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-27T09:06:09.615Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810b443ecffd4cede56340a"
+  },
+  "name": "Усенова Асель",
+  "email": "ais@gmail.com",
+  "password": "$2b$10$Url4MEvIix1wpJMfF0pUcuTy6eOr5PoavA8eabyJDh7zKXOod8Qge",
+  "role": "Teacher",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "attendance": [],
+  "createdAt": {
+    "$date": "2025-04-29T11:13:07.116Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T08:17:54.152Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810de5c90ed61772cb63409"
+  },
+  "name": "Рахимов Сардар",
+  "email": "sardar@gmail.com",
+  "password": "$2b$10$Z3Fa16XHfyjT7Jpy7xW1i.Ai/7y4gtMUSjR5.lQFKHz56.9wdZfaS",
+  "role": "Teacher",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "attendance": [],
+  "createdAt": {
+    "$date": "2025-04-29T14:12:44.062Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-22T11:55:24.820Z"
+  },
+  "__v": 0,
+  "homeroomFor": {
+    "$oid": "680b8057e926662f9df2e549"
+  }
+},
+{
+  "_id": {
+    "$oid": "6810e8937fc2c176a543393b"
+  },
+  "name": "Рахимова Ясмина",
+  "email": "yasmina@gmail.com",
+  "password": "$2b$10$LOqqGuakQkmKTf3fmBRWAOhvwO3jTwS26JO4Rsa0inEWi9yPEa9Pe",
+  "role": "Teacher",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "attendance": [],
+  "createdAt": {
+    "$date": "2025-04-29T14:56:19.823Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-29T14:56:19.823Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810e8cd7fc2c176a5433946"
+  },
+  "name": "Кочкорова Разия",
+  "email": "rasya@gmail.com",
+  "password": "$2b$10$dBxaoAqboMteofGZcw2Ipu5RWD5Cz8rRlQ5xyLRnutNUtm7eeKCxi",
+  "role": "Teacher",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "attendance": [],
+  "createdAt": {
+    "$date": "2025-04-29T14:57:17.844Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-29T14:57:17.844Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6811d6cc37f3577c6ddb6768"
+  },
+  "name": "Бейшеева Алтынай",
+  "email": "aidana@gmail.com",
+  "password": "$2b$10$dJ2dNg8RYD4k3UvMZJnd/e8bzG6JcGKZ3nRmZrrJDe8ZwPqgj/2tC",
+  "role": "Teacher",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "attendance": [],
+  "createdAt": {
+    "$date": "2025-04-30T07:52:44.335Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T08:17:21.473Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6811d9ad37f3577c6ddb6832"
+  },
+  "name": "Бекишова Элиза",
+  "email": "eliza@gmail.com",
+  "password": "$2b$10$Dz0OnmU6SrgTvAwUvItXfetEBX.afl5NWJrAm/IH08.ql6NThNHfW",
+  "role": "Teacher",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "attendance": [],
+  "createdAt": {
+    "$date": "2025-04-30T08:05:01.546Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T12:26:52.166Z"
+  },
+  "__v": 0,
+  "homeroomFor": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  }
+},
+{
+  "_id": {
+    "$oid": "6811dc2337f3577c6ddb6877"
+  },
+  "name": "Осконбаева Альбина ",
+  "email": "albina@gmail.com",
+  "password": "$2b$10$ykDJCshcCBCQdB6jnUHdnuu.2g4zkNdFW/rNAZkPx2FtWW5ffxCl6",
+  "role": "Teacher",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "attendance": [],
+  "createdAt": {
+    "$date": "2025-04-30T08:15:31.768Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T08:15:31.768Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6811dc4b37f3577c6ddb6880"
+  },
+  "name": "Тыныстанова Асель",
+  "email": "asel@gmail.com",
+  "password": "$2b$10$OPj7OdD4QBT22ypEyTKSAeGWTk.NvkRZzullM7lH64KrY/qbrA8ha",
+  "role": "Teacher",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "attendance": [],
+  "createdAt": {
+    "$date": "2025-04-30T08:16:11.682Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T08:16:11.682Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6811dc6e37f3577c6ddb6889"
+  },
+  "name": "Каныбекова Адинай",
+  "email": "adinai@gmail.com",
+  "password": "$2b$10$ddEssJ37nKAp/nr/rZcRTujJvXeOJ4fn4LSYeEqQqSv9RlGS7cGGu",
+  "role": "Teacher",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "attendance": [],
+  "createdAt": {
+    "$date": "2025-04-30T08:16:46.068Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T08:16:46.068Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6811dda137f3577c6ddb68c4"
+  },
+  "name": "Эламанов Бекжан",
+  "email": "bekjan@gmail.com",
+  "password": "$2b$10$Ttt.VyZ4DYS77v91pYeOC.34schZOzMXolaXJvKxnk/loYB9hmM8O",
+  "role": "Teacher",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "attendance": [],
+  "createdAt": {
+    "$date": "2025-04-30T08:21:53.886Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T08:21:53.886Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6811ddf837f3577c6ddb68cd"
+  },
+  "name": "Жусупов Адилет",
+  "email": "adilet@gmail.com",
+  "password": "$2b$10$QrHrSkDYse5ysoXm81MtiuCDZ3q64ATPnsWCmAC3tcvh3Xn/LWi2.",
+  "role": "Teacher",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "attendance": [],
+  "createdAt": {
+    "$date": "2025-04-30T08:23:20.855Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T08:23:20.855Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6814887d09aae4d46aa5c0fb"
+  },
+  "name": "Исмаилова Дилара",
+  "email": "dilba@gmail.com",
+  "password": "$2b$10$KYLiWkN2cRoXZK6pGFsCX.QMQGlL0CoN.8HYmEnrHaquS4ifSC6hC",
+  "role": "Teacher",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "homeroomFor": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "attendance": [],
+  "createdAt": {
+    "$date": "2025-05-02T08:55:25.707Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-02T09:13:16.642Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6814943709aae4d46aa5c2c7"
+  },
+  "name": "Рашидов Дастан",
+  "email": "dastan@gmail.com",
+  "password": "$2b$10$bMxtkZ6ceHUccqCPXHNkW.x7OqX0AxzfPHDpoWWfNh1yBtHltua0q",
+  "role": "Teacher",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "homeroomFor": null,
+  "attendance": [],
+  "createdAt": {
+    "$date": "2025-05-02T09:45:27.879Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-02T09:45:27.879Z"
+  },
+  "__v": 0
+}]

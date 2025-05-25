@@ -1,0 +1,4769 @@
+[{
+  "_id": {
+    "$oid": "681a1bd0935a30dbbe3771c2"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1c98935a30dbbe3771ca"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1cb9935a30dbbe3771cc"
+  },
+  "number": 2,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d73935a30dbbe3771d7"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d73935a30dbbe3771d9"
+  },
+  "number": 10,
+  "startTime": "12:10",
+  "endTime": "12:15",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d73935a30dbbe3771db"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d73935a30dbbe3771dd"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d73935a30dbbe3771df"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d73935a30dbbe3771e1"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d73935a30dbbe3771e3"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d73935a30dbbe3771e5"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d73935a30dbbe3771e7"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d73935a30dbbe3771e9"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d86935a30dbbe3771f5"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d86935a30dbbe3771f7"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d86935a30dbbe3771f9"
+  },
+  "number": 10,
+  "startTime": "12:10",
+  "endTime": "12:15",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d86935a30dbbe3771fb"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d86935a30dbbe3771fd"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d86935a30dbbe3771ff"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d86935a30dbbe377201"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d86935a30dbbe377203"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d86935a30dbbe377205"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d86935a30dbbe377207"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d86935a30dbbe377209"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d86935a30dbbe37720b"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d86935a30dbbe37720d"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d86935a30dbbe37720f"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d86935a30dbbe377211"
+  },
+  "number": 10,
+  "startTime": "12:10",
+  "endTime": "12:15",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d86935a30dbbe377213"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d86935a30dbbe377215"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d86935a30dbbe377217"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d86935a30dbbe377219"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d86935a30dbbe37721b"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d91935a30dbbe377222"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d91935a30dbbe377224"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d91935a30dbbe377226"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d91935a30dbbe377228"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d91935a30dbbe37722a"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d91935a30dbbe37722c"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d91935a30dbbe37722e"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d91935a30dbbe377230"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d91935a30dbbe377232"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d91935a30dbbe377234"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d91935a30dbbe377236"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d91935a30dbbe377238"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d91935a30dbbe37723a"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d91935a30dbbe37723c"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d91935a30dbbe37723e"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d91935a30dbbe377240"
+  },
+  "number": 10,
+  "startTime": "12:10",
+  "endTime": "12:15",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d91935a30dbbe377242"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d91935a30dbbe377244"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d91935a30dbbe377246"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1d91935a30dbbe377248"
+  },
+  "number": 10,
+  "startTime": "12:10",
+  "endTime": "12:15",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1dc7935a30dbbe377255"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1dc7935a30dbbe377257"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1dc7935a30dbbe377259"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1dc7935a30dbbe37725b"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1dc7935a30dbbe37725d"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1dc7935a30dbbe37725f"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1dc7935a30dbbe377261"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1dc7935a30dbbe377263"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1dc7935a30dbbe377265"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1dc7935a30dbbe377267"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1dc7935a30dbbe377269"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1dc7935a30dbbe37726b"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1dc7935a30dbbe37726d"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1dc7935a30dbbe37726f"
+  },
+  "number": 10,
+  "startTime": "12:10",
+  "endTime": "12:15",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1dc7935a30dbbe377271"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1dc7935a30dbbe377273"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1dc7935a30dbbe377275"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1dc7935a30dbbe377277"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1dc7935a30dbbe377279"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1dc7935a30dbbe37727b"
+  },
+  "number": 10,
+  "startTime": "12:10",
+  "endTime": "12:15",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1e03935a30dbbe377282"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1e03935a30dbbe377284"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1e03935a30dbbe377286"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1e03935a30dbbe377288"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1e03935a30dbbe37728a"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1e03935a30dbbe37728c"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1e03935a30dbbe37728e"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1e03935a30dbbe377290"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1e03935a30dbbe377292"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1e03935a30dbbe377294"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1e03935a30dbbe377296"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1e03935a30dbbe377298"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1e03935a30dbbe37729a"
+  },
+  "number": 10,
+  "startTime": "12:10",
+  "endTime": "12:15",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1e03935a30dbbe37729c"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1e03935a30dbbe37729e"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1e03935a30dbbe3772a0"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1e03935a30dbbe3772a2"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1e03935a30dbbe3772a4"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1e03935a30dbbe3772a6"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1e03935a30dbbe3772a8"
+  },
+  "number": 10,
+  "startTime": "12:10",
+  "endTime": "12:15",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1efe935a30dbbe3772c2"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1efe935a30dbbe3772c4"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1efe935a30dbbe3772c6"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1efe935a30dbbe3772c8"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1efe935a30dbbe3772ca"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1efe935a30dbbe3772cc"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1efe935a30dbbe3772ce"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1efe935a30dbbe3772d0"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1efe935a30dbbe3772d2"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1efe935a30dbbe3772d4"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1efe935a30dbbe3772d6"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1efe935a30dbbe3772d8"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1efe935a30dbbe3772da"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1efe935a30dbbe3772dc"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1efe935a30dbbe3772de"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1efe935a30dbbe3772e0"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1efe935a30dbbe3772e2"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1efe935a30dbbe3772e4"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0a935a30dbbe3772eb"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0a935a30dbbe3772ed"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0a935a30dbbe3772ef"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0a935a30dbbe3772f1"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0a935a30dbbe3772f3"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0a935a30dbbe3772f5"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0a935a30dbbe3772f7"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0a935a30dbbe3772f9"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0a935a30dbbe3772fb"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0a935a30dbbe3772fd"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0a935a30dbbe3772ff"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0a935a30dbbe377301"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0a935a30dbbe377303"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0a935a30dbbe377305"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0a935a30dbbe377307"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0a935a30dbbe377309"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0a935a30dbbe37730b"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0a935a30dbbe37730d"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0f935a30dbbe377314"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0f935a30dbbe377316"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0f935a30dbbe377318"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0f935a30dbbe37731a"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0f935a30dbbe37731c"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0f935a30dbbe37731e"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0f935a30dbbe377320"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0f935a30dbbe377322"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0f935a30dbbe377324"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0f935a30dbbe377326"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0f935a30dbbe377328"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0f935a30dbbe37732a"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0f935a30dbbe37732c"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0f935a30dbbe37732e"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0f935a30dbbe377330"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0f935a30dbbe377332"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0f935a30dbbe377334"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f0f935a30dbbe377336"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f13935a30dbbe37733d"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f13935a30dbbe37733f"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f13935a30dbbe377341"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f13935a30dbbe377343"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f13935a30dbbe377345"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f13935a30dbbe377347"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f13935a30dbbe377349"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f13935a30dbbe37734b"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f13935a30dbbe37734d"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f13935a30dbbe37734f"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f13935a30dbbe377351"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f13935a30dbbe377353"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f13935a30dbbe377355"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f13935a30dbbe377357"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f13935a30dbbe377359"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f13935a30dbbe37735b"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f13935a30dbbe37735d"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f13935a30dbbe37735f"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f72935a30dbbe377412"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f72935a30dbbe377414"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f72935a30dbbe377416"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f72935a30dbbe377418"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f72935a30dbbe37741a"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f72935a30dbbe37741c"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f72935a30dbbe37741e"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f72935a30dbbe377420"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f72935a30dbbe377422"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f72935a30dbbe377424"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f72935a30dbbe377426"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f72935a30dbbe377428"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f72935a30dbbe37742a"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f72935a30dbbe37742c"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f72935a30dbbe37742e"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f72935a30dbbe377430"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f72935a30dbbe377432"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1f72935a30dbbe377434"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fb7935a30dbbe377439"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fb7935a30dbbe37743b"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fb7935a30dbbe37743d"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fb7935a30dbbe37743f"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fb7935a30dbbe377441"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fb7935a30dbbe377443"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fb7935a30dbbe377445"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fb7935a30dbbe377447"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fb7935a30dbbe377449"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fbd935a30dbbe377455"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fbd935a30dbbe377457"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fbd935a30dbbe377459"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fbd935a30dbbe37745b"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fbd935a30dbbe37745d"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fbd935a30dbbe37745f"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fbd935a30dbbe377461"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fbd935a30dbbe377463"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fbd935a30dbbe377465"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fbd935a30dbbe377467"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fbd935a30dbbe377469"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fbd935a30dbbe37746b"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fbd935a30dbbe37746d"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fbd935a30dbbe37746f"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fbd935a30dbbe377471"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fbd935a30dbbe377473"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fbd935a30dbbe377475"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a1fbd935a30dbbe377477"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a201f935a30dbbe377481"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a201f935a30dbbe377483"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a201f935a30dbbe377485"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a201f935a30dbbe377487"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a201f935a30dbbe377489"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a201f935a30dbbe37748b"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a201f935a30dbbe37748d"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a201f935a30dbbe37748f"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a201f935a30dbbe377491"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a201f935a30dbbe377493"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a201f935a30dbbe377495"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a201f935a30dbbe377497"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a201f935a30dbbe377499"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a201f935a30dbbe37749b"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a201f935a30dbbe37749d"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a201f935a30dbbe37749f"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a201f935a30dbbe3774a1"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a201f935a30dbbe3774a3"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2040935a30dbbe3774aa"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2040935a30dbbe3774ac"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2040935a30dbbe3774ae"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2040935a30dbbe3774b0"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2040935a30dbbe3774b2"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2040935a30dbbe3774b4"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2040935a30dbbe3774b6"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2040935a30dbbe3774b8"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2040935a30dbbe3774ba"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2040935a30dbbe3774bc"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2040935a30dbbe3774be"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2040935a30dbbe3774c0"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2040935a30dbbe3774c2"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2040935a30dbbe3774c4"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2040935a30dbbe3774c6"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2040935a30dbbe3774c8"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2040935a30dbbe3774ca"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2040935a30dbbe3774cc"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2059935a30dbbe3774e9"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2059935a30dbbe3774eb"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2059935a30dbbe3774ed"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2059935a30dbbe3774ef"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2059935a30dbbe3774f1"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2059935a30dbbe3774f3"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2059935a30dbbe3774f5"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2059935a30dbbe3774f7"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2059935a30dbbe3774f9"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2059935a30dbbe3774fb"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2059935a30dbbe3774fd"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2059935a30dbbe3774ff"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2059935a30dbbe377501"
+  },
+  "number": 7,
+  "startTime": "10:40",
+  "endTime": "11:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2059935a30dbbe377503"
+  },
+  "number": 7,
+  "startTime": "10:40",
+  "endTime": "11:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2059935a30dbbe377505"
+  },
+  "number": 8,
+  "startTime": "11:25",
+  "endTime": "11:30",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2059935a30dbbe377507"
+  },
+  "number": 8,
+  "startTime": "11:25",
+  "endTime": "11:30",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2059935a30dbbe377509"
+  },
+  "number": 9,
+  "startTime": "11:30",
+  "endTime": "12:15",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2059935a30dbbe37750b"
+  },
+  "number": 9,
+  "startTime": "11:30",
+  "endTime": "12:15",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a206b935a30dbbe377525"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a206b935a30dbbe377527"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a206b935a30dbbe377529"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a206b935a30dbbe37752b"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a206b935a30dbbe37752d"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a206b935a30dbbe37752f"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a206b935a30dbbe377531"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a206b935a30dbbe377533"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a206b935a30dbbe377535"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a206b935a30dbbe377537"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a206b935a30dbbe377539"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a206b935a30dbbe37753b"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a206b935a30dbbe37753d"
+  },
+  "number": 7,
+  "startTime": "10:40",
+  "endTime": "11:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a206b935a30dbbe37753f"
+  },
+  "number": 7,
+  "startTime": "10:40",
+  "endTime": "11:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a206b935a30dbbe377541"
+  },
+  "number": 8,
+  "startTime": "11:25",
+  "endTime": "11:30",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a206b935a30dbbe377543"
+  },
+  "number": 8,
+  "startTime": "11:25",
+  "endTime": "11:30",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a206b935a30dbbe377545"
+  },
+  "number": 9,
+  "startTime": "11:30",
+  "endTime": "12:15",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a206b935a30dbbe377547"
+  },
+  "number": 9,
+  "startTime": "11:30",
+  "endTime": "12:15",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2109935a30dbbe377554"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2109935a30dbbe377556"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2109935a30dbbe377558"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2109935a30dbbe37755a"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2109935a30dbbe37755c"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2109935a30dbbe37755e"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2109935a30dbbe377560"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2109935a30dbbe377562"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2109935a30dbbe377564"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2109935a30dbbe377566"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2109935a30dbbe377568"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2109935a30dbbe37756a"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2109935a30dbbe37756c"
+  },
+  "number": 7,
+  "startTime": "10:40",
+  "endTime": "11:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2109935a30dbbe37756e"
+  },
+  "number": 7,
+  "startTime": "10:40",
+  "endTime": "11:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2109935a30dbbe377570"
+  },
+  "number": 8,
+  "startTime": "11:25",
+  "endTime": "11:30",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2109935a30dbbe377572"
+  },
+  "number": 8,
+  "startTime": "11:25",
+  "endTime": "11:30",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2109935a30dbbe377574"
+  },
+  "number": 9,
+  "startTime": "11:30",
+  "endTime": "12:15",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a2109935a30dbbe377576"
+  },
+  "number": 9,
+  "startTime": "11:30",
+  "endTime": "12:15",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a21c0935a30dbbe377637"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a21c0935a30dbbe377639"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a21c0935a30dbbe37763b"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a21c0935a30dbbe37763d"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a21c0935a30dbbe37763f"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a21c0935a30dbbe377641"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a21c0935a30dbbe377643"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a21c0935a30dbbe377645"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a21c0935a30dbbe377647"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a21c0935a30dbbe377649"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a21c0935a30dbbe37764b"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a21c0935a30dbbe37764d"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a21c0935a30dbbe37764f"
+  },
+  "number": 7,
+  "startTime": "10:40",
+  "endTime": "11:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a21c0935a30dbbe377651"
+  },
+  "number": 7,
+  "startTime": "10:40",
+  "endTime": "11:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a21c0935a30dbbe377653"
+  },
+  "number": 8,
+  "startTime": "11:25",
+  "endTime": "11:30",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a21c0935a30dbbe377655"
+  },
+  "number": 8,
+  "startTime": "11:25",
+  "endTime": "11:30",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a21c0935a30dbbe377657"
+  },
+  "number": 9,
+  "startTime": "11:30",
+  "endTime": "12:15",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a21c0935a30dbbe377659"
+  },
+  "number": 9,
+  "startTime": "11:30",
+  "endTime": "12:15",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e45a27fea1e613c4073"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e45a27fea1e613c4075"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e45a27fea1e613c4077"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e45a27fea1e613c4079"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e45a27fea1e613c407b"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e45a27fea1e613c407d"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e45a27fea1e613c407f"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e45a27fea1e613c4081"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e45a27fea1e613c4083"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e45a27fea1e613c4085"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e45a27fea1e613c4087"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e45a27fea1e613c4089"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e45a27fea1e613c408b"
+  },
+  "number": 7,
+  "startTime": "10:40",
+  "endTime": "11:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e45a27fea1e613c408d"
+  },
+  "number": 7,
+  "startTime": "10:40",
+  "endTime": "11:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e45a27fea1e613c408f"
+  },
+  "number": 8,
+  "startTime": "11:25",
+  "endTime": "11:30",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e45a27fea1e613c4091"
+  },
+  "number": 8,
+  "startTime": "11:25",
+  "endTime": "11:30",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e45a27fea1e613c4093"
+  },
+  "number": 9,
+  "startTime": "11:30",
+  "endTime": "12:15",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e45a27fea1e613c4095"
+  },
+  "number": 9,
+  "startTime": "11:30",
+  "endTime": "12:15",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e64a27fea1e613c40a2"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e64a27fea1e613c40a4"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e64a27fea1e613c40a6"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e64a27fea1e613c40a8"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e64a27fea1e613c40aa"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e64a27fea1e613c40ac"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e64a27fea1e613c40ae"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e64a27fea1e613c40b0"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e64a27fea1e613c40b2"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e64a27fea1e613c40b4"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e64a27fea1e613c40b6"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e64a27fea1e613c40b8"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e64a27fea1e613c40ba"
+  },
+  "number": 7,
+  "startTime": "10:40",
+  "endTime": "11:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e64a27fea1e613c40bc"
+  },
+  "number": 7,
+  "startTime": "10:40",
+  "endTime": "11:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e64a27fea1e613c40be"
+  },
+  "number": 8,
+  "startTime": "11:25",
+  "endTime": "11:30",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e64a27fea1e613c40c0"
+  },
+  "number": 8,
+  "startTime": "11:25",
+  "endTime": "11:30",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e64a27fea1e613c40c2"
+  },
+  "number": 9,
+  "startTime": "11:30",
+  "endTime": "12:15",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e64a27fea1e613c40c4"
+  },
+  "number": 9,
+  "startTime": "11:30",
+  "endTime": "12:15",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e96a27fea1e613c40c9"
+  },
+  "number": 9,
+  "startTime": "11:20",
+  "endTime": "12:05",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e96a27fea1e613c40cb"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e96a27fea1e613c40cd"
+  },
+  "number": 8,
+  "startTime": "11:15",
+  "endTime": "11:20",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e96a27fea1e613c40cf"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e96a27fea1e613c40d1"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e96a27fea1e613c40d3"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e96a27fea1e613c40d5"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e96a27fea1e613c40d7"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:30",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e96a27fea1e613c40d9"
+  },
+  "number": 7,
+  "startTime": "10:30",
+  "endTime": "11:15",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e9aa27fea1e613c40e4"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e9aa27fea1e613c40e6"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e9aa27fea1e613c40e8"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e9aa27fea1e613c40ea"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e9aa27fea1e613c40ec"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e9aa27fea1e613c40ee"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:30",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e9aa27fea1e613c40f0"
+  },
+  "number": 7,
+  "startTime": "10:30",
+  "endTime": "11:15",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e9aa27fea1e613c40f2"
+  },
+  "number": 8,
+  "startTime": "11:15",
+  "endTime": "11:20",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e9aa27fea1e613c40f4"
+  },
+  "number": 9,
+  "startTime": "11:20",
+  "endTime": "12:05",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e9aa27fea1e613c40f6"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e9aa27fea1e613c40f8"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e9aa27fea1e613c40fa"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e9aa27fea1e613c40fc"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e9aa27fea1e613c40fe"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e9aa27fea1e613c4100"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:30",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e9aa27fea1e613c4102"
+  },
+  "number": 7,
+  "startTime": "10:30",
+  "endTime": "11:15",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e9aa27fea1e613c4104"
+  },
+  "number": 8,
+  "startTime": "11:15",
+  "endTime": "11:20",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0e9aa27fea1e613c4106"
+  },
+  "number": 9,
+  "startTime": "11:20",
+  "endTime": "12:05",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0ed8a27fea1e613c4113"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0ed8a27fea1e613c4115"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0ed8a27fea1e613c4117"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0ed8a27fea1e613c4119"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0ed8a27fea1e613c411b"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0ed8a27fea1e613c411d"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0ed8a27fea1e613c411f"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0ed8a27fea1e613c4121"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0ed8a27fea1e613c4123"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:30",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0ed8a27fea1e613c4125"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:30",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0ed8a27fea1e613c4127"
+  },
+  "number": 7,
+  "startTime": "10:30",
+  "endTime": "11:15",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0ed8a27fea1e613c4129"
+  },
+  "number": 8,
+  "startTime": "11:15",
+  "endTime": "11:20",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0ed8a27fea1e613c412b"
+  },
+  "number": 9,
+  "startTime": "11:20",
+  "endTime": "12:05",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0ed8a27fea1e613c412d"
+  },
+  "number": 7,
+  "startTime": "10:30",
+  "endTime": "11:15",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0ed8a27fea1e613c412f"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0ed8a27fea1e613c4131"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0ed8a27fea1e613c4133"
+  },
+  "number": 8,
+  "startTime": "11:15",
+  "endTime": "11:20",
+  "type": "break",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b0ed8a27fea1e613c4135"
+  },
+  "number": 9,
+  "startTime": "11:20",
+  "endTime": "12:05",
+  "type": "lesson",
+  "shift": "first",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681db384abdc5738b368fcb2"
+  },
+  "number": 1,
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "schoolId": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-09T07:49:25.002Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-09T07:49:25.002Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "681db384abdc5738b368fcb3"
+  },
+  "number": 2,
+  "startTime": "08:45",
+  "endTime": "08:50",
+  "type": "break",
+  "shift": "first",
+  "schoolId": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-09T07:49:25.002Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-09T07:49:25.002Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "681db384abdc5738b368fcb4"
+  },
+  "number": 3,
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "schoolId": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-09T07:49:25.002Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-09T07:49:25.002Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "681db384abdc5738b368fcb5"
+  },
+  "number": 4,
+  "startTime": "09:35",
+  "endTime": "09:40",
+  "type": "break",
+  "shift": "first",
+  "schoolId": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-09T07:49:25.002Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-09T07:49:25.002Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "681db384abdc5738b368fcb6"
+  },
+  "number": 5,
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "schoolId": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-09T07:49:25.002Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-09T07:49:25.002Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "681db384abdc5738b368fcb7"
+  },
+  "number": 6,
+  "startTime": "10:25",
+  "endTime": "10:35",
+  "type": "break",
+  "shift": "first",
+  "schoolId": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-09T07:49:25.002Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-09T07:49:25.002Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "681db384abdc5738b368fcb8"
+  },
+  "number": 7,
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "schoolId": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-09T07:49:25.002Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-09T07:49:25.002Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "681db384abdc5738b368fcb9"
+  },
+  "number": 8,
+  "startTime": "11:20",
+  "endTime": "11:25",
+  "type": "break",
+  "shift": "first",
+  "schoolId": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-09T07:49:25.002Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-09T07:49:25.002Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "681db384abdc5738b368fcba"
+  },
+  "number": 9,
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "schoolId": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-09T07:49:25.002Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-09T07:49:25.002Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "681db384abdc5738b368fcbb"
+  },
+  "number": 10,
+  "startTime": "12:10",
+  "endTime": "12:15",
+  "type": "break",
+  "shift": "first",
+  "schoolId": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-09T07:49:25.002Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-09T07:49:25.002Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "681db384abdc5738b368fcbc"
+  },
+  "number": 11,
+  "startTime": "12:15",
+  "endTime": "13:00",
+  "type": "lesson",
+  "shift": "first",
+  "schoolId": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-09T07:49:25.002Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-09T07:49:25.002Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68237780ae233f04b014a08f"
+  },
+  "number": 1,
+  "startTime": "13:00",
+  "endTime": "13:45",
+  "type": "lesson",
+  "shift": "second",
+  "schoolId": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-13T16:46:56.782Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-13T16:46:56.782Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68237780ae233f04b014a090"
+  },
+  "number": 2,
+  "startTime": "13:45",
+  "endTime": "13:50",
+  "type": "break",
+  "shift": "second",
+  "schoolId": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-13T16:46:56.783Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-13T16:46:56.783Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68237780ae233f04b014a091"
+  },
+  "number": 3,
+  "startTime": "13:50",
+  "endTime": "14:35",
+  "type": "lesson",
+  "shift": "second",
+  "schoolId": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-13T16:46:56.783Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-13T16:46:56.783Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68237780ae233f04b014a092"
+  },
+  "number": 4,
+  "startTime": "14:35",
+  "endTime": "14:40",
+  "type": "break",
+  "shift": "second",
+  "schoolId": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-13T16:46:56.783Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-13T16:46:56.783Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68237780ae233f04b014a093"
+  },
+  "number": 5,
+  "startTime": "14:40",
+  "endTime": "15:25",
+  "type": "lesson",
+  "shift": "second",
+  "schoolId": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-13T16:46:56.783Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-13T16:46:56.783Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68237780ae233f04b014a094"
+  },
+  "number": 6,
+  "startTime": "15:25",
+  "endTime": "15:35",
+  "type": "break",
+  "shift": "second",
+  "schoolId": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-13T16:46:56.783Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-13T16:46:56.783Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68237780ae233f04b014a095"
+  },
+  "number": 7,
+  "startTime": "15:35",
+  "endTime": "16:20",
+  "type": "lesson",
+  "shift": "second",
+  "schoolId": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-13T16:46:56.783Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-13T16:46:56.783Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68237780ae233f04b014a096"
+  },
+  "number": 8,
+  "startTime": "16:20",
+  "endTime": "16:25",
+  "type": "break",
+  "shift": "second",
+  "schoolId": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-13T16:46:56.783Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-13T16:46:56.783Z"
+  }
+}]

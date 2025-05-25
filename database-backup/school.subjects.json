@@ -1,0 +1,342 @@
+[{
+  "_id": {
+    "$oid": "6810c7fd8aa79bf8275661cf"
+  },
+  "subName": "Биология",
+  "sessions": null,
+  "sclassName": null,
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "teacher": null,
+  "createdAt": {
+    "$date": "2025-04-29T12:37:17.342Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T09:31:02.101Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810cd6603ace2f340a756e1"
+  },
+  "subName": "География",
+  "sessions": null,
+  "sclassName": null,
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "teacher": null,
+  "createdAt": {
+    "$date": "2025-04-29T13:00:22.410Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-29T13:00:22.410Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810de3d90ed61772cb633fe"
+  },
+  "subName": "Геометрия",
+  "sessions": null,
+  "sclassName": null,
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "teacher": null,
+  "createdAt": {
+    "$date": "2025-04-29T14:12:13.567Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-29T14:12:13.567Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810e1e590ed61772cb634bf"
+  },
+  "subName": "Физика",
+  "sessions": null,
+  "sclassName": null,
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "teacher": null,
+  "createdAt": {
+    "$date": "2025-04-29T14:27:49.989Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T09:03:00.003Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6811e22d37f3577c6ddb696b"
+  },
+  "subName": "Чтение",
+  "sessions": null,
+  "sclassName": null,
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "teacher": null,
+  "createdAt": {
+    "$date": "2025-04-30T08:41:17.905Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T08:41:17.905Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6811e85d37f3577c6ddb6a59"
+  },
+  "subName": "Кыргызский язык",
+  "sessions": null,
+  "sclassName": null,
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "teacher": null,
+  "createdAt": {
+    "$date": "2025-04-30T09:07:41.969Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T09:07:41.969Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6811e86937f3577c6ddb6a5f"
+  },
+  "subName": "Русский язык",
+  "sessions": null,
+  "sclassName": null,
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "teacher": null,
+  "createdAt": {
+    "$date": "2025-04-30T09:07:53.887Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T09:07:53.887Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6811eaf537f3577c6ddd35fb"
+  },
+  "subName": "Литература",
+  "sessions": null,
+  "sclassName": null,
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "teacher": null,
+  "createdAt": {
+    "$date": "2025-04-30T09:18:45.216Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T09:18:45.216Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6811eb7537f3577c6ddd3601"
+  },
+  "subName": "Рисование",
+  "sessions": null,
+  "sclassName": null,
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "teacher": null,
+  "createdAt": {
+    "$date": "2025-04-30T09:20:53.222Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T09:20:53.222Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6811eb8937f3577c6ddd3607"
+  },
+  "subName": "История",
+  "sessions": null,
+  "sclassName": null,
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "teacher": null,
+  "createdAt": {
+    "$date": "2025-04-30T09:21:13.939Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T09:21:13.939Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6811eb9137f3577c6ddd3609"
+  },
+  "subName": "Физкультура",
+  "sessions": null,
+  "sclassName": null,
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "teacher": null,
+  "createdAt": {
+    "$date": "2025-04-30T09:21:21.887Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T09:21:21.887Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6811ebb137f3577c6ddd360f"
+  },
+  "subName": "Кыргызкая литература",
+  "sessions": null,
+  "sclassName": null,
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "teacher": null,
+  "createdAt": {
+    "$date": "2025-04-30T09:21:53.632Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T09:21:53.632Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6811ebcd37f3577c6ddd3615"
+  },
+  "subName": "Математика",
+  "sessions": null,
+  "sclassName": null,
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "teacher": null,
+  "createdAt": {
+    "$date": "2025-04-30T09:22:21.403Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T09:22:21.403Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6811ebe137f3577c6ddd361b"
+  },
+  "subName": "Английский язык",
+  "sessions": null,
+  "sclassName": null,
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "teacher": null,
+  "createdAt": {
+    "$date": "2025-04-30T09:22:41.855Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T09:23:35.580Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6811ebf237f3577c6ddd3621"
+  },
+  "subName": "Информатика",
+  "sessions": null,
+  "sclassName": null,
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "teacher": null,
+  "createdAt": {
+    "$date": "2025-04-30T09:22:58.731Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T09:22:58.731Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6811ec4937f3577c6ddd362c"
+  },
+  "subName": "Музыка",
+  "sessions": null,
+  "sclassName": null,
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "teacher": null,
+  "createdAt": {
+    "$date": "2025-04-30T09:24:25.760Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-30T09:24:25.760Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6819ff0768665936a222543f"
+  },
+  "subName": "Алгебра",
+  "sessions": null,
+  "sclassName": null,
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "teacher": null,
+  "createdAt": {
+    "$date": "2025-05-06T12:22:31.893Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-06T12:22:31.893Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b3159b230fb2b342390bc"
+  },
+  "subName": "Химия",
+  "sessions": null,
+  "sclassName": null,
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "teacher": null,
+  "createdAt": {
+    "$date": "2025-05-07T10:09:29.293Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:09:29.293Z"
+  },
+  "__v": 0
+}]

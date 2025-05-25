@@ -1,0 +1,1232 @@
+[{
+  "_id": {
+    "$oid": "681db1feabdc5738b368fc51"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "6819ff0768665936a222543f"
+  },
+  "teacherId": {
+    "$oid": "6810de5c90ed61772cb63409"
+  },
+  "day": "Monday",
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-09T07:42:54.778Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-09T09:03:51.180Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "681db1feabdc5738b368fc52"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "681b3159b230fb2b342390bc"
+  },
+  "teacherId": {
+    "$oid": "680df381c1ed80b58657649a"
+  },
+  "day": "Monday",
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-09T07:42:54.778Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-09T09:03:51.176Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "681db1feabdc5738b368fc53"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "6811e85d37f3577c6ddb6a59"
+  },
+  "teacherId": {
+    "$oid": "6811d9ad37f3577c6ddb6832"
+  },
+  "day": "Monday",
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-09T07:42:54.779Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-09T09:03:51.182Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "681db1feabdc5738b368fc54"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "6811ebb137f3577c6ddd360f"
+  },
+  "teacherId": {
+    "$oid": "6811d9ad37f3577c6ddb6832"
+  },
+  "day": "Monday",
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-09T07:42:54.779Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-09T09:03:51.179Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "681db404abdc5738b368fd29"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "6819ff0768665936a222543f"
+  },
+  "teacherId": {
+    "$oid": "6810de5c90ed61772cb63409"
+  },
+  "day": "Tuesday",
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-09T07:51:32.036Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-09T07:51:32.036Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "681db404abdc5738b368fd2a"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "6811e85d37f3577c6ddb6a59"
+  },
+  "teacherId": {
+    "$oid": "6811d9ad37f3577c6ddb6832"
+  },
+  "day": "Tuesday",
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-09T07:51:32.036Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-09T07:51:32.036Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "681db404abdc5738b368fd2b"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "681b3159b230fb2b342390bc"
+  },
+  "teacherId": {
+    "$oid": "680df381c1ed80b58657649a"
+  },
+  "day": "Tuesday",
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-09T07:51:32.036Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-09T07:51:32.036Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "681db404abdc5738b368fd2c"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "6810c7fd8aa79bf8275661cf"
+  },
+  "teacherId": {
+    "$oid": "6811ddf837f3577c6ddb68cd"
+  },
+  "day": "Tuesday",
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-09T07:51:32.036Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-09T07:51:32.036Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "681db404abdc5738b368fd2d"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "6811ebe137f3577c6ddd361b"
+  },
+  "teacherId": {
+    "$oid": "6810e8cd7fc2c176a5433946"
+  },
+  "day": "Tuesday",
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-09T07:51:32.036Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-09T07:51:32.036Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68206ba475fbe6d2952d02ca"
+  },
+  "classId": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "subjectId": {
+    "$oid": "6811e85d37f3577c6ddb6a59"
+  },
+  "teacherId": {
+    "$oid": "6811d9ad37f3577c6ddb6832"
+  },
+  "day": "Monday",
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:19:32.976Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:19:32.976Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68206ba475fbe6d2952d02cb"
+  },
+  "classId": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "subjectId": {
+    "$oid": "6811ebb137f3577c6ddd360f"
+  },
+  "teacherId": {
+    "$oid": "6811d9ad37f3577c6ddb6832"
+  },
+  "day": "Monday",
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:19:32.977Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:19:32.977Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68206ba475fbe6d2952d02cc"
+  },
+  "classId": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "subjectId": {
+    "$oid": "6819ff0768665936a222543f"
+  },
+  "teacherId": {
+    "$oid": "6810de5c90ed61772cb63409"
+  },
+  "day": "Monday",
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:19:32.977Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:19:32.977Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68206ba475fbe6d2952d02cd"
+  },
+  "classId": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "subjectId": {
+    "$oid": "681b3159b230fb2b342390bc"
+  },
+  "teacherId": {
+    "$oid": "680df381c1ed80b58657649a"
+  },
+  "day": "Monday",
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:19:32.977Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:19:32.977Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68206beb75fbe6d2952d02df"
+  },
+  "classId": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "subjectId": {
+    "$oid": "6811e85d37f3577c6ddb6a59"
+  },
+  "teacherId": {
+    "$oid": "6811d9ad37f3577c6ddb6832"
+  },
+  "day": "Tuesday",
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:20:43.448Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:20:43.448Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68206beb75fbe6d2952d02e0"
+  },
+  "classId": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "subjectId": {
+    "$oid": "6819ff0768665936a222543f"
+  },
+  "teacherId": {
+    "$oid": "6810de5c90ed61772cb63409"
+  },
+  "day": "Tuesday",
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:20:43.448Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:20:43.448Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68206beb75fbe6d2952d02e1"
+  },
+  "classId": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "subjectId": {
+    "$oid": "6810c7fd8aa79bf8275661cf"
+  },
+  "teacherId": {
+    "$oid": "6811ddf837f3577c6ddb68cd"
+  },
+  "day": "Tuesday",
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:20:43.448Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:20:43.448Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68206beb75fbe6d2952d02e2"
+  },
+  "classId": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "subjectId": {
+    "$oid": "6811ebe137f3577c6ddd361b"
+  },
+  "teacherId": {
+    "$oid": "6810e8cd7fc2c176a5433946"
+  },
+  "day": "Tuesday",
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:20:43.448Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:20:43.448Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68206beb75fbe6d2952d02e3"
+  },
+  "classId": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "subjectId": {
+    "$oid": "681b3159b230fb2b342390bc"
+  },
+  "teacherId": {
+    "$oid": "680df381c1ed80b58657649a"
+  },
+  "day": "Tuesday",
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:20:43.448Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:20:43.448Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68206c6675fbe6d2952d02ff"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "6811e85d37f3577c6ddb6a59"
+  },
+  "teacherId": {
+    "$oid": "6811d9ad37f3577c6ddb6832"
+  },
+  "day": "Wednesday",
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:22:46.986Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:22:46.986Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68206c6675fbe6d2952d0300"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "6810cd6603ace2f340a756e1"
+  },
+  "teacherId": {
+    "$oid": "6810e8937fc2c176a543393b"
+  },
+  "day": "Wednesday",
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:22:46.986Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:22:46.986Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68206c6675fbe6d2952d0301"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "6811e86937f3577c6ddb6a5f"
+  },
+  "teacherId": {
+    "$oid": "6811d6cc37f3577c6ddb6768"
+  },
+  "day": "Wednesday",
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:22:46.986Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:22:46.986Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68206c6675fbe6d2952d0302"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "6811eaf537f3577c6ddd35fb"
+  },
+  "teacherId": {
+    "$oid": "6811d6cc37f3577c6ddb6768"
+  },
+  "day": "Wednesday",
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:22:46.986Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:22:46.986Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68206c6675fbe6d2952d0303"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "6811eb9137f3577c6ddd3609"
+  },
+  "teacherId": {
+    "$oid": "6811dda137f3577c6ddb68c4"
+  },
+  "day": "Wednesday",
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:22:46.986Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:22:46.986Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68206cae75fbe6d2952d0312"
+  },
+  "classId": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "subjectId": {
+    "$oid": "6811e86937f3577c6ddb6a5f"
+  },
+  "teacherId": {
+    "$oid": "6811d6cc37f3577c6ddb6768"
+  },
+  "day": "Wednesday",
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:23:58.975Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:23:58.975Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68206cae75fbe6d2952d0313"
+  },
+  "classId": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "subjectId": {
+    "$oid": "6811eaf537f3577c6ddd35fb"
+  },
+  "teacherId": {
+    "$oid": "6811d6cc37f3577c6ddb6768"
+  },
+  "day": "Wednesday",
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:23:58.975Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:23:58.975Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68206cae75fbe6d2952d0314"
+  },
+  "classId": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "subjectId": {
+    "$oid": "6811e85d37f3577c6ddb6a59"
+  },
+  "teacherId": {
+    "$oid": "6811d9ad37f3577c6ddb6832"
+  },
+  "day": "Wednesday",
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:23:58.975Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:23:58.975Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68206cae75fbe6d2952d0315"
+  },
+  "classId": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "subjectId": {
+    "$oid": "6811eb9137f3577c6ddd3609"
+  },
+  "teacherId": {
+    "$oid": "6811dda137f3577c6ddb68c4"
+  },
+  "day": "Wednesday",
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:23:58.975Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:23:58.975Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68206cae75fbe6d2952d0316"
+  },
+  "classId": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "subjectId": {
+    "$oid": "6810cd6603ace2f340a756e1"
+  },
+  "teacherId": {
+    "$oid": "6810e8937fc2c176a543393b"
+  },
+  "day": "Wednesday",
+  "startTime": "11:25",
+  "endTime": "12:10",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:23:58.975Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:23:58.975Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6820726e75fbe6d2952d0421"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "6811e86937f3577c6ddb6a5f"
+  },
+  "teacherId": {
+    "$oid": "6811d6cc37f3577c6ddb6768"
+  },
+  "day": "Thursday",
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:48:30.207Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:48:30.207Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6820726e75fbe6d2952d0422"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "6811ebf237f3577c6ddd3621"
+  },
+  "teacherId": {
+    "$oid": "6811dc4b37f3577c6ddb6880"
+  },
+  "day": "Thursday",
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:48:30.207Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:48:30.207Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6820726e75fbe6d2952d0423"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "6811ebe137f3577c6ddd361b"
+  },
+  "teacherId": {
+    "$oid": "6810e8cd7fc2c176a5433946"
+  },
+  "day": "Thursday",
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:48:30.207Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:48:30.207Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6820726e75fbe6d2952d0424"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "6810e1e590ed61772cb634bf"
+  },
+  "teacherId": {
+    "$oid": "6814887d09aae4d46aa5c0fb"
+  },
+  "day": "Thursday",
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:48:30.207Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:48:30.207Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682072cf75fbe6d2952d0442"
+  },
+  "classId": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "subjectId": {
+    "$oid": "6811ebf237f3577c6ddd3621"
+  },
+  "teacherId": {
+    "$oid": "6811dc4b37f3577c6ddb6880"
+  },
+  "day": "Thursday",
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:50:07.453Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:50:07.453Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682072cf75fbe6d2952d0443"
+  },
+  "classId": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "subjectId": {
+    "$oid": "6811e86937f3577c6ddb6a5f"
+  },
+  "teacherId": {
+    "$oid": "6811d6cc37f3577c6ddb6768"
+  },
+  "day": "Thursday",
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:50:07.454Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:50:07.454Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682072cf75fbe6d2952d0444"
+  },
+  "classId": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "subjectId": {
+    "$oid": "6810e1e590ed61772cb634bf"
+  },
+  "teacherId": {
+    "$oid": "6814887d09aae4d46aa5c0fb"
+  },
+  "day": "Thursday",
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:50:07.454Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:50:07.454Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "682072cf75fbe6d2952d0445"
+  },
+  "classId": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "subjectId": {
+    "$oid": "6811ebe137f3577c6ddd361b"
+  },
+  "teacherId": {
+    "$oid": "6810e8cd7fc2c176a5433946"
+  },
+  "day": "Thursday",
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:50:07.454Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:50:07.454Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6820736375fbe6d2952d0453"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "6811e86937f3577c6ddb6a5f"
+  },
+  "teacherId": {
+    "$oid": "6811d6cc37f3577c6ddb6768"
+  },
+  "day": "Friday",
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:52:35.113Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T10:03:08.603Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6820736375fbe6d2952d0454"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "6811eb8937f3577c6ddd3607"
+  },
+  "teacherId": {
+    "$oid": "6810b443ecffd4cede56340a"
+  },
+  "day": "Friday",
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:52:35.113Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T10:24:35.584Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6820736375fbe6d2952d0455"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "6810e1e590ed61772cb634bf"
+  },
+  "teacherId": {
+    "$oid": "6814887d09aae4d46aa5c0fb"
+  },
+  "day": "Friday",
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:52:35.113Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T10:24:35.589Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6820736375fbe6d2952d0456"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "6811ebf237f3577c6ddd3621"
+  },
+  "teacherId": {
+    "$oid": "6811dc4b37f3577c6ddb6880"
+  },
+  "day": "Friday",
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:52:35.113Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T10:03:08.609Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6820737f75fbe6d2952d0464"
+  },
+  "classId": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "subjectId": {
+    "$oid": "6811eb8937f3577c6ddd3607"
+  },
+  "teacherId": {
+    "$oid": "6810b443ecffd4cede56340a"
+  },
+  "day": "Friday",
+  "startTime": "08:00",
+  "endTime": "08:45",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:53:03.830Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:53:03.830Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6820737f75fbe6d2952d0465"
+  },
+  "classId": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "subjectId": {
+    "$oid": "6811e86937f3577c6ddb6a5f"
+  },
+  "teacherId": {
+    "$oid": "6811d6cc37f3577c6ddb6768"
+  },
+  "day": "Friday",
+  "startTime": "08:50",
+  "endTime": "09:35",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:53:03.830Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:53:03.830Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6820737f75fbe6d2952d0466"
+  },
+  "classId": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "subjectId": {
+    "$oid": "6811ebf237f3577c6ddd3621"
+  },
+  "teacherId": {
+    "$oid": "6811dc4b37f3577c6ddb6880"
+  },
+  "day": "Friday",
+  "startTime": "09:40",
+  "endTime": "10:25",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:53:03.830Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:53:03.830Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6820737f75fbe6d2952d0467"
+  },
+  "classId": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "subjectId": {
+    "$oid": "6810e1e590ed61772cb634bf"
+  },
+  "teacherId": {
+    "$oid": "6814887d09aae4d46aa5c0fb"
+  },
+  "day": "Friday",
+  "startTime": "10:35",
+  "endTime": "11:20",
+  "type": "lesson",
+  "shift": "first",
+  "topic": "",
+  "homework": "",
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-05-11T09:53:03.830Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:53:03.830Z"
+  }
+}]

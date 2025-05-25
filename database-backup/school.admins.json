@@ -1,0 +1,11 @@
+[{
+  "_id": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "name": "Айсулуу Каныбекова",
+  "email": "aisuluu@gmail.com",
+  "password": "$2b$10$w4Ze0DUlUqBbyPrwggrbNOADlqW.w6vnxtLtXT4p6M2IlJoCDDzOK",
+  "role": "Admin",
+  "schoolName": "school",
+  "__v": 0
+}]

@@ -1,0 +1,17 @@
+[{
+  "_id": {
+    "$oid": "682acbafe03a5fcb34a67106"
+  },
+  "teacher": {
+    "$oid": "6810de5c90ed61772cb63409"
+  },
+  "complaintType": "tech",
+  "description": "не получается ставит оценки",
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "date": {
+    "$date": "2025-05-19T06:11:59.962Z"
+  },
+  "__v": 0
+}]

@@ -1,0 +1,111 @@
+[{
+  "_id": {
+    "$oid": "681db65fabdc5738b368fe2d"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "6819ff0768665936a222543f"
+  },
+  "teacherId": {
+    "$oid": "6810de5c90ed61772cb63409"
+  },
+  "term": 1,
+  "records": [
+    {
+      "studentId": {
+        "$oid": "68107d14e92c2380f001efc9"
+      },
+      "date": "2024-09-02",
+      "status": "Отсутствовал"
+    },
+    {
+      "studentId": {
+        "$oid": "6810819ea28a2c7590bf212d"
+      },
+      "date": "2024-09-02",
+      "status": "Отсутствовал"
+    },
+    {
+      "studentId": {
+        "$oid": "681a05087610f91ee2df8b98"
+      },
+      "date": "2024-09-02",
+      "status": "Отсутствовал"
+    },
+    {
+      "studentId": {
+        "$oid": "68175db1e474945085a57c09"
+      },
+      "date": "2024-09-03",
+      "status": "Отсутствовал"
+    },
+    {
+      "studentId": {
+        "$oid": "680df45bc1ed80b5865764d6"
+      },
+      "date": "2024-09-09",
+      "status": "Отсутствовал"
+    }
+  ],
+  "createdAt": {
+    "$date": "2025-05-09T08:01:35.805Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-12T12:24:31.993Z"
+  },
+  "__v": 3
+},
+{
+  "_id": {
+    "$oid": "681f29c4ba1c39bd87dcd313"
+  },
+  "classId": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "subjectId": {
+    "$oid": "681b3159b230fb2b342390bc"
+  },
+  "teacherId": {
+    "$oid": "680df381c1ed80b58657649a"
+  },
+  "term": 1,
+  "records": [
+    {
+      "studentId": {
+        "$oid": "680df45bc1ed80b5865764d6"
+      },
+      "date": "2024-09-03",
+      "status": "Отсутствовал"
+    },
+    {
+      "studentId": {
+        "$oid": "681779a3dde1f9a61ea7abb9"
+      },
+      "date": "2024-09-02",
+      "status": "Отсутствовал"
+    },
+    {
+      "studentId": {
+        "$oid": "68107fc9a28a2c7590bf2117"
+      },
+      "date": "2024-09-03",
+      "status": "Отсутствовал"
+    },
+    {
+      "studentId": {
+        "$oid": "68175cece474945085a57c03"
+      },
+      "date": "2024-09-09",
+      "status": "Отсутствовал"
+    }
+  ],
+  "createdAt": {
+    "$date": "2025-05-10T10:26:12.599Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T10:55:42.300Z"
+  },
+  "__v": 2
+}]

@@ -1,0 +1,92 @@
+[{
+  "_id": {
+    "$oid": "680ce3059e1989ddcc93b12c"
+  },
+  "termNumber": 1,
+  "startDate": {
+    "$date": "2024-09-01T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2024-10-31T00:00:00.000Z"
+  },
+  "workingDays": 44,
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-26T13:43:33.432Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-26T13:44:19.163Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "680ce36e9e1989ddcc93b132"
+  },
+  "termNumber": 2,
+  "startDate": {
+    "$date": "2024-11-10T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2024-12-27T00:00:00.000Z"
+  },
+  "workingDays": 35,
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-26T13:45:18.255Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-26T13:45:18.255Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "680ce3999e1989ddcc93b136"
+  },
+  "termNumber": 3,
+  "startDate": {
+    "$date": "2025-01-06T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2025-03-03T00:00:00.000Z"
+  },
+  "workingDays": 41,
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-26T13:46:02.000Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-26T13:46:02.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "680ce3b79e1989ddcc93b13a"
+  },
+  "termNumber": 4,
+  "startDate": {
+    "$date": "2025-03-10T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2025-05-25T00:00:00.000Z"
+  },
+  "workingDays": 55,
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "createdAt": {
+    "$date": "2025-04-26T13:46:31.283Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-26T13:46:31.283Z"
+  },
+  "__v": 0
+}]

@@ -1,0 +1,704 @@
+[{
+  "_id": {
+    "$oid": "681b30adb230fb2b34238fcd"
+  },
+  "teacher": {
+    "$oid": "6810de5c90ed61772cb63409"
+  },
+  "subject": {
+    "$oid": "6819ff0768665936a222543f"
+  },
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "sessions": 2,
+  "createdAt": {
+    "$date": "2025-05-07T10:06:37.109Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T12:48:35.404Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b30c3b230fb2b34238fe6"
+  },
+  "teacher": {
+    "$oid": "6810de5c90ed61772cb63409"
+  },
+  "subject": {
+    "$oid": "6819ff0768665936a222543f"
+  },
+  "sclassName": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "sessions": 2,
+  "createdAt": {
+    "$date": "2025-05-07T10:06:59.887Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:06:59.887Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b30e7b230fb2b34239018"
+  },
+  "teacher": {
+    "$oid": "6810de5c90ed61772cb63409"
+  },
+  "subject": {
+    "$oid": "6810de3d90ed61772cb633fe"
+  },
+  "sclassName": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "sessions": 1,
+  "createdAt": {
+    "$date": "2025-05-07T10:07:35.013Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:07:35.013Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b30fab230fb2b34239036"
+  },
+  "teacher": {
+    "$oid": "6810de5c90ed61772cb63409"
+  },
+  "subject": {
+    "$oid": "6810de3d90ed61772cb633fe"
+  },
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "sessions": 1,
+  "createdAt": {
+    "$date": "2025-05-07T10:07:54.820Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:07:54.820Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b3106b230fb2b3423904f"
+  },
+  "teacher": {
+    "$oid": "6811d9ad37f3577c6ddb6832"
+  },
+  "subject": {
+    "$oid": "6811e85d37f3577c6ddb6a59"
+  },
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "sessions": 3,
+  "createdAt": {
+    "$date": "2025-05-07T10:08:06.780Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:08:06.780Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b3111b230fb2b34239068"
+  },
+  "teacher": {
+    "$oid": "6811d9ad37f3577c6ddb6832"
+  },
+  "subject": {
+    "$oid": "6811e85d37f3577c6ddb6a59"
+  },
+  "sclassName": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "sessions": 3,
+  "createdAt": {
+    "$date": "2025-05-07T10:08:17.633Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:08:17.633Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b3126b230fb2b34239081"
+  },
+  "teacher": {
+    "$oid": "6811d9ad37f3577c6ddb6832"
+  },
+  "subject": {
+    "$oid": "6811ebb137f3577c6ddd360f"
+  },
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "sessions": 1,
+  "createdAt": {
+    "$date": "2025-05-07T10:08:38.234Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:08:38.234Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b3133b230fb2b3423909a"
+  },
+  "teacher": {
+    "$oid": "6811d9ad37f3577c6ddb6832"
+  },
+  "subject": {
+    "$oid": "6811ebb137f3577c6ddd360f"
+  },
+  "sclassName": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "sessions": 1,
+  "createdAt": {
+    "$date": "2025-05-07T10:08:51.145Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:08:51.145Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b3173b230fb2b342390d7"
+  },
+  "teacher": {
+    "$oid": "680df381c1ed80b58657649a"
+  },
+  "subject": {
+    "$oid": "681b3159b230fb2b342390bc"
+  },
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "sessions": 2,
+  "createdAt": {
+    "$date": "2025-05-07T10:09:55.312Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:09:55.312Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b317fb230fb2b342390f0"
+  },
+  "teacher": {
+    "$oid": "680df381c1ed80b58657649a"
+  },
+  "subject": {
+    "$oid": "681b3159b230fb2b342390bc"
+  },
+  "sclassName": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "sessions": 2,
+  "createdAt": {
+    "$date": "2025-05-07T10:10:07.411Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:10:07.411Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b31a6b230fb2b34239109"
+  },
+  "teacher": {
+    "$oid": "6811ddf837f3577c6ddb68cd"
+  },
+  "subject": {
+    "$oid": "6810c7fd8aa79bf8275661cf"
+  },
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "sessions": 1,
+  "createdAt": {
+    "$date": "2025-05-07T10:10:46.827Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:10:46.827Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b31b0b230fb2b34239122"
+  },
+  "teacher": {
+    "$oid": "6811ddf837f3577c6ddb68cd"
+  },
+  "subject": {
+    "$oid": "6810c7fd8aa79bf8275661cf"
+  },
+  "sclassName": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "sessions": 1,
+  "createdAt": {
+    "$date": "2025-05-07T10:10:56.091Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:10:56.091Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b31cdb230fb2b3423913b"
+  },
+  "teacher": {
+    "$oid": "6810e8937fc2c176a543393b"
+  },
+  "subject": {
+    "$oid": "6810cd6603ace2f340a756e1"
+  },
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "sessions": 1,
+  "createdAt": {
+    "$date": "2025-05-07T10:11:25.944Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:11:25.944Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b31dab230fb2b34239154"
+  },
+  "teacher": {
+    "$oid": "6810e8937fc2c176a543393b"
+  },
+  "subject": {
+    "$oid": "6810cd6603ace2f340a756e1"
+  },
+  "sclassName": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "sessions": 1,
+  "createdAt": {
+    "$date": "2025-05-07T10:11:38.437Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:11:38.437Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b320cb230fb2b3423916d"
+  },
+  "teacher": {
+    "$oid": "6811d6cc37f3577c6ddb6768"
+  },
+  "subject": {
+    "$oid": "6811e86937f3577c6ddb6a5f"
+  },
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "sessions": 3,
+  "createdAt": {
+    "$date": "2025-05-07T10:12:28.011Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:12:28.011Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b321cb230fb2b34239186"
+  },
+  "teacher": {
+    "$oid": "6811d6cc37f3577c6ddb6768"
+  },
+  "subject": {
+    "$oid": "6811e86937f3577c6ddb6a5f"
+  },
+  "sclassName": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "sessions": 3,
+  "createdAt": {
+    "$date": "2025-05-07T10:12:44.116Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:12:44.116Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b322bb230fb2b3423919f"
+  },
+  "teacher": {
+    "$oid": "6811d6cc37f3577c6ddb6768"
+  },
+  "subject": {
+    "$oid": "6811eaf537f3577c6ddd35fb"
+  },
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "sessions": 1,
+  "createdAt": {
+    "$date": "2025-05-07T10:12:59.846Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:12:59.846Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b3269b230fb2b342391ce"
+  },
+  "teacher": {
+    "$oid": "6811d6cc37f3577c6ddb6768"
+  },
+  "subject": {
+    "$oid": "6811eaf537f3577c6ddd35fb"
+  },
+  "sclassName": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "sessions": 1,
+  "createdAt": {
+    "$date": "2025-05-07T10:14:01.989Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:14:01.989Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b327ab230fb2b342391e7"
+  },
+  "teacher": {
+    "$oid": "6810e8cd7fc2c176a5433946"
+  },
+  "subject": {
+    "$oid": "6811ebe137f3577c6ddd361b"
+  },
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "sessions": 2,
+  "createdAt": {
+    "$date": "2025-05-07T10:14:18.649Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:14:18.649Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b3286b230fb2b34239200"
+  },
+  "teacher": {
+    "$oid": "6810e8cd7fc2c176a5433946"
+  },
+  "subject": {
+    "$oid": "6811ebe137f3577c6ddd361b"
+  },
+  "sclassName": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "sessions": 2,
+  "createdAt": {
+    "$date": "2025-05-07T10:14:30.060Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:14:30.060Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b329cb230fb2b34239219"
+  },
+  "teacher": {
+    "$oid": "6810b443ecffd4cede56340a"
+  },
+  "subject": {
+    "$oid": "6811eb8937f3577c6ddd3607"
+  },
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "sessions": 1,
+  "createdAt": {
+    "$date": "2025-05-07T10:14:52.596Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:14:52.596Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b32aeb230fb2b34239233"
+  },
+  "teacher": {
+    "$oid": "6810b443ecffd4cede56340a"
+  },
+  "subject": {
+    "$oid": "6811eb8937f3577c6ddd3607"
+  },
+  "sclassName": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "sessions": 1,
+  "createdAt": {
+    "$date": "2025-05-07T10:15:10.592Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:15:10.592Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b32beb230fb2b3423924c"
+  },
+  "teacher": {
+    "$oid": "6811dda137f3577c6ddb68c4"
+  },
+  "subject": {
+    "$oid": "6811eb9137f3577c6ddd3609"
+  },
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "sessions": 1,
+  "createdAt": {
+    "$date": "2025-05-07T10:15:26.530Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:15:26.530Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b32c9b230fb2b34239265"
+  },
+  "teacher": {
+    "$oid": "6811dda137f3577c6ddb68c4"
+  },
+  "subject": {
+    "$oid": "6811eb9137f3577c6ddd3609"
+  },
+  "sclassName": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "sessions": 1,
+  "createdAt": {
+    "$date": "2025-05-07T10:15:37.302Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:15:37.302Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b32dab230fb2b3423927e"
+  },
+  "teacher": {
+    "$oid": "6811dc4b37f3577c6ddb6880"
+  },
+  "subject": {
+    "$oid": "6811ebf237f3577c6ddd3621"
+  },
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "sessions": 2,
+  "createdAt": {
+    "$date": "2025-05-07T10:15:54.070Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:15:54.070Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b32e9b230fb2b34239297"
+  },
+  "teacher": {
+    "$oid": "6811dc4b37f3577c6ddb6880"
+  },
+  "subject": {
+    "$oid": "6811ebf237f3577c6ddd3621"
+  },
+  "sclassName": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "sessions": 2,
+  "createdAt": {
+    "$date": "2025-05-07T10:16:09.396Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-07T10:16:09.396Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682070c275fbe6d2952d03c5"
+  },
+  "teacher": {
+    "$oid": "6814887d09aae4d46aa5c0fb"
+  },
+  "subject": {
+    "$oid": "6810e1e590ed61772cb634bf"
+  },
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "sessions": 2,
+  "createdAt": {
+    "$date": "2025-05-11T09:41:22.670Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:41:22.670Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682070d675fbe6d2952d03e4"
+  },
+  "teacher": {
+    "$oid": "6814887d09aae4d46aa5c0fb"
+  },
+  "subject": {
+    "$oid": "6810e1e590ed61772cb634bf"
+  },
+  "sclassName": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "sessions": 2,
+  "createdAt": {
+    "$date": "2025-05-11T09:41:42.933Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T09:41:42.933Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682097fc1ee55aa4d822a12a"
+  },
+  "teacher": {
+    "$oid": "6811dc2337f3577c6ddb6877"
+  },
+  "subject": {
+    "$oid": "6810c7fd8aa79bf8275661cf"
+  },
+  "sclassName": {
+    "$oid": "680ce4649e1989ddcc93b154"
+  },
+  "sessions": 2,
+  "createdAt": {
+    "$date": "2025-05-11T12:28:44.915Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-11T12:28:44.915Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68244215fdb37e47a2ad99ef"
+  },
+  "teacher": {
+    "$oid": "6814943709aae4d46aa5c2c7"
+  },
+  "subject": {
+    "$oid": "6819ff0768665936a222543f"
+  },
+  "sclassName": {
+    "$oid": "680ce4649e1989ddcc93b154"
+  },
+  "sessions": 2,
+  "createdAt": {
+    "$date": "2025-05-14T07:11:17.925Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-14T07:11:17.925Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6824424ffdb37e47a2ad9a0e"
+  },
+  "teacher": {
+    "$oid": "6810e8937fc2c176a543393b"
+  },
+  "subject": {
+    "$oid": "6811e86937f3577c6ddb6a5f"
+  },
+  "sclassName": {
+    "$oid": "680ce4649e1989ddcc93b154"
+  },
+  "sessions": 2,
+  "createdAt": {
+    "$date": "2025-05-14T07:12:15.235Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-14T07:12:15.235Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "682c1e44ef4fe059b813fb0f"
+  },
+  "teacher": {
+    "$oid": "6814887d09aae4d46aa5c0fb"
+  },
+  "subject": {
+    "$oid": "6811eb7537f3577c6ddd3601"
+  },
+  "sclassName": {
+    "$oid": "6810a0a1301e9ce0c0f319ff"
+  },
+  "sessions": 1,
+  "createdAt": {
+    "$date": "2025-05-20T06:16:36.149Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-20T06:16:36.149Z"
+  },
+  "__v": 0
+}]

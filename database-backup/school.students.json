@@ -1,0 +1,304 @@
+[{
+  "_id": {
+    "$oid": "680df45bc1ed80b5865764d6"
+  },
+  "name": "Омокоева Нурайым",
+  "rollNum": 709209194,
+  "password": "$2b$10$JS1fUSltquya79yerLeWS.RprwND0AxP0MgpGGC0k.8FecWm/FzX.",
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "role": "Student",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68107d14e92c2380f001efc9"
+  },
+  "name": "Бакытбекова Сезим",
+  "rollNum": 705234567,
+  "password": "$2b$10$ZQXON7NCmKmxljAwvg7HuO/Tk3lcAqOz.Yr.MSY3P6eODfHtoJP5O",
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "role": "Student",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68107fc9a28a2c7590bf2117"
+  },
+  "name": "Маткалыков Мебербек",
+  "rollNum": 500234567,
+  "password": "$2b$10$Qgo3eRBIKZKLbHD6cec.3O5NHN9Af5tCCS4Kyvpje9mVbzJRio1XC",
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "role": "Student",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810819ea28a2c7590bf212d"
+  },
+  "name": "Атапова Толгонай",
+  "rollNum": 502345678,
+  "password": "$2b$10$BpYjo/F498/E9WRBYKnSDuoQ01dsBkZ55WxvsidcGsEysvBKooowS",
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "role": "Student",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68108218a28a2c7590bf2142"
+  },
+  "name": "Акылбекова Айжамал",
+  "rollNum": 702123456,
+  "password": "$2b$10$EQV8iQpryZLXbSJPELZDOeBWgjD/ZV0hWBux52nxsQh3xVY0bsbJq",
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "role": "Student",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6810a171301e9ce0c0f31a6e"
+  },
+  "name": "Кубанычбеков Эмир",
+  "rollNum": 704123478,
+  "password": "$2b$10$erGTR8AioqIvu/iL9fBEEu4QSMP/70JHoQqcHkELmA92.aV2STUvm",
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "role": "Student",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6812459076020384052f7cdf"
+  },
+  "name": "Асанова Алия",
+  "rollNum": 555020304,
+  "password": "$2b$10$vBUgK8g1ALsLsnolwCSFg.TiKJXRuCPFJXrKk88qXPq4C/YGOBNSO",
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "role": "Student",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68175cece474945085a57c03"
+  },
+  "name": "Алтымышова Пери",
+  "rollNum": 702345678,
+  "password": "$2b$10$GIbBXiKkbA08pI7/H.TZGOVp2GhPXGj.T/9WdPWj4U9rvd01IwzyC",
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "role": "Student",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68175d95e474945085a57c06"
+  },
+  "name": "Акматалиева Салтанат",
+  "rollNum": 508321456,
+  "password": "$2b$10$xI2hQ2E2ruEE5dvRWaHr3uTcg/AaoKzItpRsyoEwGBW8SuvflM3m2",
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "role": "Student",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68175db1e474945085a57c09"
+  },
+  "name": "Исаев Дастан",
+  "rollNum": 555123454,
+  "password": "$2b$10$bInLLodxFR1E0GuTSneBlO/M3UzYjqrniI3EIo/WkMM1X0.NeyjIi",
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "role": "Student",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68175ddbe474945085a57c0c"
+  },
+  "name": "Кыдыралиев Илим",
+  "rollNum": 333456788,
+  "password": "$2b$10$JA0otIM8dSk3q8.3mccxr.ovBs1BDUerDcMp.NzVgoBx7pRUjQbzi",
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "role": "Student",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68175e06e474945085a57c0f"
+  },
+  "name": "Эмильбеков Ильгиз ",
+  "rollNum": 789678594,
+  "password": "$2b$10$BSCs6jM/RArgQbaOP4l2x.SJRqv4QdzS0rm.nCE5AF3nxhlvc1DJK",
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "role": "Student",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68175e4ee474945085a57c32"
+  },
+  "name": "Арстанбеков Нурсултан",
+  "rollNum": 222334455,
+  "password": "$2b$10$kuMSdy1pHrqfsKRwjyE4f.13YOOfvbxhHlC2/2GyER5ItvrSqkrG6",
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "role": "Student",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68175e7ee474945085a57c35"
+  },
+  "name": "Абдурауф Абдулла",
+  "rollNum": 509345678,
+  "password": "$2b$10$dSbRRjhaiie4dFD/v4eQGe7IBc3qnklXbQZsUCAYyNtjNa3hyhPEm",
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "role": "Student",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68175ea3e474945085a57c4a"
+  },
+  "name": "Омушева Арууке",
+  "rollNum": 778987654,
+  "password": "$2b$10$6pKXjIsXlrn5S40CneOFheZbQPqviyzZek/77d0f7ZVvZi9pXpOZa",
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "role": "Student",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681779a3dde1f9a61ea7abb9"
+  },
+  "name": "Курманбеков Талгат ",
+  "rollNum": 543216789,
+  "password": "$2b$10$XqojuW4RATdu7mYzkA3m6.hb42wMhQFLBdRvwUGToXrGmMAu9mr6G",
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "role": "Student",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681a05087610f91ee2df8b98"
+  },
+  "name": "Рахатбеков Элдияр",
+  "rollNum": 765843982,
+  "password": "$2b$10$nQOxoMHdMO9D/9Sg.0TpOOU3UmTG2jSV.OT92LXoeGY7vN8s9oPKK",
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "role": "Student",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b22d3a1ad854f5aa4386b"
+  },
+  "name": "Бакытов Баел",
+  "rollNum": 709123456,
+  "password": "$2b$10$l8BPsk4VYM9wHLhznOsiHur1KIt23O5B78GwPVJz0RXLeDQDBAxUy",
+  "sclassName": {
+    "$oid": "680b80da332462b6ee2c0f5b"
+  },
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "role": "Student",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68313cfc4ea5d56dc86baa68"
+  },
+  "name": "Сыдыгалиева Сезим",
+  "rollNum": 786574832,
+  "password": "$2b$10$e11kw9BC8SwAvWCyscgituD8VAe2DilpgIn8NQEi/Y0A2Hr4gWJBi",
+  "sclassName": {
+    "$oid": "680b8057e926662f9df2e549"
+  },
+  "school": {
+    "$oid": "680b7d221e2b2ef8d55863e1"
+  },
+  "role": "Student",
+  "__v": 0
+}]
