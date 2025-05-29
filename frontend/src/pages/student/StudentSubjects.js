@@ -73,17 +73,13 @@ function StudentSubjects() {
 
       <Stack spacing={4}>
         <Paper elevation={3} sx={{ p: 3 }}>
-          <Typography variant="h6" gutterBottom>
-            📘 Предметы и преподаватели
-          </Typography>
-
           {subjectsList?.length ? (
             <TableContainer component={Paper} variant="outlined">
               <Table size="small">
                 <TableHead>
                   <TableRow>
                     <TableCell><strong>Предмет</strong></TableCell>
-                    <TableCell><strong>Преподаватель</strong></TableCell>
+                    <TableCell><strong>Учитель</strong></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>

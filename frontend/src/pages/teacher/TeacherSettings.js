@@ -83,7 +83,6 @@ function TeacherSettings() {
           <MenuItem value="en">English</MenuItem>
         </Select>
       </FormControl>
-
       <FormControl fullWidth margin="normal">
         <InputLabel id="items-label">Элементов на странице</InputLabel>
         <Select
@@ -97,14 +96,11 @@ function TeacherSettings() {
           <MenuItem value={25}>25</MenuItem>
         </Select>
       </FormControl>
-
       <FormControlLabel
         control={<Switch checked={notificationsEnabled} onChange={(e) => setNotificationsEnabled(e.target.checked)} />}
         label="Уведомления"
       />
-
       <Divider sx={{ my: 3 }} />
-
       <Typography variant="h6">Смена пароля</Typography>
       <TextField
         fullWidth
@@ -122,7 +118,6 @@ function TeacherSettings() {
         value={newPassword}
         onChange={(e) => setNewPassword(e.target.value)}
       />
-
       <Box mt={3}>
         <Button variant="contained" color="primary" onClick={handleSave}>
           Сохранить изменения

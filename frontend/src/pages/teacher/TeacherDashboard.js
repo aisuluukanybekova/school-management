@@ -22,7 +22,7 @@ import TeacherSchedule from './TeacherSchedule';
 import TeacherLessonTopics from './TeacherLessonTopics';
 
 function TeacherDashboard() {
-  const [open, setOpen] = useState(true);
+  const [open] = useState(true); // 🔧 removed unused setOpen
   const teacher = useSelector((state) => state.user.currentUser);
   const isHomeroomTeacher = Boolean(teacher?.homeroomFor);
 

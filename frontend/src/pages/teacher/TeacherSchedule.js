@@ -103,7 +103,7 @@ function TeacherSchedule() {
 
   return (
     <Box p={3}>
-      <Typography variant="h5" gutterBottom>📚 Моё расписание</Typography>
+      <Typography variant="h5" gutterBottom>Моё расписание</Typography>
 
       <Box display="flex" gap={2} mb={3} flexWrap="wrap">
         <FormControl sx={{ minWidth: 250 }}>

@@ -11,7 +11,7 @@ import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import EditIcon from '@mui/icons-material/Edit';
 import SearchIcon from '@mui/icons-material/Search';
 import axios from 'axios';
-import { BlueButton, GreenButton } from '../../../components/buttonStyles';
+import { GreenButton } from '../../../components/buttonStyles';
 import TableTemplate from '../../../components/TableTemplate';
 import SpeedDialTemplate from '../../../components/SpeedDialTemplate';
 import Popup from '../../../components/Popup';
@@ -100,17 +100,17 @@ function ShowStudents() {
         <IconButton onClick={handleEditClick}>
           <EditIcon />
         </IconButton>
-        <BlueButton
+       {/*  <BlueButton
           variant="contained"
           onClick={() => navigate(`/Admin/students/student/${row.id}`)}
         >
           Просмотр
-        </BlueButton>
+        </BlueButton> */}
       </>
     );
   }
 
-  // ✅ Валидация пропсов
+  //  Валидация пропсов
   StudentButtonHaver.propTypes = {
     row: PropTypes.shape({
       id: PropTypes.string.isRequired,

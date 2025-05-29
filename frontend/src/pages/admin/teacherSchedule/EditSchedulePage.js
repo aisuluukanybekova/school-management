@@ -40,26 +40,34 @@ function EditSchedulePage() {
 
   useEffect(() => {
     if (!selectedClass) return;
-    axios.get(`/api/teacherSubjectClass/assigned/${selectedClass}`)
+    axios
+      .get(`/api/teacherSubjectClass/assigned/${selectedClass}`)
       .then((res) => setAssignedSubjects(res.data))
-      .catch(() => setMessage({ type: 'error', text: 'Ошибка загрузки предметов/учителей' }));
+      .catch(() =>
+        setMessage({ type: 'error', text: 'Ошибка загрузки предметов/учителей' })
+      );
   }, [selectedClass]);
 
-  const sanitizeSchedule = (rawLessons) => rawLessons.map((l) => ({
-    _id: l._id,
-    subjectId: typeof l.subjectId === 'object' ? l.subjectId._id : String(l.subjectId),
-    teacherId: typeof l.teacherId === 'object' ? l.teacherId._id : String(l.teacherId),
-    classId: l.classId?._id || l.classId,
-    startTime: l.startTime,
-    endTime: l.endTime,
-    day: l.day,
-  }));
+  const sanitizeSchedule = (rawLessons) =>
+    rawLessons.map((l) => ({
+      _id: l._id,
+      subjectId:
+        typeof l.subjectId === 'object' ? l.subjectId._id : String(l.subjectId),
+      teacherId:
+        typeof l.teacherId === 'object' ? l.teacherId._id : String(l.teacherId),
+      classId: l.classId?._id || l.classId,
+      startTime: l.startTime,
+      endTime: l.endTime,
+      day: l.day,
+    }));
 
   const loadSchedule = async () => {
     try {
       const { data } = await axios.get(`/api/schedule/class/${selectedClass}`);
       const filtered = data.schedules.filter(
-        (s) => s.day.trim() === ruToEnDay[selectedDay] && s.type === 'lesson',
+        (s) =>
+          s.day.trim() === ruToEnDay[selectedDay] &&
+          s.type === 'lesson',
       );
       const cleaned = sanitizeSchedule(filtered);
       setSchedule(cleaned);
@@ -87,11 +95,12 @@ function EditSchedulePage() {
     const original = originalSchedule[originalIndex];
     if (!original) return true;
 
-    const isContentChanged = original.subjectId !== lesson.subjectId
-      || original.teacherId !== lesson.teacherId
-      || original.startTime !== lesson.startTime
-      || original.endTime !== lesson.endTime
-      || original.day !== lesson.day;
+    const isContentChanged =
+      original.subjectId !== lesson.subjectId ||
+      original.teacherId !== lesson.teacherId ||
+      original.startTime !== lesson.startTime ||
+      original.endTime !== lesson.endTime ||
+      original.day !== lesson.day;
 
     const isPositionChanged = originalIndex !== index;
 
@@ -99,10 +108,21 @@ function EditSchedulePage() {
   };
 
   const saveChanges = async () => {
-    const invalid = schedule.find((s) => !s.subjectId || !s.teacherId || !s.classId || !s.startTime || !s.endTime || !s.day);
+    const invalid = schedule.find(
+      (s) =>
+        !s.subjectId ||
+        !s.teacherId ||
+        !s.classId ||
+        !s.startTime ||
+        !s.endTime ||
+        !s.day
+    );
 
     if (invalid) {
-      setMessage({ type: 'error', text: '⚠️ Убедитесь, что все строки заполнены полностью.' });
+      setMessage({
+        type: 'error',
+        text: ' Убедитесь, что все строки заполнены полностью.',
+      });
       return;
     }
 
@@ -127,11 +147,15 @@ function EditSchedulePage() {
       }
 
       await Promise.all(updates);
-      setMessage({ type: 'success', text: 'Расписание успешно обновлено ✅' });
+      setMessage({ type: 'success', text: 'Расписание успешно обновлено' });
       await loadSchedule();
     } catch (err) {
-      console.error('❌ Ошибка при сохранении:', err?.response?.data);
-      setMessage({ type: 'error', text: err?.response?.data?.message || 'Ошибка при сохранении' });
+      console.error('Ошибка при сохранении:', err?.response?.data);
+      setMessage({
+        type: 'error',
+        text:
+          err?.response?.data?.message || 'Ошибка при сохранении',
+      });
     }
   };
 
@@ -142,29 +166,45 @@ function EditSchedulePage() {
       </Typography>
 
       {message.text && (
-        <Alert severity={message.type} sx={{ mb: 2 }}>{message.text}</Alert>
+        <Alert severity={message.type} sx={{ mb: 2 }}>
+          {message.text}
+        </Alert>
       )}
 
       <Box display="flex" gap={2} mb={3}>
         <FormControl sx={{ minWidth: 180 }} size="small">
           <InputLabel>Класс</InputLabel>
-          <Select value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)} label="Класс">
+          <Select
+            value={selectedClass}
+            onChange={(e) => setSelectedClass(e.target.value)}
+            label="Класс"
+          >
             {classes.map((cls) => (
-              <MenuItem key={cls._id} value={cls._id}>{cls.sclassName}</MenuItem>
+              <MenuItem key={cls._id} value={cls._id}>
+                {cls.sclassName}
+              </MenuItem>
             ))}
           </Select>
         </FormControl>
 
         <FormControl sx={{ minWidth: 180 }} size="small">
           <InputLabel>День недели</InputLabel>
-          <Select value={selectedDay} onChange={(e) => setSelectedDay(e.target.value)} label="День недели">
+          <Select
+            value={selectedDay}
+            onChange={(e) => setSelectedDay(e.target.value)}
+            label="День недели"
+          >
             {daysOfWeek.map((day) => (
-              <MenuItem key={day} value={day}>{day}</MenuItem>
+              <MenuItem key={day} value={day}>
+                {day}
+              </MenuItem>
             ))}
           </Select>
         </FormControl>
 
-        <Button variant="outlined" onClick={loadSchedule}>Загрузить расписание</Button>
+        <Button variant="outlined" onClick={loadSchedule}>
+          Загрузить расписание
+        </Button>
       </Box>
 
       {schedule.length > 0 && (
@@ -182,36 +222,47 @@ function EditSchedulePage() {
                 {schedule.map((lesson, index) => (
                   <TableRow
                     key={lesson._id}
-                    sx={{ backgroundColor: isLessonChanged(lesson, index) ? '#fff9c4' : 'inherit' }}
+                    sx={{
+                      backgroundColor: isLessonChanged(lesson, index)
+                        ? '#fff9c4'
+                        : 'inherit',
+                    }}
                   >
                     <TableCell>
-                      {lesson.startTime}
-                      {' '}
-                      -
-                      {' '}
-                      {lesson.endTime}
+                      {lesson.startTime} - {lesson.endTime}
                     </TableCell>
                     <TableCell>
                       <Select
                         value={lesson.subjectId || ''}
-                        onChange={(e) => handleChange(index, 'subjectId', e.target.value)}
+                        onChange={(e) =>
+                          handleChange(index, 'subjectId', e.target.value)
+                        }
                         size="small"
                         fullWidth
                       >
                         {assignedSubjects.map((subj) => (
-                          <MenuItem key={subj.subjectId} value={subj.subjectId}>{subj.subjectName}</MenuItem>
+                          <MenuItem
+                            key={subj.subjectId}
+                            value={subj.subjectId}
+                          >
+                            {subj.subjectName}
+                          </MenuItem>
                         ))}
                       </Select>
                     </TableCell>
                     <TableCell>
                       <Select
                         value={lesson.teacherId || ''}
-                        onChange={(e) => handleChange(index, 'teacherId', e.target.value)}
+                        onChange={(e) =>
+                          handleChange(index, 'teacherId', e.target.value)
+                        }
                         size="small"
                         fullWidth
                       >
                         {getTeachersForSubject(lesson.subjectId).map((t) => (
-                          <MenuItem key={t._id} value={t._id}>{t.name}</MenuItem>
+                          <MenuItem key={t._id} value={t._id}>
+                            {t.name}
+                          </MenuItem>
                         ))}
                       </Select>
                     </TableCell>
@@ -221,7 +272,12 @@ function EditSchedulePage() {
             </Table>
           </TableContainer>
 
-          <Button variant="contained" color="success" sx={{ mt: 3 }} onClick={saveChanges}>
+          <Button
+            variant="contained"
+            color="success"
+            sx={{ mt: 3 }}
+            onClick={saveChanges}
+          >
             Сохранить изменения
           </Button>
         </>

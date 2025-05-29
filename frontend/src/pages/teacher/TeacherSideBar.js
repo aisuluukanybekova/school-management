@@ -125,7 +125,7 @@ function TeacherSideBar() {
         </Tooltip>
       ))}
 
-      {/* 🔥 Классный руководитель */}
+      {/*  Классный руководитель */}
       {currentUser?.homeroomFor && (
         <>
           <Divider sx={{ my: 2 }} />

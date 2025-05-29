@@ -26,6 +26,8 @@ function AddTeacher() {
   const [message, setMessage] = useState('');
   const [loader, setLoader] = useState(false);
 
+  const [passwordError, setPasswordError] = useState(false);
+
   const school = typeof currentUser?.school === 'object'
     ? currentUser.school._id
     : currentUser?.schoolId || currentUser?.school || '';
@@ -56,6 +58,11 @@ function AddTeacher() {
 
   const submitHandler = (event) => {
     event.preventDefault();
+    if (password.length > 8) {
+      setPasswordError(true);
+      return;
+    }
+
     setLoader(true);
     dispatch(registerUser(fields, 'Teacher'));
   };
@@ -108,11 +115,20 @@ function AddTeacher() {
             id="teacherPassword"
             className="registerInput"
             type="password"
-            placeholder="Введите пароль"
+            placeholder="Введите пароль (макс. 8 символов)"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setPasswordError(false);
+            }}
+            maxLength={8}
             required
           />
+          {passwordError && (
+            <p style={{ color: 'red', fontSize: '0.9em', marginTop: '4px' }}>
+              Пароль не должен превышать 8 символов
+            </p>
+          )}
 
           <FormControl fullWidth sx={{ mt: 2 }}>
             <InputLabel id="homeroom-label">Классный руководитель для</InputLabel>

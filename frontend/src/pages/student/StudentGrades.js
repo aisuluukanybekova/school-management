@@ -118,7 +118,7 @@ function StudentGradesWithSchedule() {
   return (
     <Box p={4}>
       <Typography variant="h5" gutterBottom fontWeight="bold">
-        Журнал по расписанию
+        Успеваемость ученика
       </Typography>
 
       {error && (

@@ -4,7 +4,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import SchoolIcon from '@mui/icons-material/School';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
@@ -55,7 +54,7 @@ StatCard.propTypes = {
 function TeacherHomePage() {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
-  const { subjectDetails, sclassStudents } = useSelector((state) => state.sclass);
+  const { sclassStudents } = useSelector((state) => state.sclass); // ✅ Removed unused subjectDetails
   const [homeroomClass, setHomeroomClass] = useState(null);
 
   const classID = currentUser.teachSclass?._id;
@@ -83,7 +82,6 @@ function TeacherHomePage() {
   }, [currentUser]);
 
   const numberOfStudents = sclassStudents?.length || 0;
-  const numberOfSessions = subjectDetails?.sessions || 0;
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -113,15 +111,6 @@ function TeacherHomePage() {
             value={numberOfStudents}
             icon={<SchoolIcon />}
             delay={0.1}
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={4}>
-          <StatCard
-            title="Всего уроков"
-            value={numberOfSessions}
-            icon={<MenuBookIcon />}
-            delay={0.3}
           />
         </Grid>
 

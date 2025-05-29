@@ -52,7 +52,7 @@ function ShowTeachers() {
         : `/api/teachers/${id}`;
       await axios.delete(url);
       dispatch(getAllTeachers(currentUser.school._id));
-      setMessage('Преподаватель(и) удалён(ы) успешно.');
+      setMessage('Успешно удалено.');
       setShowPopup(true);
     } catch (err) {
       console.error('Ошибка при удалении:', err);

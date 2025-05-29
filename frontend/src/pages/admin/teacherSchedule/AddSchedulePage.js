@@ -238,7 +238,11 @@ function AddSchedulePage() {
               </TableHead>
               <TableBody>
                 {lessons.map((l) => (
-                  <TableRow key={`${l.startTime}-${l.endTime}`} hover sx={{ '&:nth-of-type(odd)': { backgroundColor: '#fafafa' } }}>
+               <TableRow
+  key={`${l.startTime}-${l.endTime}`}
+  hover
+  sx={{ '&:nth-of-type(odd)': { backgroundColor: '#fafafa' } }}
+>
                     <TableCell align="center">{l.number}</TableCell>
                     <TableCell align="center">{l.startTime}</TableCell>
                     <TableCell align="center">{l.endTime}</TableCell>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   Box, Typography, Table, TableHead, TableBody, TableRow, TableCell,
   Button, TextField, Select, MenuItem, IconButton, Paper, Stack, TableContainer,
@@ -21,14 +21,14 @@ function EditTimeSlots() {
 
   const schoolId = currentUser?.schoolId || currentUser?.school?._id;
 
-  const fetchSlots = async () => {
+  const fetchSlots = useCallback(async () => {
     const res = await axios.get(`/api/timeslots/${schoolId}?shift=${shift}`);
     setSlots(res.data);
-  };
+  }, [schoolId, shift]);
 
   useEffect(() => {
     if (schoolId) fetchSlots();
-  }, [schoolId, shift, fetchSlots]); // Added fetchSlots for exhaustive-deps
+  }, [schoolId, shift, fetchSlots]);
 
   const handleChange = (index, field, value) => {
     const updated = [...slots];

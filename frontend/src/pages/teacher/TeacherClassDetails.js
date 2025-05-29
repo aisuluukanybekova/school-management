@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -25,20 +25,22 @@ function TeacherClassForm() {
 
   const teacherId = currentUser?._id;
 
-  const fetchTeacherClasses = async () => {
+  const fetchTeacherClasses = useCallback(async () => {
     try {
-      const res = await axios.get(`${REACT_APP_BASE_URL}/api/teacherSubjectClass/by-teacher/${teacherId}`);
+      const res = await axios.get(
+        `${REACT_APP_BASE_URL}/api/teacherSubjectClass/by-teacher/${teacherId}`
+      );
       setTeacherClasses(res.data);
     } catch (err) {
       console.error('Ошибка загрузки классов учителя:', err);
     }
-  };
+  }, [teacherId]);
 
   useEffect(() => {
     if (teacherId) {
       fetchTeacherClasses();
     }
-  }, [teacherId]);
+  }, [teacherId, fetchTeacherClasses]);
 
   useEffect(() => {
     if (selectedClass) {
@@ -46,7 +48,14 @@ function TeacherClassForm() {
     }
   }, [selectedClass, dispatch]);
 
-  const uniqueClasses = [...new Map(teacherClasses.map((item) => [item.sclassId, { id: item.sclassId, name: item.sclassName }])).values()];
+  const uniqueClasses = [
+    ...new Map(
+      teacherClasses.map((item) => [
+        item.sclassId,
+        { id: item.sclassId, name: item.sclassName },
+      ])
+    ).values(),
+  ];
 
   const studentColumns = [
     { id: 'name', label: 'Имя', minWidth: 170 },
@@ -71,25 +80,26 @@ function TeacherClassForm() {
           onChange={(e) => setSelectedClass(e.target.value)}
         >
           {uniqueClasses.map((cls) => (
-            <MenuItem key={cls.id} value={cls.id}>{cls.name}</MenuItem>
+            <MenuItem key={cls.id} value={cls.id}>
+              {cls.name}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>
 
       {loading ? (
         <Typography>Загрузка студентов...</Typography>
+      ) : sclassStudents.length > 0 ? (
+        <Paper sx={{ mt: 3 }}>
+          <TableTemplate
+            columns={studentColumns}
+            rows={studentRows}
+          />
+        </Paper>
       ) : (
-        sclassStudents.length > 0 ? (
-          <Paper sx={{ mt: 3 }}>
-            <TableTemplate
-              columns={studentColumns}
-              rows={studentRows}
-              // Колонка "Действия" не будет показана
-            />
-          </Paper>
-        ) : (
-          <Typography color="text.secondary">Нет студентов для выбранного класса.</Typography>
-        )
+        <Typography color="text.secondary">
+          Нет студентов для выбранного класса.
+        </Typography>
       )}
     </Box>
   );

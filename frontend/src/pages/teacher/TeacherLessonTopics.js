@@ -1,4 +1,3 @@
-// весь ваш импорт без изменений
 import React, { useEffect, useState } from 'react';
 import {
   Box, Typography, FormControl, InputLabel, MenuItem, Select, TextField,
@@ -158,7 +157,8 @@ function TeacherLessonTopics() {
 
       {selectedTerm && (
         <Typography color="textSecondary" mb={2}>
-          Период: {new Date(selectedTerm.startDate).toLocaleDateString('ru-RU')} — {new Date(selectedTerm.endDate).toLocaleDateString('ru-RU')}
+          Период: {new Date(selectedTerm.startDate).toLocaleDateString('ru-RU')} —{' '}
+          {new Date(selectedTerm.endDate).toLocaleDateString('ru-RU')}
         </Typography>
       )}
 

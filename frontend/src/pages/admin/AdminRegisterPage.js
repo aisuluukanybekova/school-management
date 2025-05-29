@@ -53,13 +53,26 @@ function AdminRegisterPage() {
     const email = event.target.email.value;
     const password = event.target.password.value;
 
-    if (!name || !schoolName || !email || !password) {
-      if (!name) setAdminNameError(true);
-      if (!schoolName) setSchoolNameError(true);
-      if (!email) setEmailError(true);
-      if (!password) setPasswordError(true);
-      return;
+    let hasError = false;
+
+    if (!name) {
+      setAdminNameError(true);
+      hasError = true;
     }
+    if (!schoolName) {
+      setSchoolNameError(true);
+      hasError = true;
+    }
+    if (!email) {
+      setEmailError(true);
+      hasError = true;
+    }
+    if (!password || password.length > 8) {
+      setPasswordError(true);
+      hasError = true;
+    }
+
+    if (hasError) return;
 
     const fields = {
       name, email, password, role, schoolName,
@@ -152,7 +165,8 @@ function AdminRegisterPage() {
                 id="password"
                 autoComplete="current-password"
                 error={passwordError}
-                helperText={passwordError && 'Пароль обязателен'}
+                inputProps={{ maxLength: 8 }}
+                helperText={passwordError && 'Пароль обязателен и не должен превышать 8 символов'}
                 onChange={handleInputChange}
                 InputProps={{
                   endAdornment: (

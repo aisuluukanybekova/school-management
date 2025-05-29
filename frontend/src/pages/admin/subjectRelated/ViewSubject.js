@@ -37,14 +37,14 @@ const ViewSubject = () => {
       <h3 className="text-lg font-semibold mb-2">📚 Темы занятий:</h3>
       {topics.length ? (
         <ul className="list-disc list-inside space-y-1">
-          {topics.map((t, idx) => (
-            <li key={idx}>
-              <strong>{t.day} {t.startTime}:</strong> {t.topic}
-              {t.homework && (
-                <span className="text-sm text-gray-600"> — домашка: {t.homework}</span>
-              )}
-            </li>
-          ))}
+          {topics.map((t) => (
+  <li key={t._id}>
+    <strong>{t.day} {t.startTime}:</strong> {t.topic}
+    {t.homework && (
+      <span className="text-sm text-gray-600"> — домашка: {t.homework}</span>
+    )}
+  </li>
+))}
         </ul>
       ) : (
         <p>Темы пока не добавлены.</p>

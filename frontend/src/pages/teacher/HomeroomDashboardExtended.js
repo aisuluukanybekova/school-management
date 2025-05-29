@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
-  Box, Typography, Table, TableHead, TableBody, TableRow,
-  TableCell, Paper, CircularProgress, FormControl,
-  InputLabel, Select, MenuItem, Button, TableSortLabel, TextField, Tabs, Tab,
+  Box, Typography, Table, TableHead, TableBody, TableRow, TableCell, Paper,
+  CircularProgress, FormControl, InputLabel, Select, MenuItem, Button,
+  TableSortLabel, TextField, Tabs, Tab,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, LineChart, Line, Legend,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  LineChart, Line, Legend,
 } from 'recharts';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -51,8 +51,11 @@ function HomeroomDashboardExtended() {
         setLoading(true);
         const params = { term };
         if (selectedSubject) params.subjectId = selectedSubject;
-        const res = await axios.get(`/api/homeroom/class/${classId}/summary`, { params });
-        const sorted = [...res.data.students].sort((a, b) => a.name.localeCompare(b.name, 'ru', { sensitivity: 'base' }));
+        const res = await axios.get(`/api/homeroom/class/${classId}/summary`, {
+          params,
+        });
+        const sorted = [...res.data.students].sort((a, b) =>
+          a.name.localeCompare(b.name, 'ru', { sensitivity: 'base' }));
         setData(sorted);
       } catch (err) {
         console.error('Ошибка получения данных:', err);
@@ -86,8 +89,8 @@ function HomeroomDashboardExtended() {
     }
     return 0;
   });
-
-  const filteredData = sortedData.filter((s) => s.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredData = sortedData.filter((s) =>
+    s.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   const exportPDF = () => {
     const doc = new jsPDF();
@@ -113,16 +116,16 @@ function HomeroomDashboardExtended() {
         Телефон: s.phone || '-',
         Пропуски: s.absentCount,
         Оценки: s.grades.map((g) => Math.round(g.avg)).join(', '),
-      })),
+      }))
     );
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Summary');
     XLSX.writeFile(workbook, 'homeroom-summary.xlsx');
   };
-  const chartData = data.map((s, idx) => {
+
+  const chartData = data.map((s) => {
     const subject = subjects.find((sub) => sub.subjectId === selectedSubject);
     const subjectName = subject?.subjectName || '';
-
     let avg = 0;
     let hasGrade = false;
 
@@ -133,7 +136,8 @@ function HomeroomDashboardExtended() {
         hasGrade = true;
       }
     } else {
-      const validGrades = s.grades?.map((g) => g.avg).filter((n) => typeof n === 'number') || [];
+      const validGrades = s.grades?.map((g) => g.avg)
+        .filter((n) => typeof n === 'number') || [];
       if (validGrades.length) {
         avg = Math.round(validGrades.reduce((a, b) => a + b, 0) / validGrades.length);
         hasGrade = true;
@@ -141,8 +145,8 @@ function HomeroomDashboardExtended() {
     }
 
     return {
-      name: `${idx + 1}. ${s.name.replace(/\n/g, ' ')}`,
-      avg: hasGrade ? avg : 0, // Show 0 if no grade, but render anyway
+      name: s.name.replace(/\n/g, ' '),
+      avg: hasGrade ? avg : 0,
       absents: typeof s.absentCount === 'number' ? s.absentCount : 0,
     };
   });
@@ -150,7 +154,9 @@ function HomeroomDashboardExtended() {
   const termAverageData = [1, 2, 3, 4].map((t) => {
     const res = data.filter((s) => s.term === t || s.term === undefined);
     const totalGrades = res.flatMap((s) => s.grades.map((g) => g.avg));
-    const avg = totalGrades.length ? totalGrades.reduce((a, b) => a + b, 0) / totalGrades.length : 0;
+    const avg = totalGrades.length
+      ? totalGrades.reduce((a, b) => a + b, 0) / totalGrades.length
+      : 0;
     return { term: `Четверть ${t}`, avg: Number(avg.toFixed(2)) };
   });
 
@@ -164,7 +170,6 @@ function HomeroomDashboardExtended() {
   }));
 
   if (loading) return <CircularProgress sx={{ m: 4 }} />;
-
   return (
     <Box p={4}>
       <Typography variant="h4" fontWeight="bold" gutterBottom>
@@ -174,11 +179,15 @@ function HomeroomDashboardExtended() {
       <Box display="flex" gap={2} flexWrap="wrap" mt={2} mb={3}>
         <FormControl sx={{ minWidth: 200 }}>
           <InputLabel id="term-label">Четверть</InputLabel>
-          <Select labelId="term-label" value={term} label="Четверть" onChange={(e) => setTerm(e.target.value)}>
+          <Select
+            labelId="term-label"
+            value={term}
+            label="Четверть"
+            onChange={(e) => setTerm(e.target.value)}
+          >
             {[1, 2, 3, 4].map((n) => (
               <MenuItem key={n} value={n}>
-                Четверть
-                {n}
+                Четверть {n}
               </MenuItem>
             ))}
           </Select>
@@ -186,10 +195,17 @@ function HomeroomDashboardExtended() {
 
         <FormControl sx={{ minWidth: 250 }}>
           <InputLabel id="subject-label">Предмет</InputLabel>
-          <Select labelId="subject-label" value={selectedSubject} label="Предмет" onChange={(e) => setSelectedSubject(e.target.value)}>
+          <Select
+            labelId="subject-label"
+            value={selectedSubject}
+            label="Предмет"
+            onChange={(e) => setSelectedSubject(e.target.value)}
+          >
             <MenuItem value="">Все предметы</MenuItem>
-            {subjects.map((s, i) => (
-              <MenuItem key={i} value={s.subjectId}>{s.subjectName}</MenuItem>
+            {subjects.map((s) => (
+              <MenuItem key={s.subjectId} value={s.subjectId}>
+                {s.subjectName}
+              </MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -220,18 +236,30 @@ function HomeroomDashboardExtended() {
               <TableRow>
                 <TableCell><strong>№</strong></TableCell>
                 <TableCell>
-                  <TableSortLabel active={sortConfig.key === 'name'} direction={sortConfig.direction} onClick={() => handleSort('name')}>
+                  <TableSortLabel
+                    active={sortConfig.key === 'name'}
+                    direction={sortConfig.direction}
+                    onClick={() => handleSort('name')}
+                  >
                     ФИО
                   </TableSortLabel>
                 </TableCell>
                 <TableCell><strong>Телефон</strong></TableCell>
                 <TableCell>
-                  <TableSortLabel active={sortConfig.key === 'absentCount'} direction={sortConfig.direction} onClick={() => handleSort('absentCount')}>
+                  <TableSortLabel
+                    active={sortConfig.key === 'absentCount'}
+                    direction={sortConfig.direction}
+                    onClick={() => handleSort('absentCount')}
+                  >
                     Пропуски
                   </TableSortLabel>
                 </TableCell>
                 <TableCell>
-                  <TableSortLabel active={sortConfig.key === 'avg'} direction={sortConfig.direction} onClick={() => handleSort('avg')}>
+                  <TableSortLabel
+                    active={sortConfig.key === 'avg'}
+                    direction={sortConfig.direction}
+                    onClick={() => handleSort('avg')}
+                  >
                     Оценки
                   </TableSortLabel>
                 </TableCell>
@@ -240,16 +268,20 @@ function HomeroomDashboardExtended() {
             <TableBody>
               {filteredData.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={5} align="center">Нет совпадений</TableCell>
+                  <TableCell colSpan={5} align="center">
+                    Нет совпадений
+                  </TableCell>
                 </TableRow>
               ) : (
-                filteredData.map((s, i) => (
+                filteredData.map((s, idx) => (
                   <TableRow key={s._id}>
-                    <TableCell>{i + 1}</TableCell>
+                    <TableCell>{idx + 1}</TableCell>
                     <TableCell>{s.name.replace(/\n/g, ' ')}</TableCell>
                     <TableCell>{s.phone || '-'}</TableCell>
                     <TableCell>{s.absentCount}</TableCell>
-                    <TableCell>{s.grades.map((g) => Math.round(g.avg)).join(', ') || '—'}</TableCell>
+                    <TableCell>
+                      {s.grades.map((g) => Math.round(g.avg)).join(', ') || '—'}
+                    </TableCell>
                   </TableRow>
                 ))
               )}
@@ -258,37 +290,30 @@ function HomeroomDashboardExtended() {
         </Paper>
       ) : (
         <Box>
-          {chartData.length > 0 && (
-            <Box mt={4}>
-              {selectedSubject && (
-                <Typography variant="h6" fontWeight="bold" gutterBottom>
-                  Успеваемость по предмету
-                </Typography>
-              )}
-              <ResponsiveContainer width="100%" height={500}>
-                <BarChart
-                  layout="vertical"
-                  data={chartData}
-                  margin={{
-                    top: 20, right: 30, left: 100, bottom: 20,
-                  }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis type="number" domain={[0, 5]} />
-                  <YAxis
-                    type="category"
-                    dataKey="name"
-                    width={200}
-                    interval={0}
-                    tick={{ fontSize: 12 }}
-                  />
-                  <Tooltip />
-                  {selectedSubject && <Bar dataKey="avg" radius={[0, 4, 4, 0]} />}
-                </BarChart>
-              </ResponsiveContainer>
-
-            </Box>
-          )}
+          <Box mt={6}>
+            <Typography variant="h6" fontWeight="bold" gutterBottom>
+              Успеваемость по предмету
+            </Typography>
+            <ResponsiveContainer width="100%" height={500}>
+              <BarChart
+                layout="vertical"
+                data={chartData}
+                margin={{ top: 20, right: 30, left: 100, bottom: 20 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis type="number" domain={[0, 5]} />
+                <YAxis
+                  type="category"
+                  dataKey="name"
+                  width={200}
+                  interval={0}
+                  tick={{ fontSize: 12 }}
+                />
+                <Tooltip />
+                <Bar dataKey="avg" radius={[0, 4, 4, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </Box>
 
           <Box mt={6}>
             <Typography variant="h6" fontWeight="bold" gutterBottom>
@@ -298,9 +323,7 @@ function HomeroomDashboardExtended() {
               <BarChart
                 layout="vertical"
                 data={chartData}
-                margin={{
-                  top: 20, right: 30, left: 100, bottom: 20,
-                }}
+                margin={{ top: 20, right: 30, left: 100, bottom: 20 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis type="number" />
@@ -308,7 +331,7 @@ function HomeroomDashboardExtended() {
                   type="category"
                   dataKey="name"
                   width={200}
-                  interval={0} //  Показывает всех учеников
+                  interval={0}
                   tick={{ fontSize: 12 }}
                 />
                 <Tooltip />
@@ -340,7 +363,14 @@ function HomeroomDashboardExtended() {
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={gradeSegments}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="grade" label={{ value: 'Оценка', position: 'insideBottom', offset: -5 }} />
+                <XAxis
+                  dataKey="grade"
+                  label={{
+                    value: 'Оценка',
+                    position: 'insideBottom',
+                    offset: -5,
+                  }}
+                />
                 <YAxis allowDecimals={false} />
                 <Tooltip />
                 <Bar dataKey="count" />

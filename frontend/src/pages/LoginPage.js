@@ -12,7 +12,6 @@ import PropTypes from 'prop-types';
 import bgpic from '../assets/designlogin.jpg';
 import { LightPurpleButton } from '../components/buttonStyles';
 import { loginUser } from '../redux/userRelated/userHandle';
-import Popup from '../components/Popup';
 
 const defaultTheme = createTheme();
 
@@ -81,12 +80,8 @@ function LoginPage({ userRole }) {
       if (currentRole === 'Admin') navigate('/Admin/dashboard');
       else if (currentRole === 'Student') navigate('/Student/dashboard');
       else if (currentRole === 'Teacher') navigate('/Teacher/dashboard');
-    } else if (status === 'failed') {
-      setMessage(response);
-      setShowPopup(true);
-      setLoader(false);
-    } else if (status === 'error') {
-      setMessage('Ошибка сети');
+    } else if (status === 'failed' || status === 'error') {
+      setMessage(response || 'Неправильный логин или пароль');
       setShowPopup(true);
       setLoader(false);
     }
@@ -105,7 +100,7 @@ function LoginPage({ userRole }) {
               }}
             >
               {userRole === 'Admin' ? 'Администратор — вход'
-                : userRole === 'Teacher' ? 'Преподаватель — вход'
+                : userRole === 'Teacher' ? 'Учитель — вход'
                   : userRole === 'Student' ? 'Ученик — вход' : 'Вход'}
             </Typography>
             <Typography variant="body1" sx={{ textAlign: 'center', mb: 3, color: '#444' }}>
@@ -182,7 +177,6 @@ function LoginPage({ userRole }) {
                   control={<Checkbox value="remember" color="primary" />}
                   label="Запомнить меня"
                 />
-                <StyledLink href="#">Забыли пароль?</StyledLink>
               </Grid>
               <LightPurpleButton
                 type="submit"
@@ -192,6 +186,16 @@ function LoginPage({ userRole }) {
               >
                 {loader ? <CircularProgress size={24} color="inherit" /> : 'Войти'}
               </LightPurpleButton>
+
+              {showPopup && (
+                <Typography
+                  variant="body2"
+                  sx={{ mt: 2, color: 'error.main', textAlign: 'center' }}
+                >
+                  {message}
+                </Typography>
+              )}
+
               {userRole === 'Admin' && (
                 <Grid container justifyContent="center" sx={{ mt: 2 }}>
                   <Typography variant="body2">
@@ -223,7 +227,6 @@ function LoginPage({ userRole }) {
         <CircularProgress color="primary" />
         Пожалуйста, подождите...
       </Backdrop>
-      <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
     </ThemeProvider>
   );
 }
