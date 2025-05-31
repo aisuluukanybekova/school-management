@@ -167,12 +167,17 @@ exports.getClassesAndSubjectsByTeacher = async (req, res) => {
 //  Обновить связь
 exports.updateTeacherSubjectClass = async (req, res) => {
   try {
-    const { teacherID, subjectId, sclassName, sessions } = req.body;
+    const { teacherId, subjectId, classId, sessions } = req.body; //  правильные поля
     const { id } = req.params;
 
     const updated = await TeacherSubjectClass.findByIdAndUpdate(
       id,
-      { teacher: teacherID, subject: subjectId, sclassName, sessions },
+      {
+        teacher: teacherId,
+        subject: subjectId,
+        sclassName: classId,
+        sessions,
+      },
       { new: true }
     );
 

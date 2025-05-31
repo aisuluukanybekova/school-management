@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box, Typography, FormControl, InputLabel, Select, MenuItem, Button,
-  Table, TableBody, TableCell, TableHead, TableRow, Paper, TableContainer, Alert,
+  Box, Typography, FormControl, InputLabel, Select, MenuItem,
+  Button, Table, TableBody, TableCell, TableHead, TableRow,
+  Paper, TableContainer, Alert
 } from '@mui/material';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
@@ -28,14 +29,21 @@ function EditSchedulePage() {
   const [schedule, setSchedule] = useState([]);
   const [originalSchedule, setOriginalSchedule] = useState([]);
   const [assignedSubjects, setAssignedSubjects] = useState([]);
+  const [cabinets, setCabinets] = useState([]);
   const [message, setMessage] = useState({ type: '', text: '' });
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios.get(`/api/classes/school/${schoolId}`);
-      setClasses(data);
+      try {
+        const { data: classData } = await axios.get(`/api/classes/school/${schoolId}`);
+        const { data: cabinetData } = await axios.get(`/api/cabinets/${schoolId}`);
+        setClasses(classData);
+        setCabinets(cabinetData.cabinets || []);
+      } catch {
+        setMessage({ type: 'error', text: 'Ошибка загрузки классов и кабинетов' });
+      }
     };
-    fetchData();
+    if (schoolId) fetchData();
   }, [schoolId]);
 
   useEffect(() => {
@@ -51,14 +59,13 @@ function EditSchedulePage() {
   const sanitizeSchedule = (rawLessons) =>
     rawLessons.map((l) => ({
       _id: l._id,
-      subjectId:
-        typeof l.subjectId === 'object' ? l.subjectId._id : String(l.subjectId),
-      teacherId:
-        typeof l.teacherId === 'object' ? l.teacherId._id : String(l.teacherId),
+      subjectId: typeof l.subjectId === 'object' ? l.subjectId._id : String(l.subjectId),
+      teacherId: typeof l.teacherId === 'object' ? l.teacherId._id : String(l.teacherId),
       classId: l.classId?._id || l.classId,
       startTime: l.startTime,
       endTime: l.endTime,
       day: l.day,
+      room: l.room || '',
     }));
 
   const loadSchedule = async () => {
@@ -100,11 +107,24 @@ function EditSchedulePage() {
       original.teacherId !== lesson.teacherId ||
       original.startTime !== lesson.startTime ||
       original.endTime !== lesson.endTime ||
-      original.day !== lesson.day;
+      original.day !== lesson.day ||
+      original.room !== lesson.room;
 
     const isPositionChanged = originalIndex !== index;
 
     return isContentChanged || isPositionChanged;
+  };
+
+  const handleDelete = async (lessonId) => {
+    if (!window.confirm('Удалить этот урок из расписания?')) return;
+
+    try {
+      await axios.delete(`/api/schedule/${lessonId}`);
+      setSchedule((prev) => prev.filter((l) => l._id !== lessonId));
+      setMessage({ type: 'success', text: 'Урок успешно удалён' });
+    } catch {
+      setMessage({ type: 'error', text: 'Ошибка при удалении урока' });
+    }
   };
 
   const saveChanges = async () => {
@@ -115,46 +135,47 @@ function EditSchedulePage() {
         !s.classId ||
         !s.startTime ||
         !s.endTime ||
-        !s.day
+        !s.day ||
+        !s.room
     );
 
     if (invalid) {
       setMessage({
         type: 'error',
-        text: ' Убедитесь, что все строки заполнены полностью.',
+        text: 'Убедитесь, что все строки заполнены полностью.',
       });
       return;
     }
 
     try {
-      const updates = schedule
-        .filter((s, i) => isLessonChanged(s, i))
-        .map((s) => {
-          console.log('Обновление:', s);
-          return axios.put(`/api/schedule/${s._id}`, {
+      const changedLessons = schedule.filter((s, i) => isLessonChanged(s, i));
+
+      if (changedLessons.length === 0) {
+        setMessage({ type: 'info', text: 'Изменения не обнаружены.' });
+        return;
+      }
+
+      await Promise.all(
+        changedLessons.map((s) =>
+          axios.put(`/api/schedule/${s._id}`, {
             subjectId: s.subjectId,
             teacherId: s.teacherId,
             startTime: s.startTime,
             endTime: s.endTime,
             day: s.day,
             classId: s.classId,
-          });
-        });
+            room: s.room,
+          })
+        )
+      );
 
-      if (updates.length === 0) {
-        setMessage({ type: 'info', text: 'Изменения не обнаружены.' });
-        return;
-      }
-
-      await Promise.all(updates);
       setMessage({ type: 'success', text: 'Расписание успешно обновлено' });
       await loadSchedule();
     } catch (err) {
       console.error('Ошибка при сохранении:', err?.response?.data);
       setMessage({
         type: 'error',
-        text:
-          err?.response?.data?.message || 'Ошибка при сохранении',
+        text: err?.response?.data?.message || 'Ошибка при сохранении',
       });
     }
   };
@@ -216,6 +237,8 @@ function EditSchedulePage() {
                   <TableCell>Время</TableCell>
                   <TableCell>Предмет</TableCell>
                   <TableCell>Учитель</TableCell>
+                  <TableCell>Кабинет</TableCell>
+                  <TableCell>Удалить</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -241,10 +264,7 @@ function EditSchedulePage() {
                         fullWidth
                       >
                         {assignedSubjects.map((subj) => (
-                          <MenuItem
-                            key={subj.subjectId}
-                            value={subj.subjectId}
-                          >
+                          <MenuItem key={subj.subjectId} value={subj.subjectId}>
                             {subj.subjectName}
                           </MenuItem>
                         ))}
@@ -265,6 +285,35 @@ function EditSchedulePage() {
                           </MenuItem>
                         ))}
                       </Select>
+                    </TableCell>
+                    <TableCell>
+                      <Select
+                        value={lesson.room || ''}
+                        onChange={(e) =>
+                          handleChange(index, 'room', e.target.value)
+                        }
+                        size="small"
+                        fullWidth
+                        displayEmpty
+                      >
+                        <MenuItem value="">
+                          <em>Не выбран</em>
+                        </MenuItem>
+                        {cabinets.map((cab) => (
+                          <MenuItem key={cab._id} value={cab.name}>
+                            {cab.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        color="error"
+                        size="small"
+                        onClick={() => handleDelete(lesson._id)}
+                      >
+                        Удалить
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}

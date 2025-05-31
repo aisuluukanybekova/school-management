@@ -30,12 +30,12 @@ const scheduleSchema = new mongoose.Schema({
   startTime: {
     type: String,
     required: true,
-    match: /^([01]\d|2[0-3]):([0-5]\d)$/, // формат HH:MM
+    match: /^([01]\d|2[0-3]):([0-5]\d)$/,
   },
   endTime: {
     type: String,
     required: true,
-    match: /^([01]\d|2[0-3]):([0-5]\d)$/, // формат HH:MM
+    match: /^([01]\d|2[0-3]):([0-5]\d)$/,
   },
   type: {
     type: String,
@@ -54,7 +54,11 @@ const scheduleSchema = new mongoose.Schema({
   homework: {
     type: String,
     default: '',
-  }
+  },
+  room: {
+    type: String,       
+    default: '',
+  },
 }, {
   timestamps: true
 });

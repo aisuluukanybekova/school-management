@@ -18,6 +18,8 @@ import AttendanceReportPage from './Journal/AttendanceReportPage';
 import TermTabs from './TermTabs';
 import ScheduleTable from './teacherSchedule/ScheduleTable';
 import AddSchedulePage from './teacherSchedule/AddSchedulePage';
+import ClassroomManager from './ClassroomManager';
+
 
 // Students
 import AddStudent from './studentRelated/AddStudent';
@@ -88,6 +90,7 @@ function AdminDashboard() {
           <Route path="/Admin/teacher-schedule" element={<ScheduleTable />} />
           <Route path="/Admin/add-schedule" element={<AddSchedulePage />} />
           <Route path="/Admin/edit-schedule" element={<EditSchedulePage />} />
+          <Route path="/Admin/classrooms" element={<ClassroomManager />} />
 
           {/* Ученики */}
           <Route

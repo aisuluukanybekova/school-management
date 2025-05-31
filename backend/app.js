@@ -39,6 +39,7 @@ app.use('/api/homeroom', require('./routes/homeroom'));
 app.use('/api/timeslots', require('./routes/timeSlot'));
 app.use('/api/tutor', require('./routes/aiTutorRoutes'));
 app.use('/api/teacher-complains', require('./routes/teacherComplainRoutes'));
+app.use('/api/cabinets', require('./routes/cabinet-routes'));
 
 // 404
 app.use((req, res) => {

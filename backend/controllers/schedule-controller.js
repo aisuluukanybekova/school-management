@@ -1,3 +1,4 @@
+// Updated schedule controller with room/class conflict + duplicate day schedule prevention
 const mongoose = require('mongoose');
 const Schedule = require('../models/scheduleSchema');
 const Term = require('../models/termSchema');
@@ -14,7 +15,6 @@ const ruToEnDay = {
   "Воскресенье": "Sunday"
 };
 
-// Расписание на день с полной валидацией
 exports.createFullDaySchedule = async (req, res) => {
   try {
     const { classId, day, lessons, shift = 'first' } = req.body;
@@ -24,6 +24,19 @@ exports.createFullDaySchedule = async (req, res) => {
     }
 
     const convertedDay = ruToEnDay[day] || day;
+
+    //  Блок повторного создания расписания на день
+    const existingDaySchedule = await Schedule.findOne({
+      classId,
+      day: convertedDay,
+      type: 'lesson'
+    });
+    if (existingDaySchedule) {
+      return res.status(400).json({
+        success: false,
+        message: `Для класса уже создано расписание на ${day}`
+      });
+    }
 
     const timeSlots = await TimeSlot.find({ shift }).sort({ number: 1 });
     if (!timeSlots.length) {
@@ -62,7 +75,7 @@ exports.createFullDaySchedule = async (req, res) => {
 
       if (lessonIndex >= lessons.length) break;
 
-      const { subjectId, teacherId, startTime, endTime } = lessons[lessonIndex];
+      const { subjectId, teacherId, startTime, endTime, room } = lessons[lessonIndex];
 
       if (!subjectId || !teacherId || !startTime || !endTime) {
         return res.status(400).json({
@@ -71,16 +84,43 @@ exports.createFullDaySchedule = async (req, res) => {
         });
       }
 
+      //  Конфликт учителя
       const conflict = await Schedule.findOne({
         teacherId,
         day: convertedDay,
         $or: [{ startTime: { $lt: endTime }, endTime: { $gt: startTime } }]
       });
-
       if (conflict) {
         return res.status(400).json({
           success: false,
           message: `Конфликт: Учитель занят с ${conflict.startTime} до ${conflict.endTime}`
+        });
+      }
+
+      //  Конфликт по кабинету
+      const roomConflict = await Schedule.findOne({
+        classId: { $ne: classId },
+        room,
+        day: convertedDay,
+        $or: [{ startTime: { $lt: endTime }, endTime: { $gt: startTime } }]
+      });
+      if (roomConflict) {
+        return res.status(400).json({
+          success: false,
+          message: `Конфликт кабинета: в ${room} уже запланирован другой класс с ${roomConflict.startTime} до ${roomConflict.endTime}`
+        });
+      }
+
+      //  Конфликт самого класса по времени (в другой аудитории)
+      const selfClassConflict = await Schedule.findOne({
+        classId,
+        day: convertedDay,
+        $or: [{ startTime: { $lt: endTime }, endTime: { $gt: startTime } }]
+      });
+      if (selfClassConflict) {
+        return res.status(400).json({
+          success: false,
+          message: `Конфликт: Класс уже занят с ${selfClassConflict.startTime} до ${selfClassConflict.endTime}`
         });
       }
 
@@ -117,6 +157,7 @@ exports.createFullDaySchedule = async (req, res) => {
         day: convertedDay,
         startTime,
         endTime,
+        room,
         type: 'lesson'
       });
 
@@ -132,7 +173,7 @@ exports.createFullDaySchedule = async (req, res) => {
   }
 };
 
-// Расписание на неделю
+
 exports.createFullWeekSchedule = async (req, res) => {
   try {
     const { classId, weekLessons } = req.body;
@@ -161,8 +202,21 @@ exports.createFullWeekSchedule = async (req, res) => {
     for (const [day, lessons] of Object.entries(weekLessons)) {
       const convertedDay = ruToEnDay[day] || day;
 
+      // Проверка: уже есть расписание на этот день для класса?
+      const existingDaySchedule = await Schedule.findOne({
+        classId,
+        day: convertedDay,
+        type: 'lesson'
+      });
+      if (existingDaySchedule) {
+        return res.status(400).json({
+          success: false,
+          message: `Для класса уже создано расписание на ${day}`
+        });
+      }
+
       for (const lesson of lessons) {
-        const { subjectId, teacherId, startTime, endTime } = lesson;
+        const { subjectId, teacherId, startTime, endTime, room } = lesson;
 
         if (!subjectId || !teacherId || !startTime || !endTime) {
           return res.status(400).json({ success: false, message: `Некорректные данные в дне ${day}` });
@@ -178,6 +232,33 @@ exports.createFullWeekSchedule = async (req, res) => {
           return res.status(400).json({
             success: false,
             message: `Конфликт: Учитель занят ${convertedDay} с ${conflict.startTime} до ${conflict.endTime}`
+          });
+        }
+
+        const roomConflict = await Schedule.findOne({
+          classId: { $ne: classId },
+          room,
+          day: convertedDay,
+          $or: [{ startTime: { $lt: endTime }, endTime: { $gt: startTime } }]
+        });
+
+        if (roomConflict) {
+          return res.status(400).json({
+            success: false,
+            message: `Конфликт кабинета: в ${room} уже запланирован другой класс с ${roomConflict.startTime} до ${roomConflict.endTime}`
+          });
+        }
+
+        const selfClassConflict = await Schedule.findOne({
+          classId,
+          day: convertedDay,
+          $or: [{ startTime: { $lt: endTime }, endTime: { $gt: startTime } }]
+        });
+
+        if (selfClassConflict) {
+          return res.status(400).json({
+            success: false,
+            message: `Конфликт: Класс уже занят с ${selfClassConflict.startTime} до ${selfClassConflict.endTime}`
           });
         }
 
@@ -216,6 +297,7 @@ exports.createFullWeekSchedule = async (req, res) => {
               day: convertedDay,
               startTime,
               endTime,
+              room,
               type: 'lesson'
             }
           }
@@ -260,12 +342,17 @@ exports.deleteSchedule = async (req, res) => {
     res.status(500).json({ success: false, message: 'Ошибка сервера: ' + error.message });
   }
 };
-// Обновить элемент расписания
 
 exports.updateSchedule = async (req, res) => {
   try {
-    const { subjectId, teacherId, startTime, endTime, day, classId } = req.body;
+    const { subjectId, teacherId, startTime, endTime, day, classId, room } = req.body;
     const { id } = req.params;
+
+    console.log('====== ОБНОВЛЕНИЕ УРОКА ======');
+    console.log('Текущий ID урока:', id);
+    console.log('Предмет:', subjectId);
+    console.log('Учитель:', teacherId);
+    console.log('Класс:', classId);
 
     if (!subjectId || !teacherId || !startTime || !endTime || !day || !classId) {
       return res.status(400).json({ message: 'Не все поля указаны для обновления.' });
@@ -280,7 +367,7 @@ exports.updateSchedule = async (req, res) => {
       return res.status(404).json({ message: 'Текущий урок не найден.' });
     }
 
-    // Проверка конфликта по времени
+    // Конфликт по времени для учителя
     const conflict = await Schedule.findOne({
       _id: { $ne: id },
       teacherId,
@@ -296,6 +383,24 @@ exports.updateSchedule = async (req, res) => {
       });
     }
 
+    // Конфликт по кабинету
+    const roomConflict = await Schedule.findOne({
+      _id: { $ne: id },
+      classId: { $ne: classId },
+      room,
+      day,
+      $or: [
+        { startTime: { $lt: endTime }, endTime: { $gt: startTime } }
+      ]
+    });
+
+    if (roomConflict) {
+      return res.status(400).json({
+        message: `Конфликт кабинета: в ${room} уже запланирован другой класс с ${roomConflict.startTime} до ${roomConflict.endTime}`
+      });
+    }
+
+    // Получение максимального количества занятий
     const assignments = await TeacherSubjectClass.find({ sclassName: classId });
     const found = assignments.find(a =>
       a.subject?.toString?.() === subjectId.toString() &&
@@ -303,6 +408,7 @@ exports.updateSchedule = async (req, res) => {
     );
 
     const maxSessions = found?.sessions || 1;
+    console.log('Максимум занятий:', maxSessions);
 
     const allLessons = await Schedule.find({
       teacherId,
@@ -311,28 +417,26 @@ exports.updateSchedule = async (req, res) => {
       type: 'lesson'
     });
 
-    // Посчитать количество занятий, исключая текущий, но только если его параметры изменились
-    let effectiveLessons = allLessons.filter(lesson => lesson._id.toString() !== id);
+    console.log('Всего уроков найдено:', allLessons.length);
 
-    // Если текущее занятие меняет subjectId или teacherId, его надо исключить из подсчета
-    const isChangingAssignment = (
-      currentLesson.subjectId.toString() !== subjectId.toString() ||
-      currentLesson.teacherId.toString() !== teacherId.toString()
-    );
+    // Исключаем текущий урок из подсчёта
+    const actualLessonCount = allLessons.filter(l => l._id.toString() !== id).length;
+    const finalCount = actualLessonCount + 1;
 
-    if (!isChangingAssignment) {
-      effectiveLessons.push(currentLesson); // оставить в подсчёте, если связка та же
-    }
+    console.log('Фактические (исключая текущий):', actualLessonCount);
+    console.log('Итоговое количество после обновления:', finalCount);
+    console.log('==============================');
 
-    if (effectiveLessons.length >= maxSessions) {
+    if (finalCount > maxSessions) {
       return res.status(400).json({
         message: `Лимит: Этот учитель уже ведёт данный предмет ${maxSessions} раз в неделю`
       });
     }
 
+    // Обновление урока
     const updated = await Schedule.findByIdAndUpdate(
       id,
-      { subjectId, teacherId, startTime, endTime, day },
+      { subjectId, teacherId, startTime, endTime, day, room },
       { new: true }
     );
 

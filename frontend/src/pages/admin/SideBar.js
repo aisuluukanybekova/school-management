@@ -26,6 +26,7 @@ import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 
 function SideBar() {
   const location = useLocation();
@@ -43,6 +44,7 @@ function SideBar() {
     { text: 'Жалобы', icon: <ReportIcon />, path: '/Admin/complains' },
     { text: 'Четверти', icon: <DateRangeIcon />, path: '/Admin/terms' },
     { text: 'Расписание', icon: <AssignmentIcon />, path: '/Admin/teacher-schedule' },
+    { text: 'Кабинеты', icon: <MeetingRoomIcon />, path: '/Admin/classrooms' },
     { text: 'Создать расписание', icon: <AddCircleOutlineIcon />, path: '/Admin/add-schedule' },
   ];
 

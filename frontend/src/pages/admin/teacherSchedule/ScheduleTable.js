@@ -81,13 +81,14 @@ function ScheduleTable() {
         autoTable(doc, {
           startY: 30,
           styles: { font: 'courier' },
-          head: [['Начало', 'Конец', 'Тип', 'Предмет', 'Учитель']],
+          head: [['Начало', 'Конец', 'Тип', 'Предмет', 'Учитель', 'Кабинет']],
           body: daySchedules.map((entry) => [
             entry.startTime,
             entry.endTime,
             entry.type === 'lesson' ? 'Урок' : 'Перемена',
             entry.subjectId?.subName || '-',
             entry.teacherId?.name || '-',
+            entry.room || '-',
           ]),
         });
       });
@@ -98,13 +99,14 @@ function ScheduleTable() {
       autoTable(doc, {
         startY: 30,
         styles: { font: 'courier' },
-        head: [['Начало', 'Конец', 'Тип', 'Предмет', 'Учитель']],
+        head: [['Начало', 'Конец', 'Тип', 'Предмет', 'Учитель', 'Кабинет']],
         body: schedules.map((entry) => [
           entry.startTime,
           entry.endTime,
           entry.type === 'lesson' ? 'Урок' : 'Перемена',
           entry.subjectId?.subName || '-',
           entry.teacherId?.name || '-',
+          entry.room || '-',
         ]),
       });
 
@@ -195,6 +197,7 @@ function ScheduleTableComponent({ data }) {
             <TableCell align="center">Тип</TableCell>
             <TableCell align="center">Предмет</TableCell>
             <TableCell align="center">Учитель</TableCell>
+            <TableCell align="center">Кабинет</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -215,6 +218,9 @@ function ScheduleTableComponent({ data }) {
               </TableCell>
               <TableCell align="center">
                 {entry.type === 'lesson' ? entry.teacherId?.name : '—'}
+              </TableCell>
+              <TableCell align="center">
+                {entry.type === 'lesson' ? entry.room || '—' : '—'}
               </TableCell>
             </TableRow>
           ))}

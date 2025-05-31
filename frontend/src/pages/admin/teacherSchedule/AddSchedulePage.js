@@ -20,6 +20,7 @@ function AddSchedulePage() {
   const navigate = useNavigate();
 
   const [classes, setClasses] = useState([]);
+  const [cabinets, setCabinets] = useState([]);
   const [assignedSubjects, setAssignedSubjects] = useState([]);
   const [selectedClass, setSelectedClass] = useState('');
   const [selectedDay, setSelectedDay] = useState('');
@@ -48,7 +49,9 @@ function AddSchedulePage() {
     const fetchInitialData = async () => {
       try {
         const { data: classData } = await axios.get(`/api/classes/school/${schoolId}`);
+        const { data: cabinetData } = await axios.get(`/api/cabinets/${schoolId}`);
         setClasses(classData);
+        setCabinets(cabinetData.cabinets || []);
         await loadTimeSlots();
       } catch {
         setError('Ошибка загрузки данных');
@@ -56,7 +59,7 @@ function AddSchedulePage() {
         setLoading(false);
       }
     };
-    fetchInitialData();
+    if (schoolId) fetchInitialData();
   }, [schoolId, loadTimeSlots]);
 
   useEffect(() => {
@@ -87,6 +90,7 @@ function AddSchedulePage() {
       number: index + 1,
       subjectId: '',
       teacherId: '',
+      room: '',
       startTime: slot.startTime,
       endTime: slot.endTime,
     }));
@@ -97,9 +101,12 @@ function AddSchedulePage() {
   };
 
   const handleLessonChange = (index, field, value) => {
-    setLessons((prev) => prev.map((l, i) => (i === index
-      ? { ...l, [field]: value, ...(field === 'subjectId' ? { teacherId: '' } : {}) }
-      : l)));
+    setLessons((prev) => prev.map((lesson, i) => {
+      if (i !== index) return lesson;
+      const updated = { ...lesson, [field]: value };
+      if (field === 'subjectId') updated.teacherId = '';
+      return updated;
+    }));
   };
 
   const getTeachersForSubject = (subjectId) => {
@@ -108,8 +115,8 @@ function AddSchedulePage() {
   };
 
   const saveSchedule = async () => {
-    if (!lessons.every((l) => l.subjectId && l.teacherId)) {
-      alert('Заполните все строки расписания!');
+    if (!lessons.every((l) => l.subjectId && l.teacherId && l.room)) {
+      alert('Заполните все строки расписания, включая кабинет!');
       return;
     }
 
@@ -118,18 +125,17 @@ function AddSchedulePage() {
         classId: selectedClass,
         day: selectedDay,
         shift,
-        lessons: lessons.map(({
-          subjectId, teacherId, startTime, endTime,
-        }) => ({
+        lessons: lessons.map(({ subjectId, teacherId, startTime, endTime, room }) => ({
           subjectId,
           teacherId,
           startTime,
           endTime,
+          room,
         })),
       };
 
       const { data } = await axios.post('/api/schedule/full-day', payload);
-      setSuccessMessage(data.message || '✅ Расписание сохранено.');
+      setSuccessMessage(data.message || 'Расписание сохранено.');
       setLessons([]);
     } catch (err) {
       setError(err?.response?.data?.message || 'Ошибка сохранения.');
@@ -148,7 +154,7 @@ function AddSchedulePage() {
     <Box p={4}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h5" gutterBottom fontWeight="bold">
-          📅 Создание расписания на день
+          Создание расписания на день
         </Typography>
         <Box display="flex" gap={1}>
           <Button
@@ -192,14 +198,21 @@ function AddSchedulePage() {
         }, {
           label: 'Смена',
           value: shift,
-          options: [{ label: 'Первая смена', value: 'first' }, { label: 'Вторая смена', value: 'second' }],
+          options: [
+            { label: 'Первая смена', value: 'first' },
+            { label: 'Вторая смена', value: 'second' },
+          ],
           onChange: setShift,
           getLabel: (o) => o.label,
           getValue: (o) => o.value,
         }].map((f) => (
           <FormControl key={f.label} sx={{ minWidth: 180 }} size="small">
             <InputLabel>{f.label}</InputLabel>
-            <Select value={f.value} onChange={(e) => f.onChange(e.target.value)} label={f.label}>
+            <Select
+              value={f.value}
+              onChange={(e) => f.onChange(e.target.value)}
+              label={f.label}
+            >
               {f.options?.map((opt) => (
                 <MenuItem key={f.getValue(opt)} value={f.getValue(opt)}>
                   {f.getLabel(opt)}
@@ -234,15 +247,12 @@ function AddSchedulePage() {
                   <TableCell align="center">Конец</TableCell>
                   <TableCell align="center">Предмет</TableCell>
                   <TableCell align="center">Учитель</TableCell>
+                  <TableCell align="center">Кабинет</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {lessons.map((l) => (
-               <TableRow
-  key={`${l.startTime}-${l.endTime}`}
-  hover
-  sx={{ '&:nth-of-type(odd)': { backgroundColor: '#fafafa' } }}
->
+                  <TableRow key={`${l.startTime}-${l.endTime}`} hover>
                     <TableCell align="center">{l.number}</TableCell>
                     <TableCell align="center">{l.startTime}</TableCell>
                     <TableCell align="center">{l.endTime}</TableCell>
@@ -270,6 +280,24 @@ function AddSchedulePage() {
                         {getTeachersForSubject(l.subjectId).map((t) => (
                           <MenuItem key={t._id} value={t._id}>
                             {t.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </TableCell>
+                    <TableCell>
+                      <Select
+                        fullWidth
+                        size="small"
+                        value={l.room}
+                        onChange={(e) => handleLessonChange(l.number - 1, 'room', e.target.value)}
+                        displayEmpty
+                      >
+                        <MenuItem value="">
+                          <em>Не выбран</em>
+                        </MenuItem>
+                        {cabinets.map((cab) => (
+                          <MenuItem key={cab._id} value={cab.name}>
+                            {cab.name}
                           </MenuItem>
                         ))}
                       </Select>
