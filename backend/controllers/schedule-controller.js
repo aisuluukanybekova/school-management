@@ -450,6 +450,7 @@ exports.updateSchedule = async (req, res) => {
 
 
 // Получить расписание по учителю + классу + предмету
+
 exports.getScheduleByTeacherClassSubject = async (req, res) => {
   try {
     const { teacherId, classId, subjectId } = req.params;
@@ -459,9 +460,10 @@ exports.getScheduleByTeacherClassSubject = async (req, res) => {
       classId,
       subjectId,
       type: 'lesson'
-    }).sort({ day: 1, startTime: 1 });
+    })
+    .select('startTime endTime day room subjectId teacherId classId type') // важно!
+    .sort({ day: 1, startTime: 1 });
 
-    //res.status(200).json({ success: true, lessons });
     res.status(200).json({ schedules: lessons });
 
   } catch (error) {
@@ -469,6 +471,7 @@ exports.getScheduleByTeacherClassSubject = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
 // Получить расписание по ID учителя
 exports.getScheduleByTeacher = async (req, res) => {
   try {

@@ -22,6 +22,16 @@ function TeacherSchedule() {
 
   const schoolId = teacher?.school?._id || teacher?.schoolId;
 
+  const ruToEnDay = {
+    "Понедельник": "Monday",
+    "Вторник": "Tuesday",
+    "Среда": "Wednesday",
+    "Четверг": "Thursday",
+    "Пятница": "Friday",
+    "Суббота": "Saturday",
+    "Воскресенье": "Sunday"
+  };
+
   useEffect(() => {
     const fetchAssignments = async () => {
       const res = await axios.get(`/api/teacherSubjectClass/by-teacher/${teacher._id}`);
@@ -42,11 +52,18 @@ function TeacherSchedule() {
     const fetchData = async () => {
       if (!selectedClassId || !selectedSubjectId) return;
 
+      console.log("FRONT SELECTED:", {
+        teacherId: teacher._id,
+        selectedClassId,
+        selectedSubjectId
+      });
+
       const res = await axios.get(
         `/api/schedule/by-teacher-class-subject/${teacher._id}/${selectedClassId}/${selectedSubjectId}`
       );
       const lessons = res.data.schedules.filter((s) => s.type === 'lesson');
       setSchedule(lessons);
+      console.log("SCHEDULE ===>", lessons);
 
       const topicRes = await axios.get('/api/lesson-topics', {
         params: {
@@ -91,12 +108,14 @@ function TeacherSchedule() {
   const filteredLessons = topics
     .map((t, i) => {
       if (t.date !== selectedDate) return null;
-      const match = schedule.find((s) => s.day === t.day && s.startTime === t.startTime);
+      const convertedDay = ruToEnDay[t.day] || t.day;
+      const match = schedule.find((s) => s.day === convertedDay && s.startTime === t.startTime);
       return {
         index: i,
         time: `${t.startTime} - ${match?.endTime || ''}`,
         topic: t.topic,
         homework: t.homework,
+        room: match?.room || '',
       };
     })
     .filter(Boolean);
@@ -118,8 +137,8 @@ function TeacherSchedule() {
           >
             {assignments.map((a) => (
               <MenuItem
-                key={`${a.sclassId}_${a.subjectId}`}
-                value={`${a.sclassId}_${a.subjectId}`}
+                key={`${a.sclassId?._id || a.sclassId}_${a.subjectId?._id || a.subjectId}`}
+                value={`${a.sclassId?._id || a.sclassId}_${a.subjectId?._id || a.subjectId}`}
               >
                 {`${a.sclassName} — ${a.subjectName}`}
               </MenuItem>
@@ -163,6 +182,7 @@ function TeacherSchedule() {
           <TableHead>
             <TableRow>
               <TableCell>Время</TableCell>
+              <TableCell>Кабинет</TableCell>
               <TableCell>Тема</TableCell>
               <TableCell>Домашка</TableCell>
             </TableRow>
@@ -172,6 +192,7 @@ function TeacherSchedule() {
               filteredLessons.map((lesson) => (
                 <TableRow key={lesson.index}>
                   <TableCell>{lesson.time}</TableCell>
+                  <TableCell>{lesson.room}</TableCell>
                   <TableCell>
                     <TextField
                       variant="standard"
@@ -192,7 +213,7 @@ function TeacherSchedule() {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={3} align="center">
+                <TableCell colSpan={4} align="center">
                   Нет уроков на выбранную дату
                 </TableCell>
               </TableRow>

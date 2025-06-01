@@ -126,92 +126,64 @@ function EditSchedulePage() {
       setMessage({ type: 'error', text: 'Ошибка при удалении урока' });
     }
   };
-const saveChanges = async () => {
-  const invalid = schedule.find(
-    (s) =>
-      !s.subjectId || !s.teacherId || !s.classId ||
-      !s.startTime || !s.endTime || !s.day || !s.room
-  );
-  if (invalid) {
-    setMessage({ type: 'error', text: 'Убедитесь, что все строки заполнены полностью.' });
-    return;
-  }
 
-  try {
-    const newLessons = schedule.filter(s => s._id.length < 24); // временный id
-    const updatedLessons = schedule.filter(s => s._id.length === 24 && isLessonChanged(s, schedule.findIndex(l => l._id === s._id)));
+  const saveChanges = async () => {
+    const invalid = schedule.find(
+      (s) =>
+        !s.subjectId ||
+        !s.teacherId ||
+        !s.classId ||
+        !s.startTime ||
+        !s.endTime ||
+        !s.day ||
+        !s.room
+    );
 
-    if (newLessons.length === 0 && updatedLessons.length === 0) {
-      setMessage({ type: 'info', text: 'Изменения не обнаружены.' });
+    if (invalid) {
+      setMessage({
+        type: 'error',
+        text: 'Убедитесь, что все строки заполнены полностью.',
+      });
       return;
     }
 
-    if (newLessons.length > 0) {
-      await axios.post('/api/schedule/full-day', {
-        classId: selectedClass,
-        day: selectedDay,
-        lessons: newLessons.map(({ subjectId, teacherId, startTime, endTime, room }) => ({
-          subjectId, teacherId, startTime, endTime, room
-        })),
+    try {
+      const changedLessons = schedule.filter((s, i) => isLessonChanged(s, i));
+
+      if (changedLessons.length === 0) {
+        setMessage({ type: 'info', text: 'Изменения не обнаружены.' });
+        return;
+      }
+
+      await Promise.all(
+        changedLessons.map((s) =>
+          axios.put(`/api/schedule/${s._id}`, {
+            subjectId: s.subjectId,
+            teacherId: s.teacherId,
+            startTime: s.startTime,
+            endTime: s.endTime,
+            day: s.day,
+            classId: s.classId,
+            room: s.room,
+          })
+        )
+      );
+
+      setMessage({ type: 'success', text: 'Расписание успешно обновлено' });
+      await loadSchedule();
+    } catch (err) {
+      console.error('Ошибка при сохранении:', err?.response?.data);
+      setMessage({
+        type: 'error',
+        text: err?.response?.data?.message || 'Ошибка при сохранении',
       });
     }
-
-    await Promise.all(
-      updatedLessons.map((s) =>
-        axios.put(`/api/schedule/${s._id}`, {
-          subjectId: s.subjectId,
-          teacherId: s.teacherId,
-          startTime: s.startTime,
-          endTime: s.endTime,
-          day: s.day,
-          classId: s.classId,
-          room: s.room,
-        })
-      )
-    );
-
-    setMessage({ type: 'success', text: 'Расписание успешно обновлено' });
-    await loadSchedule();
-  } catch (err) {
-    setMessage({
-      type: 'error',
-      text: err?.response?.data?.message || 'Ошибка при сохранении',
-    });
-  }
-};
-
-
-  const handleAddLesson = () => {
-    const timeSlots = [
-      { startTime: '08:00', endTime: '08:45' },
-      { startTime: '08:50', endTime: '09:35' },
-      { startTime: '09:40', endTime: '10:25' },
-      { startTime: '10:30', endTime: '11:15' },
-      { startTime: '11:20', endTime: '12:05' },
-    ];
-    const usedTimes = schedule.map(s => `${s.startTime}-${s.endTime}`);
-    const availableSlot = timeSlots.find(slot => !usedTimes.includes(`${slot.startTime}-${slot.endTime}`));
-    const slot = availableSlot || { startTime: '', endTime: '' };
-
-    setSchedule((prev) => [
-      ...prev,
-      {
-        _id: Math.random().toString(36).substr(2, 9),
-        subjectId: '',
-        teacherId: '',
-        classId: selectedClass,
-        startTime: slot.startTime,
-        endTime: slot.endTime,
-        day: ruToEnDay[selectedDay],
-        room: '',
-      },
-    ]);
   };
 
   return (
     <Box p={4}>
       <Typography variant="h5" fontWeight="bold" gutterBottom>
-         Редактирование расписания
+        ✏️ Редактирование расписания
       </Typography>
 
       {message.text && (
@@ -271,12 +243,23 @@ const saveChanges = async () => {
               </TableHead>
               <TableBody>
                 {schedule.map((lesson, index) => (
-                  <TableRow key={lesson._id} sx={{ backgroundColor: isLessonChanged(lesson, index) ? '#fff9c4' : 'inherit' }}>
-                    <TableCell>{lesson.startTime} - {lesson.endTime}</TableCell>
+                  <TableRow
+                    key={lesson._id}
+                    sx={{
+                      backgroundColor: isLessonChanged(lesson, index)
+                        ? '#fff9c4'
+                        : 'inherit',
+                    }}
+                  >
+                    <TableCell>
+                      {lesson.startTime} - {lesson.endTime}
+                    </TableCell>
                     <TableCell>
                       <Select
                         value={lesson.subjectId || ''}
-                        onChange={(e) => handleChange(index, 'subjectId', e.target.value)}
+                        onChange={(e) =>
+                          handleChange(index, 'subjectId', e.target.value)
+                        }
                         size="small"
                         fullWidth
                       >
@@ -290,7 +273,9 @@ const saveChanges = async () => {
                     <TableCell>
                       <Select
                         value={lesson.teacherId || ''}
-                        onChange={(e) => handleChange(index, 'teacherId', e.target.value)}
+                        onChange={(e) =>
+                          handleChange(index, 'teacherId', e.target.value)
+                        }
                         size="small"
                         fullWidth
                       >
@@ -304,7 +289,9 @@ const saveChanges = async () => {
                     <TableCell>
                       <Select
                         value={lesson.room || ''}
-                        onChange={(e) => handleChange(index, 'room', e.target.value)}
+                        onChange={(e) =>
+                          handleChange(index, 'room', e.target.value)
+                        }
                         size="small"
                         fullWidth
                         displayEmpty
@@ -320,7 +307,11 @@ const saveChanges = async () => {
                       </Select>
                     </TableCell>
                     <TableCell>
-                      <Button color="error" size="small" onClick={() => handleDelete(lesson._id)}>
+                      <Button
+                        color="error"
+                        size="small"
+                        onClick={() => handleDelete(lesson._id)}
+                      >
                         Удалить
                       </Button>
                     </TableCell>
@@ -329,17 +320,17 @@ const saveChanges = async () => {
               </TableBody>
             </Table>
           </TableContainer>
+
+          <Button
+            variant="contained"
+            color="success"
+            sx={{ mt: 3 }}
+            onClick={saveChanges}
+          >
+            Сохранить изменения
+          </Button>
         </>
       )}
-
-      <Box display="flex" gap={2} mt={3}>
-        <Button variant="outlined" onClick={handleAddLesson}>
-          Добавить урок
-        </Button>
-        <Button variant="contained" color="success" onClick={saveChanges}>
-          Сохранить изменения
-        </Button>
-      </Box>
     </Box>
   );
 }

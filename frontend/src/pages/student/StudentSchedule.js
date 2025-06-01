@@ -99,6 +99,7 @@ function ScheduleTableComponent({ data }) {
             <TableCell align="center">Тип</TableCell>
             <TableCell align="center">Предмет</TableCell>
             <TableCell align="center">Учитель</TableCell>
+            <TableCell align="center">Кабинет</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -109,6 +110,7 @@ function ScheduleTableComponent({ data }) {
               <TableCell align="center">{entry.type === 'lesson' ? 'Урок' : 'Перемена'}</TableCell>
               <TableCell align="center">{entry.subjectId?.subName || '—'}</TableCell>
               <TableCell align="center">{entry.teacherId?.name || '—'}</TableCell>
+              <TableCell align="center">{entry.room || '—'}</TableCell>
             </TableRow>
           ))}
         </TableBody>
