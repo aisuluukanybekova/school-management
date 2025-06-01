@@ -27,6 +27,8 @@ function ShowTeachers() {
   const { teachersList, loading } = useSelector((state) => state.teacher);
   const { currentUser } = useSelector((state) => state.user);
 
+  const schoolId = currentUser?.school?._id || currentUser?.school; //  Универсальное определение
+
   const [editTeacher, setEditTeacher] = useState({});
   const [editModalOpen, setEditModalOpen] = useState(false);
 
@@ -39,11 +41,14 @@ function ShowTeachers() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    if (currentUser?.school?._id) {
-      dispatch(getAllTeachers(currentUser.school._id));
-      axios.get(`/api/classes/school/${currentUser.school._id}`).then((res) => setClasses(res.data));
+    if (schoolId) {
+      dispatch(getAllTeachers(schoolId));
+      axios
+        .get(`/api/classes/school/${schoolId}`)
+        .then((res) => setClasses(res.data))
+        .catch((err) => console.error('Ошибка загрузки классов:', err));
     }
-  }, [dispatch, currentUser]);
+  }, [dispatch, schoolId]);
 
   const deleteHandler = async (id, address) => {
     try {
@@ -51,7 +56,7 @@ function ShowTeachers() {
         ? `/api/teachers/school/${id}`
         : `/api/teachers/${id}`;
       await axios.delete(url);
-      dispatch(getAllTeachers(currentUser.school._id));
+      dispatch(getAllTeachers(schoolId));
       setMessage('Успешно удалено.');
       setShowPopup(true);
     } catch (err) {
@@ -70,8 +75,8 @@ function ShowTeachers() {
     try {
       await axios.put(`${BASE_URL}/${editTeacher._id}`, editTeacher);
       setEditModalOpen(false);
-      dispatch(getAllTeachers(currentUser.school._id));
-      setMessage('Преподаватель обновлен успешно.');
+      dispatch(getAllTeachers(schoolId));
+      setMessage('Преподаватель обновлён успешно.');
       setShowPopup(true);
     } catch (error) {
       console.error('Ошибка при обновлении преподавателя:', error);
@@ -90,11 +95,11 @@ function ShowTeachers() {
     try {
       await axios.put(`${BASE_URL}/${editTeacher._id}`, { homeroomFor: selectedClass });
       setHomeroomModalOpen(false);
-      dispatch(getAllTeachers(currentUser.school._id));
+      dispatch(getAllTeachers(schoolId));
       setMessage('Классное руководство обновлено.');
       setShowPopup(true);
     } catch (error) {
-      console.error('Ошибка при сохранении homeroomFor', error);
+      console.error('Ошибка при сохранении homeroomFor:', error);
       setMessage('Ошибка при сохранении классного руководства');
       setShowPopup(true);
     }
@@ -107,16 +112,18 @@ function ShowTeachers() {
 
   const teacherRows = Array.isArray(teachersList)
     ? [...teachersList]
-      .sort((a, b) => a.name.localeCompare(b.name))
-      .map((t) => ({
-        _id: t._id,
-        name: t.name,
-        email: t.email,
-        homeroomFor: t.homeroomFor,
-      }))
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((t) => ({
+          _id: t._id,
+          name: t.name,
+          email: t.email,
+          homeroomFor: t.homeroomFor,
+        }))
     : [];
 
-  const filteredRows = teacherRows.filter((row) => row.name.toLowerCase().includes(searchName.toLowerCase()));
+  const filteredRows = teacherRows.filter((row) =>
+    row.name.toLowerCase().includes(searchName.toLowerCase())
+  );
 
   function TeacherButtonHaver({ row }) {
     return (
@@ -154,7 +161,7 @@ function ShowTeachers() {
     {
       icon: <PersonRemoveIcon color="error" />,
       name: 'Удалить всех преподавателей',
-      action: () => deleteHandler(currentUser.school._id, 'Teachers'),
+      action: () => deleteHandler(schoolId, 'Teachers'),
     },
   ];
 
