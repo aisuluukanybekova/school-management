@@ -550,3 +550,15 @@ exports.getLessonDatesInTerm = async (req, res) => {
   }
 };
 
+exports.createLesson = async (req, res) => {
+  try {
+    const { subjectId, teacherId, startTime, endTime, day, classId, room } = req.body;
+    const newLesson = new Schedule({
+      subjectId, teacherId, startTime, endTime, day, classId, room, type: 'lesson'
+    });
+    await newLesson.save();
+    res.status(201).json({ success: true, message: 'Урок добавлен' });
+  } catch (err) {
+    res.status(500).json({ message: 'Ошибка при создании урока', error: err.message });
+  }
+};

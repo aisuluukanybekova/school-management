@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const scheduleController = require('../controllers/schedule-controller');
 
 const {
   createFullDaySchedule,
@@ -12,11 +13,14 @@ const {
   getLessonDatesInTerm
 } = require('../controllers/schedule-controller');
 
-//  Создать расписание на один день
+// Создать расписание на один день
 router.post('/full-day', createFullDaySchedule);
 
 // Создать расписание на неделю
 router.post('/full-week', createFullWeekSchedule);
+
+// Добавить новый урок (должен идти до маршрутов с :id)
+router.post('/', scheduleController.createLesson);
 
 // Получить расписание по классу
 router.get('/class/:classId', getScheduleByClass);

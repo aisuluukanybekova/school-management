@@ -31,3 +31,21 @@ exports.deleteCabinet = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+exports.updateCabinet = async (req, res) => {
+  try {
+    const { name } = req.body;
+    if (!name) return res.status(400).json({ message: 'Название обязательно.' });
+
+    const updated = await Cabinet.findByIdAndUpdate(
+      req.params.id,
+      { name },
+      { new: true }
+    );
+
+    if (!updated) return res.status(404).json({ message: 'Кабинет не найден.' });
+
+    res.json({ success: true, cabinet: updated });
+  } catch (err) {
+    res.status(500).json({ message: 'Ошибка сервера.', error: err.message });
+  }
+};

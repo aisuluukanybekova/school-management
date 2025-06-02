@@ -30,6 +30,7 @@ function EditSchedulePage() {
   const [originalSchedule, setOriginalSchedule] = useState([]);
   const [assignedSubjects, setAssignedSubjects] = useState([]);
   const [cabinets, setCabinets] = useState([]);
+  const [timeSlots, setTimeSlots] = useState([]);
   const [message, setMessage] = useState({ type: '', text: '' });
 
   useEffect(() => {
@@ -37,10 +38,12 @@ function EditSchedulePage() {
       try {
         const { data: classData } = await axios.get(`/api/classes/school/${schoolId}`);
         const { data: cabinetData } = await axios.get(`/api/cabinets/${schoolId}`);
+        const { data: slots } = await axios.get(`/api/timeslots/${schoolId}?shift=first`);
         setClasses(classData);
         setCabinets(cabinetData.cabinets || []);
+        setTimeSlots(slots);
       } catch {
-        setMessage({ type: 'error', text: 'Ошибка загрузки классов и кабинетов' });
+        setMessage({ type: 'error', text: 'Ошибка загрузки данных' });
       }
     };
     if (schoolId) fetchData();
@@ -119,12 +122,38 @@ function EditSchedulePage() {
     if (!window.confirm('Удалить этот урок из расписания?')) return;
 
     try {
-      await axios.delete(`/api/schedule/${lessonId}`);
+      if (!lessonId.startsWith('new-')) {
+        await axios.delete(`/api/schedule/${lessonId}`);
+      }
       setSchedule((prev) => prev.filter((l) => l._id !== lessonId));
       setMessage({ type: 'success', text: 'Урок успешно удалён' });
     } catch {
       setMessage({ type: 'error', text: 'Ошибка при удалении урока' });
     }
+  };
+
+  const addLesson = () => {
+    const usedTimes = schedule.map((l) => l.startTime + '-' + l.endTime);
+    const nextSlot = timeSlots.find(
+      (slot) => slot.type === 'lesson' && !usedTimes.includes(slot.startTime + '-' + slot.endTime)
+    );
+
+    if (!nextSlot) {
+      setMessage({ type: 'info', text: 'Нет доступных временных слотов' });
+      return;
+    }
+
+    const newLesson = {
+      _id: 'new-' + Date.now(),
+      subjectId: '',
+      teacherId: '',
+      classId: selectedClass,
+      startTime: nextSlot.startTime,
+      endTime: nextSlot.endTime,
+      day: ruToEnDay[selectedDay],
+      room: '',
+    };
+    setSchedule((prev) => [...prev, newLesson]);
   };
 
   const saveChanges = async () => {
@@ -148,12 +177,9 @@ function EditSchedulePage() {
     }
 
     try {
-      const changedLessons = schedule.filter((s, i) => isLessonChanged(s, i));
-
-      if (changedLessons.length === 0) {
-        setMessage({ type: 'info', text: 'Изменения не обнаружены.' });
-        return;
-      }
+      const existing = schedule.filter((s) => !s._id.startsWith('new-'));
+      const newLessons = schedule.filter((s) => s._id.startsWith('new-'));
+      const changedLessons = existing.filter((s, i) => isLessonChanged(s, i));
 
       await Promise.all(
         changedLessons.map((s) =>
@@ -165,6 +191,21 @@ function EditSchedulePage() {
             day: s.day,
             classId: s.classId,
             room: s.room,
+          })
+        )
+      );
+
+      await Promise.all(
+        newLessons.map((s) =>
+          axios.post(`/api/schedule`, {
+            subjectId: s.subjectId,
+            teacherId: s.teacherId,
+            startTime: s.startTime,
+            endTime: s.endTime,
+            day: s.day,
+            classId: s.classId,
+            room: s.room,
+            type: 'lesson',
           })
         )
       );
@@ -183,7 +224,7 @@ function EditSchedulePage() {
   return (
     <Box p={4}>
       <Typography variant="h5" fontWeight="bold" gutterBottom>
-        ✏️ Редактирование расписания
+         Редактирование расписания
       </Typography>
 
       {message.text && (
@@ -225,6 +266,9 @@ function EditSchedulePage() {
 
         <Button variant="outlined" onClick={loadSchedule}>
           Загрузить расписание
+        </Button>
+        <Button variant="outlined" onClick={addLesson}>
+          Добавить урок
         </Button>
       </Box>
 

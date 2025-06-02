@@ -3,7 +3,7 @@ import {
   Box, Typography, TextField, Button, Table, TableHead, TableBody,
   TableRow, TableCell, Paper, TableContainer, IconButton, Alert, Stack
 } from '@mui/material';
-import { Delete } from '@mui/icons-material';
+import { Delete, Edit, Save } from '@mui/icons-material';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
@@ -13,6 +13,8 @@ function ClassroomManager() {
   const admin = useSelector((state) => state.user.currentUser);
   const [cabinets, setCabinets] = useState([]);
   const [newCabinet, setNewCabinet] = useState('');
+  const [editingId, setEditingId] = useState(null);
+  const [editedName, setEditedName] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -57,6 +59,26 @@ function ClassroomManager() {
     }
   };
 
+  const handleEdit = (cabinet) => {
+    setEditingId(cabinet._id);
+    setEditedName(cabinet.name);
+  };
+
+  const handleUpdate = async () => {
+    if (!editedName.trim()) return;
+    try {
+      await axios.put(`/api/cabinets/${editingId}`, { name: editedName.trim() });
+      setSuccess('Кабинет обновлён.');
+      setError('');
+      setEditingId(null);
+      setEditedName('');
+      fetchCabinets();
+    } catch (err) {
+      setError('Ошибка при обновлении кабинета.');
+      setSuccess('');
+    }
+  };
+
   return (
     <Box p={4}>
       <Typography variant="h5" gutterBottom fontWeight="bold">
@@ -91,11 +113,41 @@ function ClassroomManager() {
           <TableBody>
             {cabinets.map((cabinet) => (
               <TableRow key={cabinet._id}>
-                <TableCell>{cabinet.name}</TableCell>
+                <TableCell>
+                  {editingId === cabinet._id ? (
+                    <TextField
+                      size="small"
+                      value={editedName}
+                      onChange={(e) => setEditedName(e.target.value)}
+                    />
+                  ) : (
+                    cabinet.name
+                  )}
+                </TableCell>
                 <TableCell align="right">
-                  <IconButton color="error" onClick={() => handleDelete(cabinet._id)}>
-                    <Delete />
-                  </IconButton>
+                  {editingId === cabinet._id ? (
+                    <Button
+                      variant="contained"
+                      size="small"
+                      startIcon={<Save />}
+                      onClick={handleUpdate}
+                    >
+                      Сохранить
+                    </Button>
+                  ) : (
+                    <>
+                      <Button
+                        size="small"
+                        startIcon={<Edit />}
+                        onClick={() => handleEdit(cabinet)}
+                      >
+                        Редактировать
+                      </Button>
+                      <IconButton color="error" onClick={() => handleDelete(cabinet._id)}>
+                        <Delete />
+                      </IconButton>
+                    </>
+                  )}
                 </TableCell>
               </TableRow>
             ))}

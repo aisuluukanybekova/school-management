@@ -4,12 +4,11 @@ import {
   TableBody, FormControl, InputLabel, Select, MenuItem, Button,
   Paper, TableContainer, Alert, Stack,
 } from '@mui/material';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
-import { Download } from '@mui/icons-material';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 axios.defaults.baseURL = 'http://localhost:5001';
 
@@ -41,7 +40,7 @@ function ScheduleTable() {
         }
         const res = await axios.get(`/api/classes/school/${schoolId}`);
         setClasses(res.data);
-      } catch (err) {
+      } catch {
         setError('Не удалось загрузить классы.');
       }
     };
@@ -67,55 +66,44 @@ function ScheduleTable() {
     if (selectedClass && selectedDay) fetchSchedules();
   }, [selectedClass, selectedDay]);
 
-  const generatePDF = () => {
-    const doc = new jsPDF();
-    doc.setFont('courier', 'normal');
-    doc.setFontSize(16);
+  const exportToExcel = () => {
+    const data = schedules.map((entry) => ({
+      Начало: entry.startTime,
+      Конец: entry.endTime,
+      Тип: entry.type === 'lesson' ? 'Урок' : 'Перемена',
+      Предмет: entry.subjectId?.subName || '-',
+      Учитель: entry.teacherId?.name || '-',
+      Кабинет: entry.room || '-',
+    }));
 
-    if (selectedDay === 'Вся неделя') {
-      Object.entries(ruToEnDay).forEach(([ruDay, enDay], idx) => {
-        const daySchedules = schedules.filter((s) => s.day === enDay);
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Расписание');
 
-        if (idx !== 0) doc.addPage();
-        doc.text(`Расписание: ${ruDay}`, 14, 20);
-        autoTable(doc, {
-          startY: 30,
-          styles: { font: 'courier' },
-          head: [['Начало', 'Конец', 'Тип', 'Предмет', 'Учитель', 'Кабинет']],
-          body: daySchedules.map((entry) => [
-            entry.startTime,
-            entry.endTime,
-            entry.type === 'lesson' ? 'Урок' : 'Перемена',
-            entry.subjectId?.subName || '-',
-            entry.teacherId?.name || '-',
-            entry.room || '-',
-          ]),
-        });
-      });
-
-      doc.save('Расписание_вся_неделя.pdf');
-    } else {
-      doc.text(`Расписание: ${selectedDay}`, 14, 20);
-      autoTable(doc, {
-        startY: 30,
-        styles: { font: 'courier' },
-        head: [['Начало', 'Конец', 'Тип', 'Предмет', 'Учитель', 'Кабинет']],
-        body: schedules.map((entry) => [
-          entry.startTime,
-          entry.endTime,
-          entry.type === 'lesson' ? 'Урок' : 'Перемена',
-          entry.subjectId?.subName || '-',
-          entry.teacherId?.name || '-',
-          entry.room || '-',
-        ]),
-      });
-
-      doc.save(`Расписание_${selectedDay}.pdf`);
-    }
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const fileData = new Blob([excelBuffer], { type: 'application/octet-stream' });
+    saveAs(fileData, `Расписание_${selectedDay || 'день'}.xlsx`);
   };
 
   return (
     <Box p={4}>
+      <style>{`
+        @media print {
+          body * {
+            visibility: hidden;
+          }
+          .print-schedule, .print-schedule * {
+            visibility: visible;
+          }
+          .print-schedule {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+          }
+        }
+      `}</style>
+
       <Typography variant="h5" gutterBottom fontWeight="bold">
         Просмотр расписания
       </Typography>
@@ -158,21 +146,30 @@ function ScheduleTable() {
         </FormControl>
 
         <Button
-          variant="contained"
-          startIcon={<Download />}
-          onClick={generatePDF}
+          variant="outlined"
+          onClick={() => window.print()}
+          sx={{ height: 40 }}
+        >
+          Печать
+        </Button>
+
+        <Button
+          variant="outlined"
+          onClick={exportToExcel}
           disabled={schedules.length === 0}
           sx={{ height: 40 }}
         >
-          Скачать PDF
+          Экспорт в Excel
         </Button>
       </Box>
 
       {selectedDay !== 'Вся неделя' ? (
-        <ScheduleTableComponent data={schedules} />
+        <div className="print-schedule">
+          <ScheduleTableComponent data={schedules} />
+        </div>
       ) : (
         Object.entries(ruToEnDay).map(([ruDay, enDay]) => (
-          <Box key={ruDay} mb={4}>
+          <Box key={ruDay} mb={4} className="print-schedule">
             <Typography variant="h6" gutterBottom>
               {ruDay}
             </Typography>
