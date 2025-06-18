@@ -115,10 +115,10 @@ function AttendanceReportPage() {
         {!error && report.length > 0 && (
           <Box mt={2} sx={{ display: 'flex', gap: 2 }} className="no-print">
             <Button variant="contained" color="success" onClick={exportToExcel}>
-              ⬇️ Excel
+              Excel
             </Button>
             <Button variant="contained" color="primary" onClick={() => window.print()}>
-              🖨️ Печать
+              Печать
             </Button>
           </Box>
         )}

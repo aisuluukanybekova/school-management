@@ -4,8 +4,30 @@ import {
   TableRow, TableCell, Paper, Button,
 } from '@mui/material';
 
+
+const printStyle = `
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print-area, .print-area * {
+    visibility: visible;
+  }
+  .print-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    background-color: white;
+  }
+  .no-print {
+    display: none;
+  }
+}
+`;
+
 function GradebookReport() {
-  // Получаем данные из localStorage
   const raw = JSON.parse(localStorage.getItem('gradebook_report') || '[]');
   const subject = localStorage.getItem('selected_subject') || 'Предмет не указан';
 
@@ -26,68 +48,72 @@ function GradebookReport() {
   const handlePrint = () => window.print();
 
   return (
-    <Box p={4}>
-      {/* Заголовок и предмет */}
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <Box>
-          <Typography variant="h5" fontWeight="bold">
+    <>
+      {/* Вставка стилей для печати */}
+      <style>{printStyle}</style>
+
+      <Box p={4}>
+        {/* Область, которая будет напечатана */}
+        <div className="print-area">
+          <Typography variant="h5" fontWeight="bold" gutterBottom>
             📄 Отчёт по успеваемости
           </Typography>
-          <Typography variant="subtitle1" color="text.secondary">
+          <Typography variant="subtitle1" color="text.secondary" gutterBottom>
             Предмет: <strong>{subject}</strong>
           </Typography>
-        </Box>
-        <Button variant="outlined" onClick={handlePrint}>
-          🖨️ Печать
-        </Button>
-      </Box>
 
-      {/* Таблица */}
-      <TableContainer component={Paper}>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell>№</TableCell>
-              <TableCell>ФИО</TableCell>
-              <TableCell align="center">Номер</TableCell>
-              <TableCell align="center">Оценок</TableCell>
-              <TableCell align="center">Итог</TableCell>
-              <TableCell align="center">Мин</TableCell>
-              <TableCell align="center">Макс</TableCell>
-              <TableCell align="center">&lt; 3</TableCell>
-              <TableCell align="center">Статус</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {report.map((r, idx) => (
-            <TableRow key={`${r.name}-${r.rollNum}`}>
-                <TableCell>{idx + 1}</TableCell>
-                <TableCell>{r.name}</TableCell>
-                <TableCell align="center">{r.rollNum}</TableCell>
-                <TableCell align="center">{r.count}</TableCell>
-                <TableCell
-                  align="center"
-                  sx={{
-                    color: r.final !== '-' && r.final < 3 ? 'red' : 'inherit',
-                    fontWeight: r.final !== '-' && r.final < 3 ? 'bold' : 'normal',
-                  }}
-                >
-                  {r.final}
-                </TableCell>
-                <TableCell align="center">{r.min ?? '—'}</TableCell>
-                <TableCell align="center">{r.max ?? '—'}</TableCell>
-                <TableCell align="center">{r.weak}</TableCell>
-                <TableCell align="center">
-                  {r.status === 'Поддержка'
-                    ? <span style={{ color: 'red', fontWeight: 600 }}>{r.status}</span>
-                    : r.status}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Box>
+          <TableContainer component={Paper}>
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell>№</TableCell>
+                  <TableCell>ФИО</TableCell>
+                  <TableCell align="center">Номер</TableCell>
+                  <TableCell align="center">Оценок</TableCell>
+                  <TableCell align="center">Итог</TableCell>
+                  <TableCell align="center">Мин</TableCell>
+                  <TableCell align="center">Макс</TableCell>
+                  <TableCell align="center">&lt; 3</TableCell>
+                  <TableCell align="center">Статус</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {report.map((r, idx) => (
+                  <TableRow key={`${r.name}-${r.rollNum}`}>
+                    <TableCell>{idx + 1}</TableCell>
+                    <TableCell>{r.name}</TableCell>
+                    <TableCell align="center">{r.rollNum}</TableCell>
+                    <TableCell align="center">{r.count}</TableCell>
+                    <TableCell
+                      align="center"
+                      style={{
+                        color: r.final !== '-' && r.final < 3 ? 'red' : 'inherit',
+                        fontWeight: r.final !== '-' && r.final < 3 ? 'bold' : 'normal',
+                      }}
+                    >
+                      {r.final}
+                    </TableCell>
+                    <TableCell align="center">{r.min}</TableCell>
+                    <TableCell align="center">{r.max}</TableCell>
+                    <TableCell align="center">{r.weak}</TableCell>
+                    <TableCell align="center">
+                      {r.status === 'Поддержка'
+                        ? <span style={{ color: 'red', fontWeight: 600 }}>{r.status}</span>
+                        : r.status}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+
+        {/* Кнопка печати только для экрана */}
+        <Box mt={2} className="no-print">
+          <Button variant="contained" onClick={handlePrint}>🖨️ Печать</Button>
+        </Box>
+      </Box>
+    </>
   );
 }
 

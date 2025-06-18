@@ -15,7 +15,6 @@ import {
 
 const BASE_URL = 'http://localhost:5001/api';
 
-// === Универсальный запрос ===
 const request = async (method, url, data = {}, headers = {}) => axios({
   method,
   url,
@@ -45,8 +44,8 @@ export const loginUser = (fields, role) => async (dispatch) => {
       name: data.name,
       email: data.email,
       role,
-      schoolId: data.schoolId || (data.school ? data.school._id : null),
       school: data.school || null,
+      schoolId: data.school?._id || null,
       sclassName: data.sclassName || null,
       teachSclass: data.teachSclass || null,
       teachSubject: data.teachSubject || null,
@@ -77,8 +76,8 @@ export const registerUser = (fields, role) => async (dispatch) => {
         name: data.name,
         email: data.email,
         role: data.role,
-        schoolId: data.schoolId || (data.school ? data.school._id : null),
         school: data.school || null,
+        schoolId: data.school?._id || null,
       };
       dispatch(authSuccess(userPayload));
     } else {
@@ -127,14 +126,14 @@ export const updateUser = (fields, id, address) => async (dispatch) => {
   try {
     const { data } = await request('put', `${BASE_URL}/${address}/${id}`, fields);
 
-    if (data.schoolId || data.schoolName || data.school) {
+    if (data.school || data.schoolId || data.schoolName) {
       const userPayload = {
         _id: data._id,
         name: data.name,
         email: data.email,
         role: data.role,
-        schoolId: data.schoolId || (data.school ? data.school._id : null),
         school: data.school || null,
+        schoolId: data.school?._id || null,
       };
       dispatch(authSuccess(userPayload));
     } else {

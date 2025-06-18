@@ -16,13 +16,25 @@ exports.createTeacherSubjectClass = async (req, res) => {
       return res.status(409).json({ message: "Такая запись уже существует" });
     }
 
-    const record = await TeacherSubjectClass.create({ teacher: teacherID, subject: subjectId, sclassName, sessions });
+    //  ДОБАВЛЯЕМ school:
+    const adminId = req.admin?._id || req.body.school;
+    if (!adminId) return res.status(400).json({ message: 'ID школы не передан' });
+
+    const record = await TeacherSubjectClass.create({
+      teacher: teacherID,
+      subject: subjectId,
+      sclassName,
+      sessions,
+      school: adminId 
+    });
+
     res.status(201).json({ message: "Предмет успешно назначен", record });
   } catch (error) {
     console.error("Ошибка при создании связи:", error);
     res.status(500).json({ message: "Ошибка создания связи", error: error.message });
   }
 };
+
 
 //  Получить все назначения
 exports.getAllTeacherSubjectClasses = async (req, res) => {
@@ -205,5 +217,21 @@ exports.deleteTeacherSubjectClass = async (req, res) => {
   } catch (error) {
     console.error("Ошибка при удалении:", error);
     res.status(500).json({ message: "Ошибка удаления связи", error: error.message });
+  }
+};
+
+// Получить все назначения по школе
+exports.getTeacherSubjectClassBySchool = async (req, res) => {
+  try {
+    const schoolId = req.params.id;
+    const records = await TeacherSubjectClass.find({ school: schoolId })
+      .populate('teacher', 'name email')
+      .populate('subject', 'subName')
+      .populate('sclassName', 'sclassName');
+
+    res.status(200).json(records);
+  } catch (error) {
+    console.error("Ошибка при получении teacherSubjectClass по школе:", error);
+    res.status(500).json({ message: 'Ошибка сервера', error: error.message });
   }
 };

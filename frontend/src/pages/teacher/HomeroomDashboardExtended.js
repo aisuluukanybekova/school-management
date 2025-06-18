@@ -10,8 +10,6 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   LineChart, Line, Legend,
 } from 'recharts';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 
 axios.defaults.baseURL = 'http://localhost:5001';
@@ -92,21 +90,51 @@ function HomeroomDashboardExtended() {
   const filteredData = sortedData.filter((s) =>
     s.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
-  const exportPDF = () => {
-    const doc = new jsPDF();
-    doc.text('Отчет по успеваемости', 14, 16);
-    autoTable(doc, {
-      head: [['№', 'ФИО', 'Телефон', 'Пропуски', 'Оценки']],
-      body: filteredData.map((s, i) => [
-        i + 1,
-        s.name.replace(/\n/g, ' '),
-        s.phone || '-',
-        s.absentCount,
-        s.grades.map((g) => Math.round(g.avg)).join(', '),
-      ]),
-    });
-    doc.save('homeroom-summary.pdf');
-  };
+  const printTable = () => {
+  const printWindow = window.open('', '', 'width=1000,height=700');
+  const tableHtml = `
+    <html>
+      <head>
+        <title>Печать отчета</title>
+        <style>
+          body { font-family: sans-serif; padding: 20px; }
+          table { border-collapse: collapse; width: 100%; }
+          th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+          th { background: #f0f0f0; }
+        </style>
+      </head>
+      <body>
+        <h2>Отчет по успеваемости</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>№</th>
+              <th>ФИО</th>
+              <th>Телефон</th>
+              <th>Пропуски</th>
+              <th>Оценки</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${filteredData.map((s, i) => `
+              <tr>
+                <td>${i + 1}</td>
+                <td>${s.name.replace(/\n/g, ' ')}</td>
+                <td>${s.phone || '-'}</td>
+                <td>${s.absentCount}</td>
+                <td>${s.grades.map((g) => Math.round(g.avg)).join(', ')}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+        <script>window.onload = () => { window.print(); }</script>
+      </body>
+    </html>
+  `;
+  printWindow.document.write(tableHtml);
+  printWindow.document.close();
+};
+
 
   const exportExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(
@@ -209,8 +237,7 @@ function HomeroomDashboardExtended() {
             ))}
           </Select>
         </FormControl>
-
-        <Button variant="outlined" onClick={exportPDF}>Скачать PDF</Button>
+        <Button variant="outlined" onClick={printTable}>Печать</Button>
         <Button variant="outlined" onClick={exportExcel}>Скачать Excel</Button>
       </Box>
 

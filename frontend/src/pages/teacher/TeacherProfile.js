@@ -4,11 +4,11 @@ import {
   Card, CardContent, Typography, TextField, Button, Box, Snackbar, Alert,
 } from '@mui/material';
 import axios from 'axios';
-import { updateUser } from '../../redux/userRelated/userHandle';
+//import { updateUser } from '../../redux/userRelated/userHandle';
 
 function TeacherProfile() {
   const { currentUser } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
 
   const [editData, setEditData] = useState({
     name: currentUser?.name || '',
@@ -29,15 +29,6 @@ function TeacherProfile() {
 
   const handlePasswordChange = (e) => {
     setPasswordData({ ...passwordData, [e.target.name]: e.target.value });
-  };
-
-  const handleUpdate = async () => {
-    try {
-      await dispatch(updateUser(editData, currentUser._id, 'Teacher'));
-      setSnackbar({ open: true, message: 'Профиль обновлён!', severity: 'success' });
-    } catch {
-      setSnackbar({ open: true, message: 'Ошибка при обновлении профиля.', severity: 'error' });
-    }
   };
 
   const handlePasswordUpdate = async () => {
@@ -102,12 +93,6 @@ function TeacherProfile() {
             margin="normal"
             variant="outlined"
           />
-
-          <Box mt={3}>
-            <Button variant="contained" onClick={handleUpdate} fullWidth>
-              Сохранить изменения
-            </Button>
-          </Box>
 
           <Box mt={5}>
             <Typography variant="h6" gutterBottom>

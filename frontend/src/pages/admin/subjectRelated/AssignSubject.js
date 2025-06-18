@@ -25,23 +25,28 @@ function AssignSubject() {
   const [message, setMessage] = useState('');
   const [showPopup, setShowPopup] = useState(false);
 
+  // Получаем schoolId из currentUser
+  const schoolId = currentUser.schoolId || currentUser.school?._id || currentUser._id;
+
   useEffect(() => {
     const fetchAll = async () => {
       try {
         const [subjectRes, classRes, teacherRes] = await Promise.all([
-          axios.get(`/api/subjects/school/${currentUser._id}`),
-          axios.get(`/api/classes/school/${currentUser._id}`),
-          axios.get(`/api/teachers/school/${currentUser._id}`),
+          axios.get(`/api/subjects/school/${schoolId}`),
+          axios.get(`/api/classes/school/${schoolId}`),
+          axios.get(`/api/teachers/school/${schoolId}`),
         ]);
         setSubjects(subjectRes.data);
         setClasses(classRes.data);
         setTeachers(teacherRes.data);
       } catch (err) {
         console.error('Ошибка загрузки данных:', err);
+        setMessage('Ошибка загрузки данных');
+        setShowPopup(true);
       }
     };
     fetchAll();
-  }, [currentUser._id]);
+  }, [schoolId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,6 +61,7 @@ function AssignSubject() {
       subjectId,
       sclassName: classId,
       sessions: sessionsPerWeek,
+      school: schoolId, // ✅ Обязательно передаём school
     };
 
     try {
@@ -64,7 +70,7 @@ function AssignSubject() {
       navigate('/Admin/subjects');
     } catch (error) {
       console.error('Ошибка при сохранении:', error);
-      setMessage('Ошибка при сохранении назначения');
+      setMessage(error?.response?.data?.message || 'Ошибка при сохранении назначения');
       setShowPopup(true);
     } finally {
       setLoader(false);

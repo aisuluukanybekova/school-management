@@ -7,11 +7,12 @@ const {
   getTeachersWithSubjects,
   getSubjectsWithTeachersByClass,
   getClassesAndSubjectsByTeacher,
+  getTeacherSubjectClassBySchool,
   getSubjectsByClass 
 } = require("../controllers/teacherSubjectClass-controller");
 
 const router = express.Router();
-
+router.get('/school/:id', getTeacherSubjectClassBySchool);
 router.post("/", createTeacherSubjectClass);
 router.get("/", getAllTeacherSubjectClasses);
 router.get("/grouped", getTeachersWithSubjects);

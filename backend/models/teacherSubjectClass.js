@@ -21,6 +21,11 @@ const teacherSubjectClassSchema = new mongoose.Schema({
     required: true,
     min: 1,
   },
+  school: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'admin',
+    required: true,
+  },
 }, { timestamps: true });
 
 // Защита от OverwriteModelError

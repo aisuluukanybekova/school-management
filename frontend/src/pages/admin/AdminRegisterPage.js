@@ -116,7 +116,7 @@ function AdminRegisterPage() {
               Регистрация администратора
             </Typography>
             <Typography variant="body2" sx={{ mb: 3, textAlign: 'center', color: '#555' }}>
-              Создайте свою школу и начните управлять учениками и преподавателями
+            Организуйте свою школу — управляйте учениками, учетелями и расписанием
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit}>
               <TextField

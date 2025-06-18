@@ -61,19 +61,19 @@ function ChooseUser({ visitor }) {
       key: 'Admin',
       icon: <Avatar src="/avatars/admin.png" sx={{ width: 36, height: 36 }} />,
       title: 'Администратор',
-      description: 'Управление школой, пользователями и аналитикой.',
+      description: 'Управление школой, пользователями и аналитикой',
     },
     {
       key: 'Teacher',
       icon: <Avatar src="/avatars/teacher.png" sx={{ width: 36, height: 36 }} />,
       title: 'Учитель',
-      description: 'Ведение журнала, оценок и расписания.',
+      description: 'Ведение журнала, оценок и расписания',
     },
     {
       key: 'Student',
       icon: <Avatar src="/avatars/student.png" sx={{ width: 36, height: 36 }} />,
       title: 'Ученик',
-      description: 'Просмотр оценок, заданий и расписания.',
+      description: 'Просмотр оценок и расписания',
     },
   ];
 

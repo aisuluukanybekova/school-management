@@ -18,9 +18,13 @@ function SeeNotice() {
     if (currentRole === 'Admin') {
       dispatch(getAllNotices(currentUser._id, 'Notice'));
     } else {
-      dispatch(getAllNotices(currentUser.school._id, 'Notice'));
+      dispatch(getAllNotices(currentUser.school?._id, 'Notice'));
     }
   }, [dispatch, currentRole, currentUser]);
+
+  if (!currentUser || !currentRole) {
+    return <div style={{ fontSize: '20px', marginTop: '50px' }}>Загрузка пользователя...</div>;
+  }
 
   if (error) {
     console.error(error);
@@ -32,7 +36,7 @@ function SeeNotice() {
     { id: 'date', label: 'Дата', minWidth: 170 },
   ];
 
-  const noticeRows = noticesList.map((notice) => {
+  const noticeRows = Array.isArray(noticesList) ? noticesList.map((notice) => {
     const date = new Date(notice.date);
     const dateString = date.toString() !== 'Invalid Date'
       ? date.toISOString().substring(0, 10)
@@ -43,21 +47,19 @@ function SeeNotice() {
       date: dateString,
       id: notice._id,
     };
-  });
+  }) : [];
 
   return (
     <div style={{ marginTop: '50px', marginRight: '20px' }}>
       {loading ? (
         <div style={{ fontSize: '20px' }}>Загрузка...</div>
-      ) : response ? (
+      ) : response || noticeRows.length === 0 ? (
         <div style={{ fontSize: '20px' }}>Объявлений пока нет</div>
       ) : (
         <>
           <h3 style={{ fontSize: '30px', marginBottom: '40px' }}>Объявления</h3>
           <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-            {Array.isArray(noticesList) && noticesList.length > 0 && (
-              <TableViewTemplate columns={noticeColumns} rows={noticeRows} />
-            )}
+            <TableViewTemplate columns={noticeColumns} rows={noticeRows} />
           </Paper>
         </>
       )}

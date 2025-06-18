@@ -52,7 +52,6 @@ const userSlice = createSlice({
       state.error = null;
       state.currentRole = null;
     },
-
     doneSuccess: (state, action) => {
       state.userDetails = action.payload;
       state.loading = false;
@@ -64,7 +63,6 @@ const userSlice = createSlice({
       state.error = null;
       state.response = null;
     },
-
     getRequest: (state) => {
       state.loading = true;
     },
