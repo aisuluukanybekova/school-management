@@ -58,44 +58,27 @@
 git clone https://github.com/aisuluukanybekova/school-management-system.git
 cd school-management-system
 Установка зависимостей:
-bash
-Copy
-Edit
 cd backend
 npm install
-
 cd ../frontend
 npm install
 Запуск backend-сервера:
-bash
-Copy
-Edit
 cd ../backend
 npm run dev
 Запуск frontend-клиента:
-bash
-Copy
-Edit
 cd ../frontend
 npm start
+
 Дополнительные возможности
 Генерация отчетов в формате Excel и PDF
-
 Диаграммы и графики по посещаемости и успеваемости
-
 Роль-ориентированная навигация
-
 Адаптивный интерфейс
-
 Защищенная авторизация с JWT
 
 Тестирование
 Включает:
-
 Unit-тесты
-
 Интеграционные API-тесты
-
 Usability-тестирование
-
 Проверку качества кода
